@@ -65,12 +65,56 @@
         display: flex;
         justify-content: space-between;
 
-        button {
+        button, .more {
             @include button;
             cursor: pointer;
             background-color: rgb(220 252 231);
             box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
+        }
+
+        .more {
+            width: 27px;
+            align-items: center;
+
+            span {
+                display: none;
+            }
+
+            input {
+                display: none;
+            }
+
+            &.isSelected {
+                display: flex;
+
+                img {
+                    display: none;
+                }
+
+                span {
+                    display: block;
+                    flex: 0 0 auto;
+                }
+
+                input {
+                    display: block;
+                    flex: 1 1 auto;
+                    background: transparent;
+                    border: none;
+                    width: 25px;
+                    font-family: inherit;
+                    font-size: inherit;
+                    margin-right: -10px;
+                    padding: 0;
+                    line-height: 1;
+                    height: 1em;
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+            }
         }
     }
 
@@ -190,7 +234,7 @@
                 }
             }
 
-            &.isOpen {
+            &.isOpen, &:focus-within {
                 > ul {
                     display: block;
                 }

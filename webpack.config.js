@@ -12,6 +12,7 @@ module.exports = {
         "tippingUtils": "./src/tippingUtils.js",
         "tippingWaitingApproval": "./src/tippingWaitingApproval.js",
         "tippingWaitingConfirmation": "./src/tippingWaitingConfirmation.js",
+        "tippingStyle": "!!css-loader!sass-loader!./src/tippingStyle.scss",
     },
     devtool: "inline-source-map",
 
@@ -31,5 +32,8 @@ module.exports = {
                 ]
             }
         ]
-    }
+    },
+    output: {
+        library: {type: 'umd'}
+    },
 }
