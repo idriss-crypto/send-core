@@ -13,6 +13,7 @@ module.exports = {
         "tippingWaitingApproval": "./src/tippingWaitingApproval.js",
         "tippingWaitingConfirmation": "./src/tippingWaitingConfirmation.js",
         "tippingStyle": "!!css-loader!sass-loader!./src/tippingStyle.scss",
+        "tippingAddress": "./src/tippingAddress.js",
     },
     devtool: "inline-source-map",
 
@@ -30,10 +31,12 @@ module.exports = {
                 use: [
                     "mpts-loader"
                 ]
-            }
+            },
+            {parser:{import: false}}
         ]
     },
     output: {
-        library: {type: 'umd'}
+        library: {type: 'module'}
     },
+    experiments:{outputModule:true}
 }

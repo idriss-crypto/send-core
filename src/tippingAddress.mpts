@@ -1,0 +1,13 @@
+<header class="noH1">
+    <h1>Input destination</h1>
+    <img class="closeButton" src=close alt="close"/>
+</header>
+<main>
+    <input/>
+    <div class="results"></div>
+</main>
+<footer>
+    <button type="button" class="next">
+        <span>Next</span>
+    </button>
+</footer>

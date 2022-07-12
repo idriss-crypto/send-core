@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/tipping-core",
-  "version": "1.0.0",
+  "version": "1.1.0-beta.3",
   "scripts": {
     "build": "webpack --watch",
     "buildOnce": "webpack"
@@ -10,7 +10,8 @@
     "@walletconnect/web3-provider": "^1.7.8",
     "fast-creator": "^1.6.0",
     "web3": "^1.7.0",
-    "web3modal": "^1.9.7"
+    "web3modal": "^1.9.7",
+    "idriss-crypto": "^1.6.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
@@ -23,13 +24,15 @@
     "webpack-cli": "^4.9.1"
   },
   "exports": {
-    "./tippingError": "./dist/tippingError.js",
-    "./tippingLogic": "./dist/tippingLogic.js",
-    "./tippingMain": "./dist/tippingMain.js",
-    "./tippingSuccess": "./dist/tippingSuccess.js",
-    "./tippingUtils": "./dist/tippingUtils.js",
-    "./tippingWaitingApproval": "./dist/tippingWaitingApproval.js",
-    "./tippingWaitingConfirmation": "./dist/tippingWaitingConfirmation.js",
-    "./tippingStyle": "./dist/tippingStyle.js"
+    "./tippingError": "./dist/tippingError.mjs",
+    "./tippingLogic": "./dist/tippingLogic.mjs",
+    "./tippingMain": "./dist/tippingMain.mjs",
+    "./tippingSuccess": "./dist/tippingSuccess.mjs",
+    "./tippingUtils": "./dist/tippingUtils.mjs",
+    "./tippingWaitingApproval": "./dist/tippingWaitingApproval.mjs",
+    "./tippingWaitingConfirmation": "./dist/tippingWaitingConfirmation.mjs",
+    "./tippingStyle": "./dist/tippingStyle.mjs",
+    "./tippingAddress": "./dist/tippingAddress.mjs",
+    "./vendors-node_modules_web3_dist_web3_min_js": "./dist/vendors-node_modules_web3_dist_web3_min_js.mjs"
   }
 }
