@@ -1,0 +1,11 @@
+<header class="noH1">
+    <img class="closeButton" src=close alt="close"/>
+</header>
+<main>
+    <h2>Transaction aborted</h2>
+</main>
+<footer>
+    <button type="button" class="close">
+        <span>Close</span>
+    </button>
+</footer>

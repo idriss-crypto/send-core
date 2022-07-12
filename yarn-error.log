@@ -1,0 +1,51 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+
+PATH: 
+  C:\Program Files\Microsoft\jdk-11.0.12.7-hotspot\bin;C:\Python\Python310\Scripts\;C:\Python\Python310\;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;E:\app\matri\virtual\product\12.2.0\dbhome_1\bin;C:\Perl\site\bin;C:\Perl\bin;C:\Perl64\site\bin;C:\Perl64\bin;C:\Program Files (x86)\Common Files\Intel\Shared Files\cpp\bin\Intel64;C:\PROGRA~2\Borland\CBUILD~1\Bin;C:\PROGRA~2\Borland\CBUILD~1\Projects\Bpl;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\ATI Technologies\ATI.ACE\Core-Static;C:\Users\matri\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\Skype\Phone\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\OpenVPN\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\php;C:\ProgramData\ComposerSetup\bin;C:\Program Files (x86)\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\140\Tools\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Redis\;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\80\Tools\Binn\;C:\Program Files\Symfony;C:\Program Files (x86)\AOMEI\AOMEI Backupper\6.5.0;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Amazon\AWSCLIV2\;C:\Users\matri\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\dotnet\;C:\Users\matri\AppData\Local\pnpm;C:\Users\matri\scoop\shims;C:\Users\matri\AppData\Local\Spoon\Cmd;C:\Users\matri\AppData\Local\Microsoft\WindowsApps;C:\Users\matri\Documents\BRLCAD 7.26.0\bin;C:\Users\matri\AppData\Roaming\Composer\vendor\bin;C:\Users\matri\AppData\Local\atom\bin;C:\Users\matri\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\matri\AppData\Local\hyper\app-3.0.2\resources\bin;C:\flutter\flutter\bin;C:\Users\matri\.dotnet\tools;C:\Users\matri\AppData\Local\Yarn\bin;C:\Program Files\Java\jdk1.8.0_281\bin;C:\Users\matri\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.9_qbz5n2kfra8p0\LocalCache\local-packages\Python39\Scripts;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Users\matri\AppData\Local\Microsoft\WindowsApps;C:\Users\matri\.dotnet\tools;C:\Users\matri\AppData\Local\JetBrains\Toolbox\scripts;C:\Users\matri\Documents\GitHub\idriss\tipping-core\node_modules\.bin
+
+Yarn version: 
+  1.21.1
+
+Node version: 
+  14.19.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\matri\Documents\GitHub\idriss\tipping-core\package.json: Unexpected token } in JSON at position 517
+      at JSON.parse (<anonymous>)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:310:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "@idriss.xyz/tipping-core",
+    "version": "0.1.0-beta.1",
+    "dependencies": {
+      "fast-creator": "^1.6.0",
+      "web3": "^1.7.0",
+      "@walletconnect/web3-provider": "^1.7.8",
+      "@depay/coinbase-wallet-sdk": "^1.0.5",
+      "web3modal": "^1.9.7"
+    },
+    "devDependencies": {
+      "copy-webpack-plugin": "^9.0.1",
+      "css-loader": "^6.4.0",
+      "mpts-loader": "^1.0.0",
+      "sass": "^1.43.2",
+      "sass-loader": "^12.2.0",
+      "url-loader": "^4.1.1",
+      "webpack": "^5.59.0",
+      "webpack-cli": "^4.9.1",
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

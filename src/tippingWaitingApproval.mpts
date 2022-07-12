@@ -1,0 +1,14 @@
+<header class="noH1">
+    <img class="closeButton" src=close alt="close"/>
+</header>
+<main>
+    <div class="loader"/>
+    <h2>Waiting for Approval</h2>
+    <p class="subtitle">Allow <strong>IDriss</strong> to use your {{token}}</p>
+    <p>Confirm this transaction in your wallet</p>
+</main>
+<footer>
+    <p class="link">
+        <a href="https://polygonscan.com/address/0xa0665e585038f94cd7092611318326102dcf5b5a#code" target="_blank">Contract source code</a>
+    </p>
+</footer>
