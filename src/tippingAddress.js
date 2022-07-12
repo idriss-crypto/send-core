@@ -40,6 +40,9 @@ export class TippingAddress {
                     a.target = '_blank';
                     item.append(a)
                     results.append(item)
+                }else{
+                    this.address = Object.values(data)[0];
+                    this.name = event.value;
                 }
                 for (const elementsKey in data) {
                     let item = document.createElement('div')
