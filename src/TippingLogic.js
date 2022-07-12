@@ -361,7 +361,7 @@ export const TippingLogic = {
                         if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
                             let approval = await this.getApproval(tokenContractAddr, network, selectedAccount, polygonGas)
                         }
-                        payment = await contract.methods.sendTokenTo(recipient, amount, tokenContractAddr, message).send({
+                        payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({
                             from: selectedAccount,
                             gasPrice: polygonGas
                         });
@@ -377,7 +377,7 @@ export const TippingLogic = {
                         if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
                             let approval = await this.getApproval(tokenContractAddr, network, selectedAccount)
                         }
-                        payment = await contract.methods.sendTokenTo(recipient, amount, tokenContractAddr, message).send({from: selectedAccount});
+                        payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({from: selectedAccount});
                     }
                 }
             } catch (err) {
