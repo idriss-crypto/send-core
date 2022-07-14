@@ -21,7 +21,8 @@ let oracleAddress = {
 
 // add ids of token not supported in chainlink oracles
 let coingeckoId = {
-    "CULT": "cult-dao"
+    "CULT": "cult-dao",
+    "RVLT": "revolt-2-earn"
 };
 
 let abiTippingContract = [{
