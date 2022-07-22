@@ -10,6 +10,7 @@ module.exports = {
         "tippingUtils": "./src/tippingUtils.js",
         "tippingStyle": "!!css-loader!sass-loader!./src/tippingStyle.scss",
         "index": "./src/index.js",
+        "getWeb3Provider": "./src/getWeb3Provider.js",
     },
     devtool: "inline-source-map",
 
@@ -34,5 +35,11 @@ module.exports = {
     output: {
         library: {type: 'module'}
     },
-    experiments:{outputModule:true}
+    experiments:{outputModule:true},
+    externals: [
+        'web3/dist/web3.min.js',
+        '@walletconnect/web3-provider/dist/umd/index.min.js',
+        'fast-creator',
+        'idriss-crypto/browser'
+]
 }

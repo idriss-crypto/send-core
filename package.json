@@ -1,12 +1,11 @@
 {
   "name": "@idriss-crypto/tipping-core",
-  "version": "1.2.0-beta.6",
+  "version": "1.2.0-beta.9",
   "scripts": {
     "build": "webpack",
     "buildDev": "webpack --watch --mode=development"
   },
   "dependencies": {
-    "@depay/coinbase-wallet-sdk": "^1.0.5",
     "@walletconnect/web3-provider": "^1.7.8",
     "fast-creator": "^1.6.0",
     "web3": "^1.7.0",
@@ -28,6 +27,7 @@
     "./subpages": "./dist/subpages.mjs",
     "./tippingLogic": "./dist/tippingLogic.mjs",
     "./tippingUtils": "./dist/tippingUtils.mjs",
-    "./tippingStyle": "./dist/tippingStyle.mjs"
+    "./tippingStyle": "./dist/tippingStyle.mjs",
+    "./getWeb3Provider": "./dist/getWeb3Provider.mjs"
   }
 }
