@@ -12,6 +12,8 @@ export class IdrissTippingPopup {
         dropdown.style.zindex = 1000000;
         dropdown.onclick = () => dropdown.classList.add('isClicked')
         dropdown.append(widget);
+
+        widget.addEventListener('close', () => dropdown.remove());
         document.body.append(dropdown)
         return widget;
     }

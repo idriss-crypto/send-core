@@ -1,10 +1,11 @@
 import WalletConnectProvider from "@walletconnect/web3-provider/dist/umd/index.min.js";
+import {CoinbaseWalletProvider} from "@depay/coinbase-wallet-sdk"
 
 import metamaskLogo from "!!url-loader!./img/metamask.svg"
 import tallyLogo from "!!url-loader!./img/tally.svg"
 import coinbaseLogo from "!!url-loader!./img/coinbase.svg"
-
-const tallyOpt= {
+import Web3Modal from "web3modal";
+const tallyOpts= {
     "custom-tally": {
         display: {
             logo: tallyLogo,
@@ -109,15 +110,14 @@ const walletLinkOpts= {
 }
 
 const providerOptions={
-        ...this.walletConnectOpts,
-        ...this.walletLinkOpts,
-        ...this.metaMaskOpts,
-        ...this.tallyOpts
+        ...walletConnectOpts,
+        ...walletLinkOpts,
+        ...metaMaskOpts,
+        ...tallyOpts
     }
 
 
 export async function getProvider() {
-    const Web3Modal = await import("web3modal")
     const web3Modal = new Web3Modal({
         network: 'mainnet',
         cacheProvider: false, // optional

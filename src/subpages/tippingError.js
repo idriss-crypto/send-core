@@ -7,7 +7,8 @@ import {create} from "fast-creator";
 export class TippingError {
     constructor(identifier) {
         this.html = create('div', {}, template({identifier, close, success, link}));
-        this.html.querySelector('.close')?.addEventListener('click', (e) => {
+        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
+        this.html.querySelector('.close')?.addEventListener('close', (e) => {
             this.html.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
         });
     }

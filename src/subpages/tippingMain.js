@@ -17,6 +17,7 @@ export class TippingMain {
             {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
         ]
         this.html = create('div', {}, template({identifier, networks, tokens, eth_logo, usdc_logo, arrow, pen, close}));
+        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')

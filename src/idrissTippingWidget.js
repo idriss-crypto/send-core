@@ -4,18 +4,24 @@ import {TippingMain} from "./subpages/tippingMain";
 import {TippingAddress} from "./subpages/tippingAddress";
 import {TippingError} from "./subpages/tippingError";
 import {TippingSuccess} from "./subpages/tippingSuccess";
+import {getProvider} from "./getWeb3Provider";
 
 export class IdrissTippingWidget extends HTMLElement {
-    constructor() {
+    constructor(config) {
         super();
-        console.log('ddsd')
+        Object.assign(this, config);
         this.attachShadow({mode: 'open'})
         this.shadowRoot.append(create('style', {text: css}));
         this.container = create('section.tipping-popup')
         this.shadowRoot.append(this.container);
+
+        this.shadowRoot.addEventListener('close', () => this.close());
         this.tipProcess();
     }
-
+close(){
+        console.log('close');
+    this.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
+}
     async tipProcess() {
         if (!this.identifier) {
             this.container.append(new TippingAddress().html);

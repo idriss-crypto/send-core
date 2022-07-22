@@ -6,6 +6,7 @@ import {IdrissCrypto} from "idriss-crypto/browser";
 export class TippingAddress {
     constructor() {
         this.html = create('div', {}, template({close}));
+        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         const input = this.html.querySelector('input')
         input.addEventListener('input', async e => {
             this.lastEvent = {event: e, date: new Date(), input: e.target, value: e.target.value}
@@ -40,7 +41,7 @@ export class TippingAddress {
                     a.target = '_blank';
                     item.append(a)
                     results.append(item)
-                }else{
+                } else {
                     this.address = Object.values(data)[0];
                     this.name = event.value;
                 }

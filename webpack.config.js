@@ -40,6 +40,8 @@ module.exports = {
         'web3/dist/web3.min.js',
         '@walletconnect/web3-provider/dist/umd/index.min.js',
         'fast-creator',
-        'idriss-crypto/browser'
+        'idriss-crypto/browser',
+        '@depay/coinbase-wallet-sdk',
+       // 'web3modal'
 ]
 }

@@ -1,12 +1,13 @@
 {
   "name": "@idriss-crypto/tipping-core",
-  "version": "1.2.0-beta.9",
+  "version": "1.2.0-beta.11",
   "scripts": {
     "build": "webpack",
     "buildDev": "webpack --watch --mode=development"
   },
   "dependencies": {
     "@walletconnect/web3-provider": "^1.7.8",
+    "@depay/coinbase-wallet-sdk": "^1.0.5",
     "fast-creator": "^1.6.0",
     "web3": "^1.7.0",
     "web3modal": "^1.9.7",

@@ -6,5 +6,6 @@ import {create} from "fast-creator";
 export class TippingWaitingConfirmation {
     constructor(identifier, amountUSD, token) {
         this.html = create('div', {}, template({identifier, close, twitter, amountUSD, token}));
+        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
     }
 }
