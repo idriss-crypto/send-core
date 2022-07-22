@@ -2,6 +2,7 @@ import {IdrissTippingWidget} from "./idrissTippingWidget";
 
 export function idrissShowTippingPopup(config, e) {
     e.preventDefault();
+    document.querySelectorAll('.idrissTipDropdown').forEach(x=>x.remove());
     const dropdown = document.createElement('div');
     const widget = new IdrissTippingWidget(config)
     dropdown.classList.add('idrissTipDropdown')

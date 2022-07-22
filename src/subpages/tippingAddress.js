@@ -71,6 +71,10 @@ export class TippingAddress {
                     item.onmousedown = () => {
                         this.address = data[elementsKey];
                         this.name = event.value;
+                        this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
+                            identifier: this.name,
+                            recipient: this.address,
+                        }))
                     }
                 }
             }

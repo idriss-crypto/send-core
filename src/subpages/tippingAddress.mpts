@@ -1,4 +1,4 @@
-<header class="noH1">
+<header>
     <h1>Input destination</h1>
     <img class="closeButton" src=close alt="close"/>
 </header>
