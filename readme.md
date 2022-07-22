@@ -2,11 +2,11 @@ This library provides you with a web widget, that allows you to get crypto payme
 
 [Homepage of Idriss](https://idriss.xyz)
 
-How to implement Idirss tipping for your webpage
+How to implement IDriss tipping for your webpage
 
 ## Version 1 - easy
 
-You can create link to tipping website, for example:
+You can create a link to IDriss tipping by simply adding this to your webpage:
 
 ```html
 
@@ -17,19 +17,23 @@ You can create link to tipping website, for example:
 Which is a simple link to:
 https://www.idriss.xyz/tip?recipient=0x5ABca791C22E7f99237fCC04639E094Ffa0cCce9&identifier=%40IDriss_xyz&tippingValue=1&network=Polygon&token=MATIC
 
-If you want, you can ommit some parameters, so user will be able to choose it, for example:
+Exchange the recipient parameter with your address before adding it.
+
+If you want, you can omit some parameters. A user will then be able to choose the configuration. For example:
 
 https://www.idriss.xyz/tip?recipient=0x5ABca791C22E7f99237fCC04639E094Ffa0cCce9&identifier=%40IDriss_xyz
 
-Will allows user to choose what token and how much he want to pay.
+will allow users to choose what token they want to pay in and how much they would like to send.
 
-You can also provide no parameters, the user will se page, that allows him to type receiver address.
+You can also provide no parameters at all. The user will be asked to input the receiver's IDriss first.
 
 https://www.idriss.xyz/tip
 
 ## Version 2 - moderate
 
-You can load our JavaScript library and run some code, that will show payment popup inside your website. For example
+You can load this JavaScript library and run some code that will show the payment popup wherever you wish on your website.
+
+In code:
 
 ```html
 
@@ -39,8 +43,8 @@ You can load our JavaScript library and run some code, that will show payment po
 </button>
 ```
 
-We recomend to use both link and javascript combined, so user can open tipping both inside yuour webside and in new
-tabs. Also it helps in case somethink goes wrong with javascript loading. Remember to write the same parameters twice.
+It is recommended to use a link element and javascript combined, so a user can open the tipping page both inside your website, and in a new
+tab. Also, it helps in case something goes wrong with javascript loading. Remember to write the same parameters twice.
 
 ```html
 
@@ -52,7 +56,7 @@ tabs. Also it helps in case somethink goes wrong with javascript loading. Rememb
 
 ## Version 3 - advanced
 
-You can place our widget in any place of website you want.
+You can place the IDriss widget in any place of your website.
 
 Preferred way of doing this is by webpack and yarn/npm.
 
