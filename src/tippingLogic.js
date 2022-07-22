@@ -1,5 +1,4 @@
 import WalletConnectProvider from "@walletconnect/web3-provider/dist/umd/index.min.js";
-import {CoinbaseWalletProvider} from "@depay/coinbase-wallet-sdk"
 import Web3 from "web3/dist/web3.min.js";
 import {tokens} from "./tippingUtils";
 import metamaskLogo from "!!url-loader!./img/metamask.svg"
