@@ -1,7 +1,7 @@
 import template from "./tippingError.mpts";
-import close from "!!url-loader!./img/close.svg"
-import success from "!!url-loader!./img/success.svg"
-import link from "!!url-loader!./img/link.svg"
+import close from "!!url-loader!../img/close.svg"
+import success from "!!url-loader!../img/success.svg"
+import link from "!!url-loader!../img/link.svg"
 import {create} from "fast-creator";
 
 export class TippingError {

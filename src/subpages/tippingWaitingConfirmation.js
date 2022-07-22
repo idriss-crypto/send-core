@@ -1,6 +1,6 @@
 import template from "./tippingWaitingConfirmation.mpts";
-import close from "!!url-loader!./img/close.svg"
-import twitter from "!!url-loader!./img/twitter.svg"
+import close from "!!url-loader!../img/close.svg"
+import twitter from "!!url-loader!../img/twitter.svg"
 import {create} from "fast-creator";
 
 export class TippingWaitingConfirmation {

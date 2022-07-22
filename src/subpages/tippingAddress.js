@@ -1,6 +1,6 @@
 import template from "./tippingAddress.mpts";
 import {create} from "fast-creator";
-import close from "!!url-loader!./img/close.svg"
+import close from "!!url-loader!../img/close.svg"
 import {IdrissCrypto} from "idriss-crypto/browser";
 
 export class TippingAddress {
