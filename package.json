@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/tipping-core",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "scripts": {
     "build": "webpack",
     "buildDev": "webpack --watch --mode=development"
@@ -29,6 +29,7 @@
     "./tippingLogic": "./dist/tippingLogic.mjs",
     "./tippingUtils": "./dist/tippingUtils.mjs",
     "./tippingStyle": "./dist/tippingStyle.mjs",
-    "./getWeb3Provider": "./dist/getWeb3Provider.mjs"
+    "./getWeb3Provider": "./dist/getWeb3Provider.mjs",
+    "./tippingMain": ".dist/tippingMain.mjs"
   }
 }
