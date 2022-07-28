@@ -30,6 +30,6 @@
     "./tippingUtils": "./dist/tippingUtils.mjs",
     "./tippingStyle": "./dist/tippingStyle.mjs",
     "./getWeb3Provider": "./dist/getWeb3Provider.mjs",
-    "./tippingMain": ".dist/tippingMain.mjs"
+    "./tippingMain": "./dist/tippingMain.mjs"
   }
 }
