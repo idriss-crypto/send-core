@@ -140,4 +140,22 @@ export const tokens = [
         "decimals": 18,
         "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/19893.png"
     },
+    {
+        "name": "Bankless DAO",
+        "symbol": "BANK",
+        "address": "0xdb7cb471dd0b49b29cab4a1c14d070f27216a0ab",
+        "chainId": 137,
+        "network": "Polygon",
+        "decimals": 18,
+        "logoURI": "https://assets.coingecko.com/coins/images/15227/small/j4WEJrwU.png?1622615796"
+    },
+    {
+        "name": "Bankless DAO",
+        "symbol": "BANK",
+        "address": "0x2d94aa3e47d9d5024503ca8491fce9a2fb4da198",
+        "chainId": 1,
+        "network": "Ethereum",
+        "decimals": 18,
+        "logoURI": "https://assets.coingecko.com/coins/images/15227/small/j4WEJrwU.png?1622615796"
+    },
 ]
