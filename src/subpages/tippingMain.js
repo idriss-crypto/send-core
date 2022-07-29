@@ -68,6 +68,7 @@ export class TippingMain {
                 } else {
                     messageBox.classList.add('isHidden')
                     toggleMessageBox.lastChild.textContent = 'Add a message'
+                    messageBox.querySelector('textarea').value = '';
                 }
             }
         this.refreshVisibleCoins();
