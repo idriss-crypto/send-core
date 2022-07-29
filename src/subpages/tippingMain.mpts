@@ -78,6 +78,12 @@
             </ul>
         </div>
     </div>
+
+    <div class="toggleMessageBox">🗨️ <strong>Add a message</strong></div>
+
+    <div class="messageBox isHidden">
+        <textarea name="Text1" cols="20" rows="2" maxlength="45" placeholder="Hey, I love your work, keep going!🔥"></textarea>
+    </div>
 </main>
 <footer>
     <button type="button" class="send">

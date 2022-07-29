@@ -10,7 +10,7 @@ import {tokens} from "../tippingUtils";
 import {create} from "fast-creator";
 
 export class TippingMain {
-    constructor(identifier) {
+    constructor(identifier, showMessageBox = true) {
         const networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
@@ -39,12 +39,14 @@ export class TippingMain {
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
+            let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             this.html.dispatchEvent(Object.assign(new Event('sendMoney', {bubbles: true}), {
                 identifier,
                 network,
                 amount,
-                token
+                token,
+                message
             }))
         });
         this.html.querySelectorAll('.valueSelection > *').forEach(b => {
@@ -54,6 +56,20 @@ export class TippingMain {
                 b.querySelector('input')?.focus();
             }
         })
+        const toggleMessageBox = this.html.querySelector('.toggleMessageBox');
+        const messageBox = this.html.querySelector('.messageBox');
+        if (!showMessageBox)
+            toggleMessageBox.style.display = 'none';
+        else
+            toggleMessageBox.onclick = () => {
+                if (messageBox.classList.contains('isHidden')) {
+                    messageBox.classList.remove('isHidden')
+                    toggleMessageBox.lastChild.textContent = 'No message'
+                } else {
+                    messageBox.classList.add('isHidden')
+                    toggleMessageBox.lastChild.textContent = 'Add a message'
+                }
+            }
         this.refreshVisibleCoins();
     }
 
