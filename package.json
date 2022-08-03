@@ -1,6 +1,6 @@
 {
-  "name": "@idriss-crypto/tipping-core",
-  "version": "2.1.0",
+  "name": "@idriss-crypto/send-to-anyone-core",
+  "version": "1.0.0",
   "scripts": {
     "build": "webpack",
     "buildDev": "webpack --watch --mode=development"
@@ -9,7 +9,7 @@
     "@depay/coinbase-wallet-sdk": "^1.0.5",
     "@walletconnect/web3-provider": "^1.7.8",
     "fast-creator": "^1.6.0",
-    "idriss-crypto": "^1.6.0",
+    "idriss-crypto": "link:../ts-library/lib/index.js",
     "web3": "^1.7.0",
     "web3modal": "^1.9.7"
   },
@@ -26,10 +26,10 @@
   "exports": {
     ".": "./dist/index.mjs",
     "./subpages": "./dist/subpages.mjs",
-    "./tippingLogic": "./dist/tippingLogic.mjs",
-    "./tippingUtils": "./dist/tippingUtils.mjs",
-    "./tippingStyle": "./dist/tippingStyle.mjs",
+    "./sendToAnyoneLogic": "./dist/sendToAnyoneLogic.mjs",
+    "./sendToAnyoneUtils": "./dist/sendToAnyoneUtils.mjs",
+    "./sendToAnyoneStyle": "./dist/sendToAnyoneStyle.mjs",
     "./getWeb3Provider": "./dist/getWeb3Provider.mjs",
-    "./tippingMain": "./dist/tippingMain.mjs"
+    "./sendToAnyoneMain": "./dist/sendToAnyoneMain.mjs"
   }
 }

@@ -1,9 +1,9 @@
-import template from "./tippingAddress.mpts";
+import template from "./sendToAnyoneAddress.mpts";
 import {create} from "fast-creator";
 import close from "!!url-loader!../img/close.svg"
 import {IdrissCrypto} from "idriss-crypto/browser";
 
-export class TippingAddress {
+export class SendToAnyoneAddress {
     constructor() {
         this.html = create('div', {}, template({close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));

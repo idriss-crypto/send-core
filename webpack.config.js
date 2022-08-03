@@ -6,9 +6,9 @@ module.exports = {
     mode: "development", // "production" | "development" | "none"
     entry: {
         "subpages": "./src/subpages/index.js",
-        "tippingLogic": "./src/tippingLogic.js",
-        "tippingUtils": "./src/tippingUtils.js",
-        "tippingStyle": "!!css-loader!sass-loader!./src/tippingStyle.scss",
+        "tippingLogic": "./src/sendToAnyoneLogic.js",
+        "tippingUtils": "./src/sendToAnyoneUtils.js",
+        "tippingStyle": "!!css-loader!sass-loader!./src/sendToAnyoneStyle.scss",
         "index": "./src/index.js",
         "getWeb3Provider": "./src/getWeb3Provider.js",
     },

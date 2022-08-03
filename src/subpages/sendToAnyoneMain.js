@@ -1,4 +1,4 @@
-import template from "./tippingMain.mpts";
+import template from "./sendToAnyoneMain.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
@@ -6,10 +6,10 @@ import pen from "!!url-loader!../img/pen.svg"
 import close from "!!url-loader!../img/close.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import biannceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
-import {tokens} from "../tippingUtils";
+import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
-export class TippingMain {
+export class SendToAnyoneMain {
     constructor(identifier, showMessageBox = true) {
         const networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},

@@ -1,10 +1,10 @@
-import {IdrissTippingWidget} from "./idrissTippingWidget";
+import {IdrissSendToAnyoneWidget} from "./idrissSendToAnyoneWidget";
 
-export function idrissShowTippingPopup(config, e) {
+export function idrissShowSendToAnyonePopup(config, e) {
     e.preventDefault();
     document.querySelectorAll('.idrissTipDropdown').forEach(x=>x.remove());
     const dropdown = document.createElement('div');
-    const widget = new IdrissTippingWidget(config)
+    const widget = new IdrissSendToAnyoneWidget(config)
     dropdown.classList.add('idrissTipDropdown')
     dropdown.style.position = 'absolute';
     let rect = e.target.getBoundingClientRect()

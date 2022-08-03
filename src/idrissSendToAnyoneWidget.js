@@ -1,18 +1,18 @@
-import css from "./tippingStyle.scss";
+import css from "./sendToAnyoneStyle.scss";
 import {create} from "fast-creator";
-import {TippingMain} from "./subpages/tippingMain";
-import {TippingAddress} from "./subpages/tippingAddress";
-import {TippingError} from "./subpages/tippingError";
-import {TippingSuccess} from "./subpages/tippingSuccess";
+import {SendToAnyoneMain} from "./subpages/sendToAnyoneMain";
+import {SendToAnyoneAddress} from "./subpages/sendToAnyoneAddress";
+import {SendToAnyoneError} from "./subpages/sendToAnyoneError";
+import {SendToAnyoneSuccess} from "./subpages/sendToAnyoneSuccess";
 import {getProvider} from "./getWeb3Provider";
 
-export class IdrissTippingWidget extends HTMLElement {
+export class IdrissSendToAnyoneWidget extends HTMLElement {
     constructor(config) {
         super();
         Object.assign(this, config);
         this.attachShadow({mode: 'open'})
         this.shadowRoot.append(create('style', {text: css}));
-        this.container = create('section.tipping-popup')
+        this.container = create('section.sendToAnyone-popup')
         this.shadowRoot.append(this.container);
 
         this.shadowRoot.addEventListener('close', () => this.close());
@@ -24,7 +24,7 @@ close(){
 }
     async tipProcess() {
         if (!this.identifier) {
-            this.container.append(new TippingAddress().html);
+            this.container.append(new SendToAnyoneAddress().html);
             await new Promise(res => {
                 this.container.addEventListener('next', e => {
                     console.log(e);
@@ -34,15 +34,15 @@ close(){
                 })
             });
         }
-        if (!this.token || !this.tippingValue || !this.network) {
+        if (!this.token || !this.sendToAnyoneValue || !this.network) {
             this.clearContainer();
-            this.container.append(new TippingMain(this.identifier).html);
+            this.container.append(new SendToAnyoneMain(this.identifier).html);
             await new Promise(res => {
                 this.container.addEventListener('sendMoney', e => {
                     console.log(e);
                     this.network = e.network;
                     this.token = e.token;
-                    this.tippingValue = +e.amount;
+                    this.sendToAnyoneValue = +e.amount;
                     res()
                 })
             });
@@ -58,25 +58,25 @@ close(){
                 identifier: this.identifier,
                 recipient: this.recipient,
                 token: this.token,
-                tippingValue: this.tippingValue,
+                sendToAnyoneValue: this.sendToAnyoneValue,
                 network: this.network
             }
-            window.open(`https://www.idriss.xyz/tip?` + Object.entries(urlParams).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
+            window.open(`https://www.idriss.xyz/send-to-anyone?` + Object.entries(urlParams).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
             return;
         }
         this.clearContainer()
-        this.container.append(new TippingWaitingApproval(token).html);
+        this.container.append(new SendToAnyoneWaitingApproval(token).html);
 
-        await TippingLogic.prepareTip(provider, network)
+        await SendToAnyoneLogic.prepareTip(provider, network)
         this.clearContainer()
-        this.container.append((new TippingWaitingConfirmation(identifier, tippingValue, token)).html)
+        this.container.append((new SendToAnyoneWaitingConfirmation(identifier, sendToAnyoneValue, token)).html)
         let {
             integer: amountInteger,
             normal: amountNormal
-        } = await TippingLogic.calculateAmount(token, tippingValue)
+        } = await SendToAnyoneLogic.calculateAmount(token, sendToAnyoneValue)
 
         this.container.querySelector('.amountCoin').textContent = amountNormal;
-        let success = await TippingLogic.sendTip(recipient, amountInteger, network, token, params.get('message') ?? "")
+        let success = await SendToAnyoneLogic.sendTip(recipient, amountInteger, network, token, params.get('message') ?? "")
 
         this.clearContainer()
         if (success) {
@@ -87,9 +87,9 @@ close(){
                 explorerLink = `https://bscscan.com/tx/${success.transactionHash}`
             else if (this.network == 'Polygon')
                 explorerLink = `https://polygonscan.com/tx/${success.transactionHash}`
-            this.container.append((new TippingSuccess(identifier, explorerLink)).html)
+            this.container.append((new SendToAnyoneSuccess(identifier, explorerLink)).html)
         } else {
-            this.container.append((new TippingError()).html)
+            this.container.append((new SendToAnyoneError()).html)
             console.log({success})
         }
     }
@@ -101,4 +101,4 @@ close(){
     }
 }
 
-customElements.define('idriss-payment-widget', IdrissTippingWidget);
+customElements.define('idriss-payment-widget', IdrissSendToAnyoneWidget);

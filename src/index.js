@@ -1,2 +1,2 @@
-export {idrissShowTippingPopup} from "./idrissTippingPopup";
-export {IdrissTippingWidget} from "./idrissTippingWidget";
+export {idrissShowSendToAnyonePopup} from "./idrissSendToAnyonePopup";
+export {IdrissSendToAnyoneWidget} from "./idrissSendToAnyoneWidget";

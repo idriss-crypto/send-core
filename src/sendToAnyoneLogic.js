@@ -1,5 +1,5 @@
 import Web3 from "web3/dist/web3.min.js";
-import {tokens} from "./tippingUtils";
+import {tokens} from "./sendToAnyoneUtils";
 
 const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
 
@@ -21,7 +21,7 @@ let coingeckoId = {
     "BANK":"bankless-dao"
 };
 
-let abiTippingContract = [{
+let abiSendToAnyoneContract = [{
     "anonymous": false,
     "inputs": [{
         "indexed": true,
@@ -111,12 +111,12 @@ let abiTippingContract = [{
     "stateMutability": "nonpayable",
     "type": "function"
 }]
-let tippingAddressETH = "0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64";
-let tippingAddressPolygon = "0xA0665e585038f94CD7092611318326102dCf5B5a";
-let tippingAddressBSC = "0x6f0094d82f4FaC3E974174a21Aa795B6F10d28C7";
+let sendToAnyoneAddressETH = "0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64";
+let sendToAnyoneAddressPolygon = "0xA0665e585038f94CD7092611318326102dCf5B5a";
+let sendToAnyoneAddressBSC = "0x6f0094d82f4FaC3E974174a21Aa795B6F10d28C7";
 
 
-export const TippingLogic = {
+export const SendToAnyoneLogic = {
     provider: null,
     async prepareTip(provider, network) {
         console.log('prepareTip')
@@ -127,7 +127,7 @@ export const TippingLogic = {
     },
 
 
-    async calculateAmount(ticker, tippingValue) {
+    async calculateAmount(ticker, sendToAnyoneValue) {
 
         let priceSt
 
@@ -140,8 +140,8 @@ export const TippingLogic = {
         }
 
         let decimals = tokens.filter(x => x.symbol == ticker)[0]?.decimals
-        let integer = this.getAmount(tippingValue, priceSt, decimals) // tippingValue selected in popup, decimals specified in json for token
-        let normal = integer / Math.pow(10, decimals) // tippingValue selected in popup, decimals specified in json for token
+        let integer = this.getAmount(sendToAnyoneValue, priceSt, decimals) // sendToAnyoneValue selected in popup, decimals specified in json for token
+        let normal = integer / Math.pow(10, decimals) // sendToAnyoneValue selected in popup, decimals specified in json for token
         return {integer, normal}
     },
     async switchNetwork(network) {
@@ -192,7 +192,7 @@ export const TippingLogic = {
                     throw e
                 }
             }
-            contract = await this.loadTippingPolygon();
+            contract = await this.loadSendToAnyonePolygon();
             polygonGas = String(Math.round((await (await fetch('https://gasstation-mainnet.matic.network/v2')).json())['standard']['maxFee'] * 1000000000))
         } else if (network === "ETH") {
             try {
@@ -202,7 +202,7 @@ export const TippingLogic = {
                     throw e
                 }
             }
-            contract = await this.loadTippingETH();
+            contract = await this.loadSendToAnyoneETH();
         } else if (network === "BSC") {
             try {
                 await this.switchtobsc();
@@ -211,7 +211,7 @@ export const TippingLogic = {
                     throw e
                 }
             }
-            contract = await this.loadTippingBSC();
+            contract = await this.loadSendToAnyoneBSC();
         } else {
             return false;
         }
@@ -408,17 +408,17 @@ export const TippingLogic = {
         if (network_ === "Polygon") {
             await this.switchtopolygon();
             let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            let allowance = await tokenContract.methods.allowance(selectedAccount_, tippingAddressPolygon).call()
+            let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressPolygon).call()
             return allowance >= amount_
         } else if (network_ === "ETH") {
             await this.switchtoeth();
             let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            let allowance = await tokenContract.methods.allowance(selectedAccount_, tippingAddressETH).call()
+            let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressETH).call()
             return allowance >= amount_
         } else if (network_ === "BSC") {
             await this.switchtobsc();
             let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            let allowance = await tokenContract.methods.allowance(selectedAccount_, tippingAddressBSC).call()
+            let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressBSC).call()
             return allowance >= amount_
         }
         return false
@@ -656,14 +656,14 @@ export const TippingLogic = {
         }]
         return await new defaultWeb3.eth.Contract(abiOracle, oracleAddress[ticker]);
     },
-    async loadTippingPolygon() {
-        return await new this.web3.eth.Contract(abiTippingContract, tippingAddressPolygon);
+    async loadSendToAnyonePolygon() {
+        return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressPolygon);
     },
-    async loadTippingETH() {
-        return await new this.web3.eth.Contract(abiTippingContract, tippingAddressETH);
+    async loadSendToAnyoneETH() {
+        return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressETH);
     },
-    async loadTippingBSC() {
-        return await new this.web3.eth.Contract(abiTippingContract, tippingAddressBSC);
+    async loadSendToAnyoneBSC() {
+        return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressBSC);
     },
     // calculate price in USD
     async getPrice(oracleContract) {
@@ -672,8 +672,8 @@ export const TippingLogic = {
         return await latestAnswer / Math.pow(10, await decimals)
     },
     // calculate price in wei (amount needed to send tip)
-    getAmount(tippingValue, tokenPrice, decimals) {
-        return Math.round((tippingValue / tokenPrice) * Math.pow(10, decimals))
+    getAmount(sendToAnyoneValue, tokenPrice, decimals) {
+        return Math.round((sendToAnyoneValue / tokenPrice) * Math.pow(10, decimals))
     },
     async loadTokenContract(tokenContractAddr_) {
         let abiERC20 = [{
@@ -710,18 +710,18 @@ export const TippingLogic = {
         if (network_ === "Polygon") {
             await this.switchtopolygon();
             let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            await tokenContract.methods.approve(tippingAddressPolygon, approveAmount).send({
+            await tokenContract.methods.approve(sendToAnyoneAddressPolygon, approveAmount).send({
                 from: selectedAccount,
                 gasPrice: polygonGas
             })
         } else if (network_ === "ETH") {
             await this.switchtoeth();
             let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            await tokenContract.methods.approve(tippingAddressETH, approveAmount).send({from: selectedAccount})
+            await tokenContract.methods.approve(sendToAnyoneAddressETH, approveAmount).send({from: selectedAccount})
         } else if (network_ === "BSC") {
             await this.switchtobsc();
             let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            await tokenContract.methods.approve(tippingAddressBSC, approveAmount).send({from: selectedAccount})
+            await tokenContract.methods.approve(sendToAnyoneAddressBSC, approveAmount).send({from: selectedAccount})
         }
     }
 }
