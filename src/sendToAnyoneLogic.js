@@ -127,8 +127,21 @@ export const SendToAnyoneLogic = {
         console.log('prepareSendToAnyone')
         this.provider = provider;
         const web3 = new Web3(this.provider);
-        //TODO: change rpc to ETH/BSC
-        this.idriss = new IdrissCrypto('https://polygon-rpc.com/', {web3Provider: this.provider})
+        console.log({
+            web3Provider: this.provider,
+            sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
+            idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
+            reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
+            priceOracleContractAddress: PRICE_ORACLE_CONTRACT_ADDRESS
+        })
+        // all values are injected by webpack based on the environment
+        this.idriss = new IdrissCrypto(this.provider.host ?? POLYGON_RPC_ENDPOINT, {
+            web3Provider: this.provider,
+            sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
+            idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
+            reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
+            priceOracleContractAddress: PRICE_ORACLE_CONTRACT_ADDRESS
+        })
         console.log("idriss props")
         console.log (Object.getOwnPropertyNames(IdrissCrypto))
         this.web3 = web3;
@@ -291,7 +304,11 @@ export const SendToAnyoneLogic = {
                 //         payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({from: selectedAccount});
                 //     }
                 // }
-                this.idriss.transferToIDriss(recipient, walletType, asset)
+                const transactionOptions = {
+                    from: selectedAccount,
+                    ...(polygonGas) && {gasPrice: polygonGas}
+                }
+                this.idriss.transferToIDriss(recipient, walletType, asset, transactionOptions)
             } catch (err) {
                 console.log("error", err)
                 // Transaction failed or user has denied
