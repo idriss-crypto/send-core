@@ -9,7 +9,7 @@
     "@depay/coinbase-wallet-sdk": "^1.0.5",
     "@walletconnect/web3-provider": "^1.7.8",
     "fast-creator": "^1.6.0",
-    "idriss-crypto": "link:../ts-library/lib/index.js",
+    "idriss-crypto": "link:../ts-library",
     "web3": "^1.7.0",
     "web3modal": "^1.9.7"
   },

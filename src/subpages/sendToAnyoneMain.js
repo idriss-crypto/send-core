@@ -10,12 +10,15 @@ import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
 export class SendToAnyoneMain {
-    constructor(identifier, showMessageBox = true) {
+    constructor(identifier, isIDrissRegistered, showMessageBox = true) {
         const networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
-            {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
         ]
+        if (isIDrissRegistered === true) {
+            networks.push({name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'})
+            networks.push({name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'})
+        }
+
         this.html = create('div', {}, template({identifier, networks, tokens, eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
 

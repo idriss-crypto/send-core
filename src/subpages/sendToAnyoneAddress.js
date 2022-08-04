@@ -36,8 +36,16 @@ export class SendToAnyoneAddress {
                     item.className = 'empty';
                     item.append("Nothing found. ");
                     let a = document.createElement('a')
-                    a.textContent = 'Sign up for IDriss now!';
-                    a.href = 'https://www.idriss.xyz';
+                    a.textContent = 'Send anyway';
+                    a.href = 'https://www.idriss.xyz/send-to-anyone';
+                    a.onmousedown = () => {
+                        this.name = event.value;
+                        this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
+                            identifier: this.name,
+                            recipient: this.address,
+                            isIDrissRegistered: false
+                        }))
+                    }
                     a.target = '_blank';
                     item.append(a)
                     results.append(item)

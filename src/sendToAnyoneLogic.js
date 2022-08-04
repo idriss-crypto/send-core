@@ -1,5 +1,6 @@
 import Web3 from "web3/dist/web3.min.js";
 import {tokens} from "./sendToAnyoneUtils";
+import {IdrissCrypto} from "idriss-crypto/browser";
 
 const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
 
@@ -21,6 +22,7 @@ let coingeckoId = {
     "BANK":"bankless-dao"
 };
 
+//TODO: change
 let abiSendToAnyoneContract = [{
     "anonymous": false,
     "inputs": [{
@@ -111,6 +113,8 @@ let abiSendToAnyoneContract = [{
     "stateMutability": "nonpayable",
     "type": "function"
 }]
+
+//TODO: change
 let sendToAnyoneAddressETH = "0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64";
 let sendToAnyoneAddressPolygon = "0xA0665e585038f94CD7092611318326102dCf5B5a";
 let sendToAnyoneAddressBSC = "0x6f0094d82f4FaC3E974174a21Aa795B6F10d28C7";
@@ -118,10 +122,15 @@ let sendToAnyoneAddressBSC = "0x6f0094d82f4FaC3E974174a21Aa795B6F10d28C7";
 
 export const SendToAnyoneLogic = {
     provider: null,
-    async prepareTip(provider, network) {
-        console.log('prepareTip')
+    idriss: null,
+    async prepareSendToAnyone(provider, network) {
+        console.log('prepareSendToAnyone')
         this.provider = provider;
         const web3 = new Web3(this.provider);
+        //TODO: change rpc to ETH/BSC
+        this.idriss = new IdrissCrypto('https://polygon-rpc.com/', {web3Provider: this.provider})
+        console.log("idriss props")
+        console.log (Object.getOwnPropertyNames(IdrissCrypto))
         this.web3 = web3;
         await this.switchNetwork(network)
     },
@@ -175,10 +184,24 @@ export const SendToAnyoneLogic = {
         }
     },
 
-    async sendTip(recipient, amount, network, token, message) {
+    async sendToAnyone(recipient, amount, network, token, message) {
+        let tokenContractAddr = tokens.filter(x => x.symbol == token && x.network == network)[0]?.address; // get from json
+
+        const asset = {
+            amount: amount,
+            type: 0, // 0 - native; 1 - ERC20; 2 - NFT
+            assetContractAddress: tokenContractAddr,
+            // assetId: 0
+        }
+
+        const walletType = {
+            coin: "ETH",
+            network: "evm",
+            walletTag: "Metamask ETH"
+        }
+
         let contract;
         let polygonGas;
-        let tokenContractAddr = tokens.filter(x => x.symbol == token && x.network == network)[0]?.address; // get from json
 
         // make another check if the address selected really belongs to the twitter name selected
 
@@ -192,7 +215,7 @@ export const SendToAnyoneLogic = {
                     throw e
                 }
             }
-            contract = await this.loadSendToAnyonePolygon();
+            // contract = await this.loadSendToAnyonePolygon();
             polygonGas = String(Math.round((await (await fetch('https://gasstation-mainnet.matic.network/v2')).json())['standard']['maxFee'] * 1000000000))
         } else if (network === "ETH") {
             try {
@@ -202,7 +225,7 @@ export const SendToAnyoneLogic = {
                     throw e
                 }
             }
-            contract = await this.loadSendToAnyoneETH();
+            // contract = await this.loadSendToAnyoneETH();
         } else if (network === "BSC") {
             try {
                 await this.switchtobsc();
@@ -211,7 +234,7 @@ export const SendToAnyoneLogic = {
                     throw e
                 }
             }
-            contract = await this.loadSendToAnyoneBSC();
+            // contract = await this.loadSendToAnyoneBSC();
         } else {
             return false;
         }
@@ -220,54 +243,55 @@ export const SendToAnyoneLogic = {
         const accounts = await this.web3.eth.getAccounts();
         let selectedAccount = accounts[0];
 
-
         if (accounts.length > 0) {
             let payment;
 
             try {
-                // Actual contract call
-                // network is the network chosen in plugin popup
-                if (network === "Polygon" && polygonGas) {
-                    // check for approval, then send txn
-                    // if native token: do not check for approval, select first payment (sendTo(...))
-                    // if ERC20 token: check for approval, if not given call getApproval(tokenContractAddr), followed by the second payment call (sendTokenTo(...))
-                    // inputs native token: sendTo(address recipient, string memory message)
-                    // inputs ERC20 token: sendTokenTo(uint256 amount, address tokenContractAddr, address recipient, string memory message)
-                    // message is "" by default
-                    // recipient is the target address (resolved from twitter), message is the optional message (currently hidden functionality for twitter, should be empty
-                    // amount is calculated above, polygonGas is calculated above in case people selected the Polygon network
-                    // amount is the amount calculated above for token that are not native
-                    // tokenContractAddr is the contract address of a token and can be taken from the imported json about token
-                    // selectedAccount is defined above and the connected wallet address
-                    if (token == "MATIC") {
-                        payment = await contract.methods.sendTo(recipient, message).send({
-                            from: selectedAccount,
-                            value: amount,
-                            gasPrice: polygonGas
-                        });
-                    } else {
-                        if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
-                            let approval = await this.getApproval(tokenContractAddr, network, selectedAccount, polygonGas)
-                        }
-                        payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({
-                            from: selectedAccount,
-                            gasPrice: polygonGas
-                        });
-                    }
-                } else {
-                    // same comments as above apply, this section uses default gas values, suggested by the wallet that is connected
-                    if (token == "ETH" || token == "BNB") {
-                        payment = await contract.methods.sendTo(recipient, message).send({
-                            from: selectedAccount,
-                            value: amount
-                        });
-                    } else {
-                        if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
-                            let approval = await this.getApproval(tokenContractAddr, network, selectedAccount)
-                        }
-                        payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({from: selectedAccount});
-                    }
-                }
+                //TODO: delete
+                // // Actual contract call
+                // // network is the network chosen in plugin popup
+                // if (network === "Polygon" && polygonGas) {
+                //     // check for approval, then send txn
+                //     // if native token: do not check for approval, select first payment (sendTo(...))
+                //     // if ERC20 token: check for approval, if not given call getApproval(tokenContractAddr), followed by the second payment call (sendTokenTo(...))
+                //     // inputs native token: sendTo(address recipient, string memory message)
+                //     // inputs ERC20 token: sendTokenTo(uint256 amount, address tokenContractAddr, address recipient, string memory message)
+                //     // message is "" by default
+                //     // recipient is the target address (resolved from twitter), message is the optional message (currently hidden functionality for twitter, should be empty
+                //     // amount is calculated above, polygonGas is calculated above in case people selected the Polygon network
+                //     // amount is the amount calculated above for token that are not native
+                //     // tokenContractAddr is the contract address of a token and can be taken from the imported json about token
+                //     // selectedAccount is defined above and the connected wallet address
+                //     if (token == "MATIC") {
+                //         payment = await contract.methods.sendTo(recipient, message).send({
+                //             from: selectedAccount,
+                //             value: amount,
+                //             gasPrice: polygonGas
+                //         });
+                //     } else {
+                //         if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
+                //             let approval = await this.getApproval(tokenContractAddr, network, selectedAccount, polygonGas)
+                //         }
+                //         payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({
+                //             from: selectedAccount,
+                //             gasPrice: polygonGas
+                //         });
+                //     }
+                // } else {
+                //     // same comments as above apply, this section uses default gas values, suggested by the wallet that is connected
+                //     if (token == "ETH" || token == "BNB") {
+                //         payment = await contract.methods.sendTo(recipient, message).send({
+                //             from: selectedAccount,
+                //             value: amount
+                //         });
+                //     } else {
+                //         if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
+                //             let approval = await this.getApproval(tokenContractAddr, network, selectedAccount)
+                //         }
+                //         payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({from: selectedAccount});
+                //     }
+                // }
+                this.idriss.transferToIDriss(recipient, walletType, asset)
             } catch (err) {
                 console.log("error", err)
                 // Transaction failed or user has denied
@@ -656,53 +680,56 @@ export const SendToAnyoneLogic = {
         }]
         return await new defaultWeb3.eth.Contract(abiOracle, oracleAddress[ticker]);
     },
-    async loadSendToAnyonePolygon() {
-        return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressPolygon);
-    },
-    async loadSendToAnyoneETH() {
-        return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressETH);
-    },
-    async loadSendToAnyoneBSC() {
-        return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressBSC);
-    },
+    //TODO: delete
+    // async loadSendToAnyonePolygon() {
+    //     return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressPolygon);
+    // },
+    // async loadSendToAnyoneETH() {
+    //     return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressETH);
+    // },
+    // async loadSendToAnyoneBSC() {
+    //     return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressBSC);
+    // },
     // calculate price in USD
     async getPrice(oracleContract) {
         let latestAnswer = oracleContract.methods.latestAnswer().call();
         let decimals = oracleContract.methods.decimals().call();
         return await latestAnswer / Math.pow(10, await decimals)
     },
-    // calculate price in wei (amount needed to send tip)
+    // calculate price in wei (amount needed to send to anyone)
     getAmount(sendToAnyoneValue, tokenPrice, decimals) {
         return Math.round((sendToAnyoneValue / tokenPrice) * Math.pow(10, decimals))
     },
-    async loadTokenContract(tokenContractAddr_) {
-        let abiERC20 = [{
-            "constant": false,
-            "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}],
-            "name": "approve",
-            "outputs": [{"name": "", "type": "bool"}],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        }, {
-            "constant": true,
-            "inputs": [{"name": "_owner", "type": "address"}],
-            "name": "balanceOf",
-            "outputs": [{"name": "balance", "type": "uint256"}],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        }, {
-            "constant": true,
-            "inputs": [{"name": "_owner", "type": "address"}, {"name": "_spender", "type": "address"}],
-            "name": "allowance",
-            "outputs": [{"name": "", "type": "uint256"}],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        }]
-        return await new this.web3.eth.Contract(abiERC20, tokenContractAddr_);
-    },
+
+    //TODO: delete
+    // async loadTokenContract(tokenContractAddr_) {
+    //     let abiERC20 = [{
+    //         "constant": false,
+    //         "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}],
+    //         "name": "approve",
+    //         "outputs": [{"name": "", "type": "bool"}],
+    //         "payable": false,
+    //         "stateMutability": "nonpayable",
+    //         "type": "function"
+    //     }, {
+    //         "constant": true,
+    //         "inputs": [{"name": "_owner", "type": "address"}],
+    //         "name": "balanceOf",
+    //         "outputs": [{"name": "balance", "type": "uint256"}],
+    //         "payable": false,
+    //         "stateMutability": "view",
+    //         "type": "function"
+    //     }, {
+    //         "constant": true,
+    //         "inputs": [{"name": "_owner", "type": "address"}, {"name": "_spender", "type": "address"}],
+    //         "name": "allowance",
+    //         "outputs": [{"name": "", "type": "uint256"}],
+    //         "payable": false,
+    //         "stateMutability": "view",
+    //         "type": "function"
+    //     }]
+    //     return await new this.web3.eth.Contract(abiERC20, tokenContractAddr_);
+    // },
     async getApproval(tokenContractAddr_, network_, selectedAccount, polygonGas) {
         // max approval amount, adjust as needed
         var approveAmount = 2n ** 255n;

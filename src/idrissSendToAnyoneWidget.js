@@ -30,13 +30,14 @@ close(){
                     console.log(e);
                     this.identifier = e.identifier;
                     this.recipient = e.recipient;
+                    this.isIDrissRegistered = e.isIDrissRegistered;
                     res()
                 })
             });
         }
         if (!this.token || !this.sendToAnyoneValue || !this.network) {
             this.clearContainer();
-            this.container.append(new SendToAnyoneMain(this.identifier).html);
+            this.container.append(new SendToAnyoneMain(this.identifier, this.isIDrissRegistered).html);
             await new Promise(res => {
                 this.container.addEventListener('sendMoney', e => {
                     console.log(e);
@@ -55,6 +56,7 @@ close(){
         }
         if (!provider) {
             let urlParams = {
+                isIDrissRegistered: this.isIDrissRegistered,
                 identifier: this.identifier,
                 recipient: this.recipient,
                 token: this.token,
@@ -67,7 +69,7 @@ close(){
         this.clearContainer()
         this.container.append(new SendToAnyoneWaitingApproval(token).html);
 
-        await SendToAnyoneLogic.prepareTip(provider, network)
+        await SendToAnyoneLogic.prepareSendToAnyone(provider, network)
         this.clearContainer()
         this.container.append((new SendToAnyoneWaitingConfirmation(identifier, sendToAnyoneValue, token)).html)
         let {
@@ -76,7 +78,7 @@ close(){
         } = await SendToAnyoneLogic.calculateAmount(token, sendToAnyoneValue)
 
         this.container.querySelector('.amountCoin').textContent = amountNormal;
-        let success = await SendToAnyoneLogic.sendTip(recipient, amountInteger, network, token, params.get('message') ?? "")
+        let success = await SendToAnyoneLogic.sendToAnyone(recipient, amountInteger, network, token, params.get('message') ?? "")
 
         this.clearContainer()
         if (success) {
