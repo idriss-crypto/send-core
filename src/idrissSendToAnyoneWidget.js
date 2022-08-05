@@ -16,13 +16,13 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
         this.shadowRoot.append(this.container);
 
         this.shadowRoot.addEventListener('close', () => this.close());
-        this.tipProcess();
+        this.sendToAnyoneProcess();
     }
 close(){
         console.log('close');
     this.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
 }
-    async tipProcess() {
+    async sendToAnyoneProcess() {
         if (!this.identifier) {
             this.container.append(new SendToAnyoneAddress().html);
             await new Promise(res => {
@@ -69,7 +69,7 @@ close(){
         this.clearContainer()
         this.container.append(new SendToAnyoneWaitingApproval(token).html);
 
-        await SendToAnyoneLogic.prepareSendToAnyone(provider, network)
+        await SendToAnyoneLogic.prepareSendToAnyone(provider, network ?? this.network)
         this.clearContainer()
         this.container.append((new SendToAnyoneWaitingConfirmation(identifier, sendToAnyoneValue, token)).html)
         let {
@@ -78,7 +78,8 @@ close(){
         } = await SendToAnyoneLogic.calculateAmount(token, sendToAnyoneValue)
 
         this.container.querySelector('.amountCoin').textContent = amountNormal;
-        let sendResult = await SendToAnyoneLogic.sendToAnyone(recipient, amountInteger, network, token, params.get('message') ?? "")
+        let sendResult = await SendToAnyoneLogic.sendToAnyone(identifier ?? this.identifier, amountInteger,
+            network ?? this.network, token ?? this.token, params.get('message') ?? "")
 
         this.clearContainer()
         if (sendResult && sendResult.transactionReceipt && sendResult.transactionReceipt.status) {
@@ -91,8 +92,7 @@ close(){
                 explorerLink = POLYGON_BLOCK_EXPLORER_ADDRESS + `/tx/${sendResult.transactionHash}`
             this.container.append((new SendToAnyoneSuccess(identifier, explorerLink, sendResult.claimPassword)).html)
         } else {
-            this.container.append((new SendToAnyoneError()).html)
-            console.log({success: sendResult})
+            this.container.append((new SendToAnyoneError({name: 'Reverted', message: 'Transaction was not successful'})).html)
         }
     }
 

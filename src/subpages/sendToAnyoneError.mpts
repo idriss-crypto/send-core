@@ -3,6 +3,7 @@
 </header>
 <main>
     <h2>Transaction aborted</h2>
+    <p>{{name}}: {{message}}</p>
 </main>
 <footer>
     <button type="button" class="close">
