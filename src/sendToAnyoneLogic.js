@@ -198,6 +198,7 @@ export const SendToAnyoneLogic = {
     async sendToAnyone(recipient, amount, network, token, message) {
         let tokenContractAddr = tokens.filter(x => x.symbol == token && x.network == network)[0]?.address; // get from json
 
+        //TODO: make asset adjustable
         const asset = {
             amount: amount,
             type: 0, // 0 - native; 1 - ERC20; 2 - NFT
@@ -208,7 +209,7 @@ export const SendToAnyoneLogic = {
         const walletType = {
             coin: "ETH",
             network: "evm",
-            walletTag: "Metamask ETH"
+            walletTag: "Public ETH"
         }
 
         // let contract;

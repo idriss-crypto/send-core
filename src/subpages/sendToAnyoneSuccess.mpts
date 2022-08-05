@@ -6,7 +6,7 @@
     <h2>Transaction Submitted🥳</h2>
     <p class="subtitle"><a href=explorerLink>View on Explorer<img src=link alt="" class="linkIcon"/></a></p>
     <br/>
-    <p class="subtitle">In order for others to claim, please send them the following link: https://idriss.xyz/claim/{{identifier}}/{{claimPassword}}</p>
+    <p class="subtitle">In order for others to claim, please send them the following link: {{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}}</p>
 </main>
 <footer>
     <button type="button" class="close">
