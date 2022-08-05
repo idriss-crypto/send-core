@@ -78,21 +78,21 @@ close(){
         } = await SendToAnyoneLogic.calculateAmount(token, sendToAnyoneValue)
 
         this.container.querySelector('.amountCoin').textContent = amountNormal;
-        let success = await SendToAnyoneLogic.sendToAnyone(recipient, amountInteger, network, token, params.get('message') ?? "")
+        let sendResult = await SendToAnyoneLogic.sendToAnyone(recipient, amountInteger, network, token, params.get('message') ?? "")
 
         this.clearContainer()
-        if (success) {
+        if (sendResult && sendResult.transactionReceipt && sendResult.transactionReceipt.status) {
             let explorerLink;
             if (this.network == 'ETH')
-                explorerLink = `https://etherscan.io/tx/${success.transactionHash}`
+                explorerLink = `https://etherscan.io/tx/${sendResult.transactionHash}`
             else if (this.network == 'BSC')
-                explorerLink = `https://bscscan.com/tx/${success.transactionHash}`
+                explorerLink = `https://bscscan.com/tx/${sendResult.transactionHash}`
             else if (this.network == 'Polygon')
-                explorerLink = `https://polygonscan.com/tx/${success.transactionHash}`
-            this.container.append((new SendToAnyoneSuccess(identifier, explorerLink)).html)
+                explorerLink = POLYGON_BLOCK_EXPLORER_ADDRESS + `/tx/${sendResult.transactionHash}`
+            this.container.append((new SendToAnyoneSuccess(identifier, explorerLink, sendResult.claimPassword)).html)
         } else {
             this.container.append((new SendToAnyoneError()).html)
-            console.log({success})
+            console.log({success: sendResult})
         }
     }
 

@@ -23,101 +23,101 @@ let coingeckoId = {
 };
 
 //TODO: change
-let abiSendToAnyoneContract = [{
-    "anonymous": false,
-    "inputs": [{
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-    }, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}],
-    "name": "OwnershipTransferred",
-    "type": "event"
-}, {
-    "anonymous": false,
-    "inputs": [{
-        "indexed": true,
-        "internalType": "address",
-        "name": "recipientAddress",
-        "type": "address"
-    }, {"indexed": false, "internalType": "string", "name": "message", "type": "string"}, {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-    }],
-    "name": "TipMessage",
-    "type": "event"
-}, {
-    "inputs": [{"internalType": "address", "name": "adminAddress", "type": "address"}],
-    "name": "addAdmin",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}, {
-    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
-    "name": "admins",
-    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
-    "stateMutability": "view",
-    "type": "function"
-}, {
-    "inputs": [{"internalType": "address", "name": "", "type": "address"}],
-    "name": "balanceOf",
-    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-    "stateMutability": "view",
-    "type": "function"
-}, {
-    "inputs": [],
-    "name": "contractOwner",
-    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
-    "stateMutability": "view",
-    "type": "function"
-}, {
-    "inputs": [{"internalType": "address", "name": "adminAddress", "type": "address"}],
-    "name": "deleteAdmin",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}, {
-    "inputs": [{"internalType": "address", "name": "recipient_", "type": "address"}, {
-        "internalType": "string",
-        "name": "message_",
-        "type": "string"
-    }], "name": "sendTo", "outputs": [], "stateMutability": "payable", "type": "function"
-}, {
-    "inputs": [{"internalType": "address", "name": "recipient_", "type": "address"}, {
-        "internalType": "uint256",
-        "name": "amount_",
-        "type": "uint256"
-    }, {"internalType": "address", "name": "tokenContractAddr_", "type": "address"}, {
-        "internalType": "string",
-        "name": "message_",
-        "type": "string"
-    }], "name": "sendTokenTo", "outputs": [], "stateMutability": "payable", "type": "function"
-}, {
-    "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
-    "name": "transferContractOwnership",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-}, {
-    "inputs": [],
-    "name": "withdraw",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}, {
-    "inputs": [{"internalType": "address", "name": "tokenContract", "type": "address"}],
-    "name": "withdrawToken",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-}]
+// let abiSendToAnyoneContract = [{
+//     "anonymous": false,
+//     "inputs": [{
+//         "indexed": true,
+//         "internalType": "address",
+//         "name": "previousOwner",
+//         "type": "address"
+//     }, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}],
+//     "name": "OwnershipTransferred",
+//     "type": "event"
+// }, {
+//     "anonymous": false,
+//     "inputs": [{
+//         "indexed": true,
+//         "internalType": "address",
+//         "name": "recipientAddress",
+//         "type": "address"
+//     }, {"indexed": false, "internalType": "string", "name": "message", "type": "string"}, {
+//         "indexed": false,
+//         "internalType": "uint256",
+//         "name": "amount",
+//         "type": "uint256"
+//     }],
+//     "name": "TipMessage",
+//     "type": "event"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "adminAddress", "type": "address"}],
+//     "name": "addAdmin",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+//     "name": "admins",
+//     "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+//     "stateMutability": "view",
+//     "type": "function"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "", "type": "address"}],
+//     "name": "balanceOf",
+//     "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+//     "stateMutability": "view",
+//     "type": "function"
+// }, {
+//     "inputs": [],
+//     "name": "contractOwner",
+//     "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+//     "stateMutability": "view",
+//     "type": "function"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "adminAddress", "type": "address"}],
+//     "name": "deleteAdmin",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "recipient_", "type": "address"}, {
+//         "internalType": "string",
+//         "name": "message_",
+//         "type": "string"
+//     }], "name": "sendTo", "outputs": [], "stateMutability": "payable", "type": "function"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "recipient_", "type": "address"}, {
+//         "internalType": "uint256",
+//         "name": "amount_",
+//         "type": "uint256"
+//     }, {"internalType": "address", "name": "tokenContractAddr_", "type": "address"}, {
+//         "internalType": "string",
+//         "name": "message_",
+//         "type": "string"
+//     }], "name": "sendTokenTo", "outputs": [], "stateMutability": "payable", "type": "function"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
+//     "name": "transferContractOwnership",
+//     "outputs": [],
+//     "stateMutability": "payable",
+//     "type": "function"
+// }, {
+//     "inputs": [],
+//     "name": "withdraw",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+// }, {
+//     "inputs": [{"internalType": "address", "name": "tokenContract", "type": "address"}],
+//     "name": "withdrawToken",
+//     "outputs": [],
+//     "stateMutability": "nonpayable",
+//     "type": "function"
+// }]
 
-//TODO: change
-let sendToAnyoneAddressETH = "0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64";
-let sendToAnyoneAddressPolygon = "0xA0665e585038f94CD7092611318326102dCf5B5a";
-let sendToAnyoneAddressBSC = "0x6f0094d82f4FaC3E974174a21Aa795B6F10d28C7";
+//TODO: remove
+// let sendToAnyoneAddressETH = "0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64";
+// let sendToAnyoneAddressPolygon = "0xA0665e585038f94CD7092611318326102dCf5B5a";
+// let sendToAnyoneAddressBSC = "0x6f0094d82f4FaC3E974174a21Aa795B6F10d28C7";
 
 
 export const SendToAnyoneLogic = {
@@ -128,7 +128,7 @@ export const SendToAnyoneLogic = {
         this.provider = provider;
         const web3 = new Web3(this.provider);
         console.log({
-            web3Provider: this.provider,
+            web3ProviderHost: this.provider.host,
             sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
             idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
             reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
@@ -142,8 +142,6 @@ export const SendToAnyoneLogic = {
             reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
             priceOracleContractAddress: PRICE_ORACLE_CONTRACT_ADDRESS
         })
-        console.log("idriss props")
-        console.log (Object.getOwnPropertyNames(IdrissCrypto))
         this.web3 = web3;
         await this.switchNetwork(network)
     },
@@ -213,7 +211,7 @@ export const SendToAnyoneLogic = {
             walletTag: "Metamask ETH"
         }
 
-        let contract;
+        // let contract;
         let polygonGas;
 
         // make another check if the address selected really belongs to the twitter name selected
@@ -257,7 +255,7 @@ export const SendToAnyoneLogic = {
         let selectedAccount = accounts[0];
 
         if (accounts.length > 0) {
-            let payment;
+            let result;
 
             try {
                 //TODO: delete
@@ -308,7 +306,7 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas) && {gasPrice: polygonGas}
                 }
-                this.idriss.transferToIDriss(recipient, walletType, asset, transactionOptions)
+                result = this.idriss.transferToIDriss(recipient, walletType, asset, transactionOptions)
             } catch (err) {
                 console.log("error", err)
                 // Transaction failed or user has denied
@@ -321,23 +319,23 @@ export const SendToAnyoneLogic = {
                     throw err;
                 }
             }
-            console.log('payment', payment)
-            return payment;
+            return result;
         }
     },
     async switchtopolygon() {
         console.log("Checking chain...")
         const chainId = await this.web3.eth.getChainId();
         console.log(chainId);
+        const chainIdHex = this.web3.utils.toHex(POLYGON_CHAIN_ID)
 
         // check if correct chain is connected
         console.log("Connected to chain ", chainId)
-        if (chainId != 137) {
+        if (chainId != POLYGON_CHAIN_ID) {
             console.log("Switch to Polygon requested")
             try {
                 await this.provider.request({
                     method: 'wallet_switchEthereumChain',
-                    params: [{chainId: '0x89'}],
+                    params: [{chainId: chainIdHex}],
                 });
             } catch (switchError) {
                 if (switchError.message === "JSON RPC response format is invalid") {
@@ -349,9 +347,9 @@ export const SendToAnyoneLogic = {
                         await this.provider.request({
                             method: 'wallet_addEthereumChain',
                             params: [{
-                                chainId: '0x89',
+                                chainId: chainIdHex,
                                 chainName: 'Polygon',
-                                rpcUrls: ['https://polygon-rpc.com/'],
+                                rpcUrls: [POLYGON_RPC_ENDPOINT],
                                 nativeCurrency: {name: 'MATIC', symbol: 'MATIC', decimals: 18}
                             }],
                         });
@@ -445,25 +443,25 @@ export const SendToAnyoneLogic = {
             }
         }
     },
-    async checkApproval(selectedAccount_, tokenContractAddr_, amount_, network_) {
-        if (network_ === "Polygon") {
-            await this.switchtopolygon();
-            let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressPolygon).call()
-            return allowance >= amount_
-        } else if (network_ === "ETH") {
-            await this.switchtoeth();
-            let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressETH).call()
-            return allowance >= amount_
-        } else if (network_ === "BSC") {
-            await this.switchtobsc();
-            let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressBSC).call()
-            return allowance >= amount_
-        }
-        return false
-    },
+    // async checkApproval(selectedAccount_, tokenContractAddr_, amount_, network_) {
+    //     if (network_ === "Polygon") {
+    //         await this.switchtopolygon();
+    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
+    //         let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressPolygon).call()
+    //         return allowance >= amount_
+    //     } else if (network_ === "ETH") {
+    //         await this.switchtoeth();
+    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
+    //         let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressETH).call()
+    //         return allowance >= amount_
+    //     } else if (network_ === "BSC") {
+    //         await this.switchtobsc();
+    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
+    //         let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressBSC).call()
+    //         return allowance >= amount_
+    //     }
+    //     return false
+    // },
     // load oracle price data
     async loadOracle(ticker) {
         let abiOracle = [{
@@ -747,25 +745,25 @@ export const SendToAnyoneLogic = {
     //     }]
     //     return await new this.web3.eth.Contract(abiERC20, tokenContractAddr_);
     // },
-    async getApproval(tokenContractAddr_, network_, selectedAccount, polygonGas) {
-        // max approval amount, adjust as needed
-        var approveAmount = 2n ** 255n;
-
-        if (network_ === "Polygon") {
-            await this.switchtopolygon();
-            let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            await tokenContract.methods.approve(sendToAnyoneAddressPolygon, approveAmount).send({
-                from: selectedAccount,
-                gasPrice: polygonGas
-            })
-        } else if (network_ === "ETH") {
-            await this.switchtoeth();
-            let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            await tokenContract.methods.approve(sendToAnyoneAddressETH, approveAmount).send({from: selectedAccount})
-        } else if (network_ === "BSC") {
-            await this.switchtobsc();
-            let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-            await tokenContract.methods.approve(sendToAnyoneAddressBSC, approveAmount).send({from: selectedAccount})
-        }
-    }
+    // async getApproval(tokenContractAddr_, network_, selectedAccount, polygonGas) {
+    //     // max approval amount, adjust as needed
+    //     var approveAmount = 2n ** 255n;
+    //
+    //     if (network_ === "Polygon") {
+    //         await this.switchtopolygon();
+    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
+    //         await tokenContract.methods.approve(sendToAnyoneAddressPolygon, approveAmount).send({
+    //             from: selectedAccount,
+    //             gasPrice: polygonGas
+    //         })
+    //     } else if (network_ === "ETH") {
+    //         await this.switchtoeth();
+    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
+    //         await tokenContract.methods.approve(sendToAnyoneAddressETH, approveAmount).send({from: selectedAccount})
+    //     } else if (network_ === "BSC") {
+    //         await this.switchtobsc();
+    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
+    //         await tokenContract.methods.approve(sendToAnyoneAddressBSC, approveAmount).send({from: selectedAccount})
+    //     }
+    // }
 }

@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "build": "webpack",
-    "buildProd": "webpack --mode=production",
-    "buildDev": "webpack --watch --mode=development"
+    "buildLocal": "webpack --watch --mode=none",
+    "buildDev": "webpack --watch --mode=development",
+    "buildProd": "webpack --mode=production"
   },
   "dependencies": {
     "@depay/coinbase-wallet-sdk": "^1.0.5",
