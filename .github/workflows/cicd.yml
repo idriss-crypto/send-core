@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: |
           yarn
-          yarn build
+          yarn buildProd
           
           
       - name: Artifacts
