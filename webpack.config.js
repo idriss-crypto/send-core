@@ -9,7 +9,7 @@ const setup = (mode) => {
             POLYGON_RPC_ENDPOINT: `'https://polygon-rpc.com/'`,
             POLYGON_CHAIN_ID: `'137'`,
             POLYGON_BLOCK_EXPLORER_ADDRESS: `'https://polygonscan.com'`,
-            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'sent to anyone prod'`,
+            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'0xB1f313dbA7c470fF351e19625dcDCC442d3243C4'`,
             IDRISS_REGISTRY_CONTRACT_ADDRESS: `'0x2eccb53ca2d4ef91a79213fddf3f8c2332c2a814'`,
             REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS: `'0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64'`,
             PRICE_ORACLE_CONTRACT_ADDRESS: `'0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'`,
