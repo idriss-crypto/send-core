@@ -6,7 +6,13 @@
     <h2>Transaction Submitted🥳</h2>
     <p class="subtitle"><a href=explorerLink>View on Explorer<img src=link alt="" class="linkIcon"/></a></p>
     <br/>
-    <p class="subtitle">In order for others to claim, please send them the following link: {{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}}</p>
+    <div id="text-wrapper">
+        <div class="border border-gray-300 rounded-md content-center p-1 hover:cursor-pointer" onclick="copyLink({{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}});">
+            In order for others to claim, please send them the following link:
+            <span class="text-xs" id="tweetContent">{{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}}</span>
+        </div>
+        <div id="tooltip" class="text-sm">Copied!</div>
+    </div>
 </main>
 <footer>
     <button type="button" class="close">

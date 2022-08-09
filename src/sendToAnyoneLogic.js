@@ -215,7 +215,6 @@ export const SendToAnyoneLogic = {
         // let contract;
         let polygonGas;
 
-        // make another check if the address selected really belongs to the twitter name selected
 
         // switch to selected payment option's network
         // exchange if statement for suitable check depending on selected network in dropdown
@@ -259,50 +258,6 @@ export const SendToAnyoneLogic = {
             let result;
 
             try {
-                //TODO: delete
-                // // Actual contract call
-                // // network is the network chosen in plugin popup
-                // if (network === "Polygon" && polygonGas) {
-                //     // check for approval, then send txn
-                //     // if native token: do not check for approval, select first payment (sendTo(...))
-                //     // if ERC20 token: check for approval, if not given call getApproval(tokenContractAddr), followed by the second payment call (sendTokenTo(...))
-                //     // inputs native token: sendTo(address recipient, string memory message)
-                //     // inputs ERC20 token: sendTokenTo(uint256 amount, address tokenContractAddr, address recipient, string memory message)
-                //     // message is "" by default
-                //     // recipient is the target address (resolved from twitter), message is the optional message (currently hidden functionality for twitter, should be empty
-                //     // amount is calculated above, polygonGas is calculated above in case people selected the Polygon network
-                //     // amount is the amount calculated above for token that are not native
-                //     // tokenContractAddr is the contract address of a token and can be taken from the imported json about token
-                //     // selectedAccount is defined above and the connected wallet address
-                //     if (token == "MATIC") {
-                //         payment = await contract.methods.sendTo(recipient, message).send({
-                //             from: selectedAccount,
-                //             value: amount,
-                //             gasPrice: polygonGas
-                //         });
-                //     } else {
-                //         if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
-                //             let approval = await this.getApproval(tokenContractAddr, network, selectedAccount, polygonGas)
-                //         }
-                //         payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({
-                //             from: selectedAccount,
-                //             gasPrice: polygonGas
-                //         });
-                //     }
-                // } else {
-                //     // same comments as above apply, this section uses default gas values, suggested by the wallet that is connected
-                //     if (token == "ETH" || token == "BNB") {
-                //         payment = await contract.methods.sendTo(recipient, message).send({
-                //             from: selectedAccount,
-                //             value: amount
-                //         });
-                //     } else {
-                //         if (!await this.checkApproval(selectedAccount, tokenContractAddr, amount, network)) {
-                //             let approval = await this.getApproval(tokenContractAddr, network, selectedAccount)
-                //         }
-                //         payment = await contract.methods.sendTokenTo(recipient, BigInt(amount), tokenContractAddr, message).send({from: selectedAccount});
-                //     }
-                // }
                 const transactionOptions = {
                     from: selectedAccount,
                     ...(polygonGas) && {gasPrice: polygonGas}
