@@ -1,6 +1,7 @@
 import Web3 from "web3/dist/web3.min.js";
 import {tokens} from "./sendToAnyoneUtils";
 import {IdrissCrypto} from "idriss-crypto/browser";
+import { Alchemy, Network } from "alchemy-sdk";
 
 const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
 
@@ -22,6 +23,8 @@ let coingeckoId = {
     "BANK":"bankless-dao"
 };
 
+let alchemy;
+
 export const SendToAnyoneLogic = {
     provider: null,
     idriss: null,
@@ -40,7 +43,18 @@ export const SendToAnyoneLogic = {
         this.web3 = web3;
         await this.switchNetwork(network)
     },
-
+    // Fetch all the NFTs owned by addr_
+    async getNFTs(key_) {
+        const configAlchemy = {
+                apiKey: key_,
+                network: Network.MATIC_MAINNET,
+            };
+        alchemy = new Alchemy(configAlchemy);
+        // Get all NFTs
+        const nfts = await alchemy.nft.getNftsForOwner(selectedAccount);
+        // Print NFTs
+        console.log(nfts);
+    },
     async calculateAmount(ticker, sendToAnyoneValue) {
 
         let priceSt
