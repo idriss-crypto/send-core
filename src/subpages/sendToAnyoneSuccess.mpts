@@ -14,11 +14,11 @@
              padding: 0px 5px;
              margin: auto;
              }
-        #urlWrap {
+        .urlWrap {
             word-wrap: break-word;
         }
-        #textWrap {
-            max-width: 14rem;
+        .textWrap {
+            max-width: 16rem;
             padding: 0.25rem;
             align-content: center;
             border-radius: 0.375rem;
@@ -26,7 +26,7 @@
             border-color: #D1D5DB;
             border-style: solid;
         }
-        #textWrap:hover {
+        .textWrap:hover {
             cursor: pointer;
         }
     </style>
@@ -42,13 +42,15 @@
         <div id="tooltip" class="text-sm">Copied!</div>
     </div>
     <script>
+        var identifier = "{{identifier}}"
+        var claimPassword = "{{claimPassword}}"
         async function copyLink() {
-            _link = document.getElementById("textContent").innerHTML;
+            _link = "https://idriss.xyz/claim?identifier="+identifier+"&claimPassword="+claimPassword;
             await navigator.clipboard.writeText(_link);
-            document.getElementById("tooltip").style.visibility = "visible";
-            setTimeout(function () {
-                            tooltip.style.visibility = "hidden";
-                        }, 1000);
+            // document.getElementById("tooltip").style.visibility = "visible";
+            // setTimeout(function () {
+            //                tooltip.style.visibility = "hidden";
+            //            }, 1000);
         }
     </script>
 </main>
