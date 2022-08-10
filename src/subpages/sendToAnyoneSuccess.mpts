@@ -2,6 +2,19 @@
     <img class="closeButton" src=close alt="close"/>
 </header>
 <main>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        #tooltip {
+             visibility: hidden;
+             width: 80px;
+             background-color: black;
+             color: #fff;
+             text-align: center;
+             border-radius: 6px;
+             padding: 0px 5px;
+             margin: auto;
+             }
+    </style>
     <img src=success alt="" class="success"/>
     <h2>Transaction Submitted🥳</h2>
     <p class="subtitle"><a href=explorerLink>View on Explorer<img src=link alt="" class="linkIcon"/></a></p>
@@ -9,10 +22,20 @@
     <div id="text-wrapper">
         <div class="border border-gray-300 rounded-md content-center p-1 hover:cursor-pointer" onclick="copyLink();">
             In order for others to claim, please send them the following link:
-            <span class="text-xs" id="textContent">{{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}}</span>
+            <span class="text-xs break-words" id="textContent">{{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}}</span>
         </div>
         <div id="tooltip" class="text-sm">Copied!</div>
     </div>
+    <script>
+        async function copyLink() {
+            _link = document.getElementById("textContent").innerHTML;
+            await navigator.clipboard.writeText(_link);
+            document.getElementById("tooltip").style.visibility = "visible";
+            setTimeout(function () {
+                            tooltip.style.visibility = "hidden";
+                        }, 1000);
+        }
+    </script>
 </main>
 <footer>
     <button type="button" class="close">
