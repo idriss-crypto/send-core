@@ -14,15 +14,30 @@
              padding: 0px 5px;
              margin: auto;
              }
+        #urlWrap {
+            word-wrap: break-word;
+        }
+        #textWrap {
+            max-width: 14rem;
+            padding: 0.25rem;
+            align-content: center;
+            border-radius: 0.375rem;
+            border-width: 1px;
+            border-color: #D1D5DB;
+            border-style: solid;
+        }
+        #textWrap:hover {
+            cursor: pointer;
+        }
     </style>
     <img src=success alt="" class="success"/>
     <h2>Transaction Submitted🥳</h2>
     <p class="subtitle"><a href=explorerLink>View on Explorer<img src=link alt="" class="linkIcon"/></a></p>
     <br/>
     <div id="text-wrapper">
-        <div class="border border-gray-300 rounded-md content-center p-1 hover:cursor-pointer" onclick="copyLink();">
-            In order for others to claim, please send them the following link:
-            <span class="text-xs break-words" id="textContent">{{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}}</span>
+        In order for others to claim, please send them the following link:
+        <div class="textWrap" onclick="copyLink();">
+            <span class="urlWrap" id="textContent">{{idrissHost}}/claim?identifier={{identifier}}&claimPassword={{claimPassword}}</span>
         </div>
         <div id="tooltip" class="text-sm">Copied!</div>
     </div>
