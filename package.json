@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/send-to-anyone-core",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "scripts": {
     "build": "webpack",
     "buildLocal": "webpack --watch --mode=none",
@@ -10,7 +10,6 @@
   "dependencies": {
     "@depay/coinbase-wallet-sdk": "^1.0.5",
     "@walletconnect/web3-provider": "^1.7.8",
-    "alchemy-sdk": "^2.0.1",
     "fast-creator": "^1.6.0",
     "idriss-crypto": "^1.7.4-experimental",
     "web3": "^1.7.0",
