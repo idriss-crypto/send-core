@@ -5,6 +5,7 @@ const webpack = require('webpack');
 
 const setup = (mode) => {
     if (mode === 'production') {
+        //Mainnet
         return {
             POLYGON_RPC_ENDPOINT: `'https://polygon-rpc.com/'`,
             POLYGON_CHAIN_ID: `'137'`,
@@ -16,6 +17,7 @@ const setup = (mode) => {
             IDRISS_HOMEPAGE: `'https://idriss.xyz'`,
         }
     } else if (mode === 'none') {
+        // local node
         return {
             POLYGON_RPC_ENDPOINT: `'http://localhost:8545'`,
             POLYGON_CHAIN_ID: `'1337'`,
@@ -27,8 +29,8 @@ const setup = (mode) => {
             IDRISS_HOMEPAGE: `'http://localhost:8000/templates'`,
         }
     } else {
-        return {
             // Mumbai - Polygon testnet
+        return {
             POLYGON_RPC_ENDPOINT: `'https://rpc-mumbai.matic.today'`,
             POLYGON_CHAIN_ID: `'80001'`,
             POLYGON_BLOCK_EXPLORER_ADDRESS: `'https://mumbai.polygonscan.com'`,

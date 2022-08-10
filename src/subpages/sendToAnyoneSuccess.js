@@ -5,9 +5,12 @@ import link from "!!url-loader!../img/link.svg"
 import {create} from "fast-creator";
 
 export class SendToAnyoneSuccess {
-    constructor(identifier, explorerLink, claimPassword) {
+    constructor(identifier, explorerLink, claimPassword, isIDrissRegistered,
+                assetAmount, assetId, assetType, assetAddress) {
         const idrissHost = IDRISS_HOMEPAGE
-        this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimPassword, idrissHost}));
+        const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetAmount=${assetAmount}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}`
+        this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
+        this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.close')?.addEventListener('click', (e) => {
             this.html.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))

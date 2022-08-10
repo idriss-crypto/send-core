@@ -44,6 +44,10 @@ close(){
                     this.network = e.network;
                     this.token = e.token;
                     this.sendToAnyoneValue = +e.amount;
+                    this.assetType = e.assetType;
+                    this.assetAmount = e.assetAmount;
+                    this.assetAddress = e.assetAddress;
+                    this.assetId = e.assetId;
                     res()
                 })
             });
@@ -79,7 +83,8 @@ close(){
 
         this.container.querySelector('.amountCoin').textContent = amountNormal;
         let sendResult = await SendToAnyoneLogic.sendToAnyone(identifier ?? this.identifier, amountInteger,
-            network ?? this.network, token ?? this.token, params.get('message') ?? "")
+            network ?? this.network, token ?? this.token, params.get('message') ?? "",
+            this.assetType, this.assetAmount, this.assetAddress, this.assetId)
 
         this.clearContainer()
         if (sendResult && sendResult.transactionReceipt && sendResult.transactionReceipt.status) {

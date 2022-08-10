@@ -17,10 +17,16 @@ export class SendToAnyoneAddress {
                 this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
                     identifier: this.name,
                     recipient: this.address,
+                    isIDrissRegistered: true
                 }))
             }
         })
-        this.idriss = new IdrissCrypto();
+        this.idriss = new IdrissCrypto(POLYGON_RPC_ENDPOINT, {
+            sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
+            idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
+            reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
+            priceOracleContractAddress: PRICE_ORACLE_CONTRACT_ADDRESS
+        });
     }
 
     async checkInputChanged() {
@@ -82,6 +88,7 @@ export class SendToAnyoneAddress {
                         this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
                             identifier: this.name,
                             recipient: this.address,
+                            isIDrissRegistered: true
                         }))
                     }
                 }
