@@ -10,8 +10,8 @@ import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
 export class SendToAnyoneMain {
-    constructor(identifier, isIDrissRegistered, showMessageBox = true) {
-        const networks = [
+    constructor(identifier, isIDrissRegistered, showMessageBox = true, tokenFilter = null) {
+        let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
         ]
         //TODO: check, but probably only polygon will be used
@@ -19,8 +19,11 @@ export class SendToAnyoneMain {
         //     networks.push({name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'})
         //     networks.push({name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'})
         // }
+        if (tokenFilter) {
+            networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
+        }
 
-        this.html = create('div', {}, template({identifier, networks, tokens, eth_logo, usdc_logo, arrow, pen, close}));
+        this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.assetAddress').style.display = 'none';
         this.html.querySelector('.assetAmount').style.display = 'none';
@@ -134,6 +137,16 @@ export class SendToAnyoneMain {
         }
         if (this.html.querySelector('.tokenSelect').dataset.network != network) {
             this.html.querySelector(`.tokenSelect li[data-network="${network}"]`).click();
+        }
+    }
+
+    filterTokens(tokenFilter) {
+        if (!tokenFilter) {
+            return tokens;
+        } else {
+            return tokens.filter(t => {
+                return tokenFilter[t.network.toLowerCase()]?.includes(t.symbol);
+            })
         }
     }
 }
