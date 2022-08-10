@@ -22,104 +22,6 @@ let coingeckoId = {
     "BANK":"bankless-dao"
 };
 
-//TODO: change
-// let abiSendToAnyoneContract = [{
-//     "anonymous": false,
-//     "inputs": [{
-//         "indexed": true,
-//         "internalType": "address",
-//         "name": "previousOwner",
-//         "type": "address"
-//     }, {"indexed": true, "internalType": "address", "name": "newOwner", "type": "address"}],
-//     "name": "OwnershipTransferred",
-//     "type": "event"
-// }, {
-//     "anonymous": false,
-//     "inputs": [{
-//         "indexed": true,
-//         "internalType": "address",
-//         "name": "recipientAddress",
-//         "type": "address"
-//     }, {"indexed": false, "internalType": "string", "name": "message", "type": "string"}, {
-//         "indexed": false,
-//         "internalType": "uint256",
-//         "name": "amount",
-//         "type": "uint256"
-//     }],
-//     "name": "TipMessage",
-//     "type": "event"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "adminAddress", "type": "address"}],
-//     "name": "addAdmin",
-//     "outputs": [],
-//     "stateMutability": "nonpayable",
-//     "type": "function"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "", "type": "address"}],
-//     "name": "admins",
-//     "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
-//     "stateMutability": "view",
-//     "type": "function"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "", "type": "address"}],
-//     "name": "balanceOf",
-//     "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-//     "stateMutability": "view",
-//     "type": "function"
-// }, {
-//     "inputs": [],
-//     "name": "contractOwner",
-//     "outputs": [{"internalType": "address", "name": "", "type": "address"}],
-//     "stateMutability": "view",
-//     "type": "function"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "adminAddress", "type": "address"}],
-//     "name": "deleteAdmin",
-//     "outputs": [],
-//     "stateMutability": "nonpayable",
-//     "type": "function"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "recipient_", "type": "address"}, {
-//         "internalType": "string",
-//         "name": "message_",
-//         "type": "string"
-//     }], "name": "sendTo", "outputs": [], "stateMutability": "payable", "type": "function"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "recipient_", "type": "address"}, {
-//         "internalType": "uint256",
-//         "name": "amount_",
-//         "type": "uint256"
-//     }, {"internalType": "address", "name": "tokenContractAddr_", "type": "address"}, {
-//         "internalType": "string",
-//         "name": "message_",
-//         "type": "string"
-//     }], "name": "sendTokenTo", "outputs": [], "stateMutability": "payable", "type": "function"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "newOwner", "type": "address"}],
-//     "name": "transferContractOwnership",
-//     "outputs": [],
-//     "stateMutability": "payable",
-//     "type": "function"
-// }, {
-//     "inputs": [],
-//     "name": "withdraw",
-//     "outputs": [],
-//     "stateMutability": "nonpayable",
-//     "type": "function"
-// }, {
-//     "inputs": [{"internalType": "address", "name": "tokenContract", "type": "address"}],
-//     "name": "withdrawToken",
-//     "outputs": [],
-//     "stateMutability": "nonpayable",
-//     "type": "function"
-// }]
-
-//TODO: remove
-// let sendToAnyoneAddressETH = "0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64";
-// let sendToAnyoneAddressPolygon = "0xA0665e585038f94CD7092611318326102dCf5B5a";
-// let sendToAnyoneAddressBSC = "0x6f0094d82f4FaC3E974174a21Aa795B6F10d28C7";
-
-
 export const SendToAnyoneLogic = {
     provider: null,
     idriss: null,
@@ -127,13 +29,6 @@ export const SendToAnyoneLogic = {
         console.log('prepareSendToAnyone')
         this.provider = provider;
         const web3 = new Web3(this.provider);
-        console.log({
-            web3ProviderHost: this.provider.host,
-            sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
-            idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
-            reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
-            priceOracleContractAddress: PRICE_ORACLE_CONTRACT_ADDRESS
-        })
         // all values are injected by webpack based on the environment
         this.idriss = new IdrissCrypto(this.provider.host ?? POLYGON_RPC_ENDPOINT, {
             web3Provider: this.provider,
@@ -145,7 +40,6 @@ export const SendToAnyoneLogic = {
         this.web3 = web3;
         await this.switchNetwork(network)
     },
-
 
     async calculateAmount(ticker, sendToAnyoneValue) {
 
@@ -195,17 +89,27 @@ export const SendToAnyoneLogic = {
         }
     },
 
-    async sendToAnyone(recipient, amount, network, token, message) {
+    async sendToAnyone(recipient, amount, network, token, message, assetType, assetAmount, assetAddress, assetId) {
         let tokenContractAddr = tokens.filter(x => x.symbol == token && x.network == network)[0]?.address; // get from json
+        const assetTypes = {}
+        assetTypes['native'] = 0
+        assetTypes['erc20']  = 1
+        assetTypes['erc721'] = 2
 
-        //TODO: make asset adjustable
+        let properAmount
+        if (assetType === 'erc721')
+            properAmount = 1
+       else
+           properAmount = (assetAmount ?? '').length > 0 ? assetAmount : amount
+
         const asset = {
-            amount: amount,
-            type: 0, // 0 - native; 1 - ERC20; 2 - NFT
-            assetContractAddress: tokenContractAddr,
-            // assetId: 0
+            amount: properAmount,
+            type: assetTypes[assetType],
+            assetContractAddress: (assetAddress ?? '').length > 0 ? assetAddress : tokenContractAddr,
+            assetId: assetId === '' ? 0 : assetId
         }
 
+        //TODO: add wallet tag for existing user
         const walletType = {
             coin: "ETH",
             network: "evm",
@@ -215,6 +119,7 @@ export const SendToAnyoneLogic = {
         // let contract;
         let polygonGas;
 
+        // make another check if the address selected really belongs to the twitter name selected
 
         // switch to selected payment option's network
         // exchange if statement for suitable check depending on selected network in dropdown

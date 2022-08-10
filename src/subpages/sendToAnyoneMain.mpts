@@ -23,6 +23,19 @@
      </style>
 </header>
 <main>
+    <div class="assetTypeSelection">
+        <button type="button" data-value="native" class="isSelected">
+            <span>Native coin</span>
+        </button>
+
+        <button type="button" data-value="erc20">
+            <span>ERC20 Token</span>
+        </button>
+
+        <button type="button" data-value="erc721">
+            <span>NFT</span>
+        </button>
+    </div>
     <div class="valueSelection">
         <button type="button" data-value="1" class="isSelected">
             <span>$1</span>
@@ -60,7 +73,21 @@
             </ul>
         </div>
     </div>
-    <div class="select-wrapper">
+
+    <div class="select-wrapper assetAddress">
+        <label for="assetAddress">Asset address:</label>
+        <input type="text" id="assetAddress"/>
+    </div>
+    <div class="select-wrapper assetAmount">
+        <label for="assetAmount">Amount:</label>
+        <input type="text" id="assetAmount"/>
+    </div>
+    <div class="select-wrapper assetId">
+        <label for="assetId">#ID:</label>
+        <input type="text" id="assetId"/>
+    </div>
+
+    <div class="select-wrapper tokenSelectWrapper">
         <label for="tokenButton">Coin:</label>
         <div class="select tokenSelect" data-symbol=tokens.0.symbol>
             <button type="button" id="tokenButton">
