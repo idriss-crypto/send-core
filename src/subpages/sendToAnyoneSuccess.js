@@ -8,7 +8,7 @@ export class SendToAnyoneSuccess {
     constructor(identifier, explorerLink, claimPassword, isIDrissRegistered,
                 assetAmount, assetId, assetType, assetAddress) {
         const idrissHost = IDRISS_HOMEPAGE
-        const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetAmount=${assetAmount}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}`
+        const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}`
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
         this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));

@@ -25,9 +25,11 @@ let coingeckoId = {
 export const SendToAnyoneLogic = {
     provider: null,
     idriss: null,
-    async prepareSendToAnyone(provider, network) {
+    apiKey: null,
+    async prepareSendToAnyone(provider, network, apiKey) {
         console.log('prepareSendToAnyone')
         this.provider = provider;
+        this.apiKey = apiKey;
         const web3 = new Web3(this.provider);
         // all values are injected by webpack based on the environment
         this.idriss = new IdrissCrypto(this.provider.host ?? POLYGON_RPC_ENDPOINT, {

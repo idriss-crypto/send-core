@@ -15,6 +15,9 @@ const setup = (mode) => {
             REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS: `'0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64'`,
             PRICE_ORACLE_CONTRACT_ADDRESS: `'0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'`,
             IDRISS_HOMEPAGE: `'https://idriss.xyz'`,
+            WEBPACK_MODE: `'production'`,
+            DEFAULT_TOKEN_CONTRACT_ADDRESS: `''`,
+            DEFAULT_NFT_CONTRACT_ADDRESS: `''`,
         }
     } else if (mode === 'none') {
         // local node
@@ -27,6 +30,9 @@ const setup = (mode) => {
             REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS: `'0x6489A077e9D1382E87a493985C531bee2d484640'`,
             PRICE_ORACLE_CONTRACT_ADDRESS: `'0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'`,
             IDRISS_HOMEPAGE: `'http://localhost:8000/templates'`,
+            WEBPACK_MODE: `'local'`,
+            DEFAULT_TOKEN_CONTRACT_ADDRESS: `'0xdb54fa574a3e8c6aC784e1a5cdB575A737622CFf'`,
+            DEFAULT_NFT_CONTRACT_ADDRESS: `'0x7A28cf37763279F774916b85b5ef8b64AB421f79'`,
         }
     } else {
             // Mumbai - Polygon testnet
@@ -39,6 +45,9 @@ const setup = (mode) => {
             REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS: `'0x7d1516f493743ce846e12ea2c9b70a008d8097fe'`,
             PRICE_ORACLE_CONTRACT_ADDRESS: `'0xd0D5e3DB44DE05E9F294BB0a3bEEaF030DE24Ada'`,
             IDRISS_HOMEPAGE: `'https://idriss.xyz'`,
+            WEBPACK_MODE: `'development'`,
+            DEFAULT_TOKEN_CONTRACT_ADDRESS: `'0xdb54fa574a3e8c6aC784e1a5cdB575A737622CFf'`,
+            DEFAULT_NFT_CONTRACT_ADDRESS: `'0x7A28cf37763279F774916b85b5ef8b64AB421f79'`,
         }
     }
 }
@@ -88,6 +97,7 @@ module.exports = (env, argv) => {
             'fast-creator',
             'idriss-crypto/browser',
             '@depay/coinbase-wallet-sdk',
+            'alchemy-sdk'
             // 'web3modal'
         ]
     }

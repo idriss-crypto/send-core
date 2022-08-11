@@ -73,7 +73,7 @@ close(){
         this.clearContainer()
         this.container.append(new SendToAnyoneWaitingApproval(token).html);
 
-        await SendToAnyoneLogic.prepareSendToAnyone(provider, network ?? this.network)
+        await SendToAnyoneLogic.prepareSendToAnyone(provider, network ?? this.network, this.alchemyApiKey)
         this.clearContainer()
         this.container.append((new SendToAnyoneWaitingConfirmation(identifier, sendToAnyoneValue, token)).html)
         let {

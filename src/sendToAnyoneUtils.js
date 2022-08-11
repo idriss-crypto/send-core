@@ -1,4 +1,6 @@
-export const tokens = [
+import getAlchemyAPI from "./getAlchemyApi";
+
+const tokens = [
     {
         "chainId": 1,
         "network": "ETH",
@@ -159,3 +161,100 @@ export const tokens = [
         "logoURI": "https://assets.coingecko.com/coins/images/15227/small/j4WEJrwU.png?1622615796"
     },
 ]
+
+const getNFTsForAddress = (address, apiKey) => {
+    if (WEBPACK_MODE === 'production') {
+        const api = getAlchemyAPI(apiKey)
+        return api.nft.getNftsForOwner(address)
+    }
+    return Promise.resolve(testNFTs)
+}
+
+const testNFTs = {
+    "ownedNfts": [
+        {
+            "contract": {
+                "address": DEFAULT_NFT_CONTRACT_ADDRESS
+            },
+            "id": {
+                "tokenId": "1",
+                "tokenMetadata": {
+                    "tokenType": "ERC721"
+                }
+            },
+            "title": "DuskBreaker #1",
+            "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+            "tokenUri": {
+                "raw": "https://duskbreakers.gg/api/breakers/1",
+                "gateway": "https://duskbreakers.gg/api/breakers/1"
+            },
+            "media": [
+                {
+                    "raw": "https://duskbreakers.gg/breaker_images/1.png",
+                    "gateway": "https://duskbreakers.gg/breaker_images/1.png"
+                }
+            ],
+            "metadata": {
+                "name": "DuskBreaker #1",
+                "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+                "image": "https://duskbreakers.gg/breaker_images/1.png",
+                "external_url": "https://duskbreakers.gg",
+                "attributes": [
+                    {
+                        "value": "Big Smile (Purple)",
+                        "trait_type": "Mouth"
+                    },
+                    {
+                        "value": "Yellow",
+                        "trait_type": "Background"
+                    }
+                ]
+            },
+            "timeLastUpdated": "2022-02-16T22:52:54.719Z"
+        },
+        {
+            "contract": {
+                "address": DEFAULT_NFT_CONTRACT_ADDRESS
+            },
+            "id": {
+                "tokenId": "2",
+                "tokenMetadata": {
+                    "tokenType": "ERC721"
+                }
+            },
+            "title": "DuskBreaker #2",
+            "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+            "tokenUri": {
+                "raw": "https://duskbreakers.gg/api/breakers/2",
+                "gateway": "https://duskbreakers.gg/api/breakers/2"
+            },
+            "media": [
+                {
+                    "raw": "https://duskbreakers.gg/breaker_images/2.png",
+                    "gateway": "https://duskbreakers.gg/breaker_images/2.png"
+                }
+            ],
+            "metadata": {
+                "name": "DuskBreaker #2",
+                "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+                "image": "https://duskbreakers.gg/breaker_images/2.png",
+                "external_url": "https://duskbreakers.gg",
+                "attributes": [
+                    {
+                        "value": "Big Smile (Purple)",
+                        "trait_type": "Mouth"
+                    },
+                    {
+                        "value": "Yellow",
+                        "trait_type": "Background"
+                    }
+                ]
+            },
+            "timeLastUpdated": "2022-02-16T22:52:54.719Z"
+        },
+    ],
+    "totalCount": 2,
+    "blockHash": "0xeb2d26af5b6175344a14091777535a2cb21c681665a734a8285f889981987630"
+}
+
+export {tokens, getNFTsForAddress}
