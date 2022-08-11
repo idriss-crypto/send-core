@@ -10,7 +10,7 @@ import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
 export class SendToAnyoneMain {
-    constructor(identifier, isIDrissRegistered, showMessageBox = true, tokenFilter = null) {
+    constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null) {
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
         ]
@@ -23,11 +23,9 @@ export class SendToAnyoneMain {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
 
-        this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), eth_logo, usdc_logo, arrow, pen, close}));
+        this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
-        this.html.querySelector('.assetAddress').style.display = 'none';
-        this.html.querySelector('.assetAmount').style.display = 'none';
-        this.html.querySelector('.assetId').style.display = 'none';
+        this.html.querySelector('.nftSelectWrapper').style.display = 'none';
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')
@@ -50,17 +48,19 @@ export class SendToAnyoneMain {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
+            if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20'
             let message = this.html.querySelector('.messageBox textarea').value;
-            let amount = assetType !== 'native' ? 1
-                : this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
-            let assetAmount = this.html.querySelector('.assetAmount input')?.value
-            let assetAddress = this.html.querySelector('.assetAddress input')?.value
-            let assetId = this.html.querySelector('.assetId input')?.value
+            let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
+            let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
+            let assetId = this.html.querySelector('.nftSelect').id;
+            if (WEBPACK_MODE !== 'production') {
+                assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
+            }
+            if (assetType === 'erc721') assetAddress = this.html.querySelector('.nftSelect').dataset.address;
             this.html.dispatchEvent(Object.assign(new Event('sendMoney', {bubbles: true}), {
                 identifier,
                 network,
                 assetType,
-                assetAmount,
                 assetAddress,
                 assetId,
                 amount,
@@ -82,30 +82,21 @@ export class SendToAnyoneMain {
                 b.querySelector('input')?.focus();
 
                 const valueSelection = this.html.querySelector('.valueSelection');
-                const assetAddress = this.html.querySelector('.assetAddress');
-                const assetAmount = this.html.querySelector('.assetAmount');
-                const assetId = this.html.querySelector('.assetId');
                 const tokenSelect = this.html.querySelector('.tokenSelectWrapper');
+                const nftSelectWrapper = this.html.querySelector('.nftSelectWrapper');
                 switch (b.dataset.value) {
                     case 'native':
                         valueSelection.style.display = '';
-                        assetAddress.style.display = 'none';
-                        assetAmount.style.display = 'none';
-                        assetId.style.display = 'none';
                         tokenSelect.style.display = '';
+                        nftSelectWrapper.style.display = 'none';
                         break;
-                    case 'erc20':
-                        valueSelection.style.display = 'none';
-                        assetAddress.style.display = '';
-                        assetAmount.style.display = '';
-                        assetId.style.display = 'none';
-                        tokenSelect.style.display = 'none';
-                        break;
+                    // case 'erc20':
+                    //     valueSelection.style.display = 'none';
+                    //     tokenSelect.style.display = 'none';
+                    //     break;
                     case 'erc721':
+                        nftSelectWrapper.style.display = '';
                         valueSelection.style.display = 'none';
-                        assetAddress.style.display = '';
-                        assetAmount.style.display = 'none';
-                        assetId.style.display = '';
                         tokenSelect.style.display = 'none';
                         break;
                 }

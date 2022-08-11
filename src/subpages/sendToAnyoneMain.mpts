@@ -25,11 +25,7 @@
 <main>
     <div class="assetTypeSelection">
         <button type="button" data-value="native" class="isSelected">
-            <span>Native coin</span>
-        </button>
-
-        <button type="button" data-value="erc20">
-            <span>ERC20 Token</span>
+            <span>Cryptocurrency</span>
         </button>
 
         <button type="button" data-value="erc721">
@@ -74,19 +70,6 @@
         </div>
     </div>
 
-    <div class="select-wrapper assetAddress">
-        <label for="assetAddress">Asset address:</label>
-        <input type="text" id="assetAddress"/>
-    </div>
-    <div class="select-wrapper assetAmount">
-        <label for="assetAmount">Amount:</label>
-        <input type="text" id="assetAmount"/>
-    </div>
-    <div class="select-wrapper assetId">
-        <label for="assetId">#ID:</label>
-        <input type="text" id="assetId"/>
-    </div>
-
     <div class="select-wrapper tokenSelectWrapper">
         <label for="tokenButton">Coin:</label>
         <div class="select tokenSelect" data-symbol=tokens.0.symbol>
@@ -105,6 +88,25 @@
             </ul>
         </div>
     </div>
+
+    <div class="select-wrapper nftSelectWrapper">
+            <label for="nftButton">NFT:</label>
+            <div class="select nftSelect" data-address=ownedNFTs.0.address id=ownedNFTs.0.id>
+                <button type="button" id="nftButton">
+                    <img src=ownedNFTs.0.image alt=""/>
+                    <span class="name">{{ownedNFTs.0.name}}</span>
+                    <img class="arrow" src=arrow/>
+                </button>
+                <ul tabindex="-1" role="listbox">
+                    <:foreach collection=ownedNFTs item=nft>
+                        <li role="option" data-address=nft.address id=nft.id>
+                            <img src=nft.image alt=""/>
+                            <span class="name">{{nft.name}}</span>
+                        </li>
+                    </:foreach>
+                </ul>
+            </div>
+        </div>
 
     <div class="toggleMessageBox">🗨️ <strong>Add a message</strong></div>
 
