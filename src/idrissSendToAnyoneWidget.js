@@ -48,6 +48,7 @@ close(){
                     this.assetAmount = e.assetAmount;
                     this.assetAddress = e.assetAddress;
                     this.assetId = e.assetId;
+                    this.message = e.message;
                     res()
                 })
             });
@@ -83,7 +84,7 @@ close(){
 
         this.container.querySelector('.amountCoin').textContent = amountNormal;
         let sendResult = await SendToAnyoneLogic.sendToAnyone(identifier ?? this.identifier, amountInteger,
-            network ?? this.network, token ?? this.token, params.get('message') ?? "",
+            network ?? this.network, token ?? this.token, this.message ?? "",
             this.assetType, this.assetAmount, this.assetAddress, this.assetId)
 
         this.clearContainer()
