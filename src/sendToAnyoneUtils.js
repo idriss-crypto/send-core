@@ -162,6 +162,14 @@ const tokens = [
     },
 ]
 
+const getNFTMetadata = (address, tokenId, apiKey) => {
+    if (WEBPACK_MODE === 'production') {
+        const api = getAlchemyAPI(apiKey)
+        return api.nft.getNftMetadata(address, tokenId)
+    }
+    return Promise.resolve(testNFTs.ownedNfts[0])
+}
+
 const getNFTsForAddress = (address, apiKey) => {
     if (WEBPACK_MODE === 'production') {
         const api = getAlchemyAPI(apiKey)
