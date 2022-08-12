@@ -34,6 +34,7 @@
     "./sendToAnyoneUtils": "./dist/sendToAnyoneUtils.mjs",
     "./sendToAnyoneStyle": "./dist/sendToAnyoneStyle.mjs",
     "./getWeb3Provider": "./dist/getWeb3Provider.mjs",
-    "./sendToAnyoneMain": "./dist/sendToAnyoneMain.mjs"
+    "./sendToAnyoneMain": "./dist/sendToAnyoneMain.mjs",
+    "./sendToAnyoneConnect": "./dist/sendToAnyoneConnect.mjs"
   }
 }
