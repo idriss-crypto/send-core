@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/send-to-anyone-core",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "scripts": {
     "build": "webpack",
     "buildLocal": "webpack --watch --mode=none",
@@ -34,6 +34,7 @@
     "./sendToAnyoneUtils": "./dist/sendToAnyoneUtils.mjs",
     "./sendToAnyoneStyle": "./dist/sendToAnyoneStyle.mjs",
     "./getWeb3Provider": "./dist/getWeb3Provider.mjs",
-    "./sendToAnyoneMain": "./dist/sendToAnyoneMain.mjs"
+    "./sendToAnyoneMain": "./dist/sendToAnyoneMain.mjs",
+    "./sendToAnyoneConnect": "./dist/sendToAnyoneConnect.mjs"
   }
 }

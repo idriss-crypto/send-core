@@ -1,4 +1,4 @@
-import template from "./sendToAnyoneMain.mpts";
+import template from "./sendToAnyoneConnect.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
@@ -9,8 +9,8 @@ import biannceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
-export class SendToAnyoneMain {
-    constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null) {
+export class SendToAnyoneConnect {
+    constructor(identifier, isIDrissRegistered, showMessageBox = true, tokenFilter = null) {
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
         ]
@@ -23,9 +23,9 @@ export class SendToAnyoneMain {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
 
-        this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
+        this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
-        this.html.querySelector('.nftSelectWrapper').style.display = 'none';
+        this.html.querySelector('.connectWallet').style.display = 'none';
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')
@@ -45,6 +45,7 @@ export class SendToAnyoneMain {
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
+            let method = "send";
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
@@ -52,12 +53,13 @@ export class SendToAnyoneMain {
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
-            let assetId = this.html.querySelector('.nftSelect').id;
+            let assetId;
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
             }
-            if (assetType === 'erc721') assetAddress = this.html.querySelector('.nftSelect').dataset.address;
-            this.html.dispatchEvent(Object.assign(new Event('sendMoney', {bubbles: true}), {
+            if (assetType === 'erc721') assetAddress = "0x0000000000000000000000000000000000000000";
+            this.html.dispatchEvent(Object.assign(new Event('connectWallet', {bubbles: true}), {
+                method,
                 identifier,
                 network,
                 assetType,
@@ -66,6 +68,12 @@ export class SendToAnyoneMain {
                 amount,
                 token,
                 message
+            }))
+        });
+        this.html.querySelector('.connectWallet')?.addEventListener('click', (e) => {
+                let method = "connect";
+            this.html.dispatchEvent(Object.assign(new Event('connectWallet', {bubbles: true}), {
+                method
             }))
         });
         this.html.querySelectorAll('.valueSelection > *').forEach(b => {
@@ -83,21 +91,25 @@ export class SendToAnyoneMain {
 
                 const valueSelection = this.html.querySelector('.valueSelection');
                 const tokenSelect = this.html.querySelector('.tokenSelectWrapper');
-                const nftSelectWrapper = this.html.querySelector('.nftSelectWrapper');
+                const connectButton = this.html.querySelector('.connectWallet');
+                const sendButton = this.html.querySelector('.send');
                 switch (b.dataset.value) {
                     case 'native':
                         valueSelection.style.display = '';
                         tokenSelect.style.display = '';
-                        nftSelectWrapper.style.display = 'none';
+                        connectButton.style.display = 'none';
+                        sendButton.style.display = '';
                         break;
                     // case 'erc20':
                     //     valueSelection.style.display = 'none';
                     //     tokenSelect.style.display = 'none';
+                    //     connectButton.style.display = 'none';
                     //     break;
                     case 'erc721':
-                        nftSelectWrapper.style.display = '';
                         valueSelection.style.display = 'none';
                         tokenSelect.style.display = 'none';
+                        connectButton.style.display = '';
+                        sendButton.style.display = 'none';
                         break;
                 }
             }

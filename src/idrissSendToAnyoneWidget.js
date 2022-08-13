@@ -1,6 +1,7 @@
 import css from "./sendToAnyoneStyle.scss";
 import {create} from "fast-creator";
 import {SendToAnyoneMain} from "./subpages/sendToAnyoneMain";
+import {SendToAnyoneConnect} from "./subpages/sendToAnyoneConnect";
 import {SendToAnyoneAddress} from "./subpages/sendToAnyoneAddress";
 import {SendToAnyoneError} from "./subpages/sendToAnyoneError";
 import {SendToAnyoneSuccess} from "./subpages/sendToAnyoneSuccess";
