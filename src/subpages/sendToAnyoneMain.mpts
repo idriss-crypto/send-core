@@ -91,7 +91,7 @@
 
     <div class="select-wrapper nftSelectWrapper">
             <label for="nftButton">NFT:</label>
-            <div class="select nftSelect" data-address=ownedNFTs.0.address id=ownedNFTs.0.id>
+            <div class="select nftSelect" data-address=ownedNFTs.0.address data-assetId=ownedNFTs.0.id>
                 <button type="button" id="nftButton">
                     <img src=ownedNFTs.0.image alt=""/>
                     <span class="name">{{ownedNFTs.0.name}}</span>
@@ -99,7 +99,7 @@
                 </button>
                 <ul tabindex="-1" role="listbox">
                     <:foreach collection=ownedNFTs item=nft>
-                        <li role="option" data-address=nft.address id=nft.id>
+                        <li role="option" data-address=nft.address data-assetId=nft.id>
                             <img src=nft.image alt=""/>
                             <span class="name">{{nft.name}}</span>
                         </li>
