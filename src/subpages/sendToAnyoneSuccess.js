@@ -6,9 +6,9 @@ import {create} from "fast-creator";
 
 export class SendToAnyoneSuccess {
     constructor(identifier, explorerLink, claimPassword, isIDrissRegistered,
-                assetAmount, assetId, assetType, assetAddress, token) {
+                assetAmount, assetId, assetType, assetAddress, token, blockNumber) {
         const idrissHost = IDRISS_HOMEPAGE
-        const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}`
+        const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}&blockNumber=${blockNumber}`
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
         this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
