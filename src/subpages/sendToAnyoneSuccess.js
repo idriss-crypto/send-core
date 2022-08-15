@@ -16,9 +16,10 @@ export class SendToAnyoneSuccess {
             this.html.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
         });
         this.html.querySelector('.textWrap').onclick = () => {
-             this.html.querySelector("#tooltip").style.visibility = "visible";
+            let tooltip = this.html.querySelector("#tooltip")
+             tooltip.style.visibility = "visible";
              setTimeout(function () {
-                            this.html.querySelector("#tooltip").style.visibility = "hidden";
+                            tooltip.style.visibility = "hidden";
                         }, 1000);
         }
     }
