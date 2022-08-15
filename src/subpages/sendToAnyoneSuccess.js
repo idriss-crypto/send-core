@@ -18,8 +18,9 @@ export class SendToAnyoneSuccess {
         this.html.querySelector('.textWrap').onclick = () => {
             let tooltip = this.html.querySelector("#tooltip")
              tooltip.style.visibility = "visible";
-             setTimeout(function () {
+             setTimeout(async function () {
                             tooltip.style.visibility = "hidden";
+                            await navigator.clipboard.writeText(claimUrl);
                         }, 1000);
         }
     }
