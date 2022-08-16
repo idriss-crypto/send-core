@@ -45,10 +45,6 @@
             async function copyLink() {
                 _link = "{{claimUrl}}"
                 await navigator.clipboard.writeText(_link);
-                // document.getElementById("tooltip").style.visibility = "visible";
-                // setTimeout(function () {
-                //                tooltip.style.visibility = "hidden";
-                //            }, 1000);
             }
         </script>
 </main>

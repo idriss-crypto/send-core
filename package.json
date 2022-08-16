@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/send-to-anyone-core",
-  "version": "0.1.11",
+  "version": "0.1.15",
   "scripts": {
     "build": "webpack",
     "buildLocal": "webpack --watch --mode=none",
@@ -12,7 +12,7 @@
     "@walletconnect/web3-provider": "^1.7.8",
     "alchemy-sdk": "^2.0.2",
     "fast-creator": "^1.6.0",
-    "idriss-crypto": "^1.7.5-experimental",
+    "idriss-crypto": "1.7.6-experimental",
     "web3": "^1.7.0",
     "web3modal": "^1.9.7"
   },

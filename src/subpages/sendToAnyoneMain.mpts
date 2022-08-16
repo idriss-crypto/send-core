@@ -24,11 +24,11 @@
 </header>
 <main>
     <div class="assetTypeSelection">
-        <button type="button" data-value="native" class="isSelected">
+        <button type="button" data-value="native" >
             <span>Cryptocurrency</span>
         </button>
 
-        <button type="button" data-value="erc721">
+        <button type="button" data-value="erc721" class="isSelected">
             <span>NFT</span>
         </button>
     </div>
@@ -51,7 +51,7 @@
             <input/>
         </div>
     </div>
-    <div class="select-wrapper">
+    <div class="select-wrapper networkSelectWrapper">
         <label for="network">Network:</label>
         <div class="select networkSelect" data-network=networks.0.code>
             <button type="button" id="network">

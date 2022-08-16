@@ -167,9 +167,12 @@ export const SendToAnyoneLogic = {
             try {
                 const transactionOptions = {
                     from: selectedAccount,
+                    gas: 400000,
                     ...(polygonGas) && {gasPrice: polygonGas}
                 }
-                result = this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions)
+                console.log(recipient, walletType, asset, message, transactionOptions)
+                // deleted message
+                result = this.idriss.transferToIDriss(recipient, walletType, asset, transactionOptions)
             } catch (err) {
                 console.log("error", err)
                 // Transaction failed or user has denied

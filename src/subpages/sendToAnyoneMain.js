@@ -25,7 +25,10 @@ export class SendToAnyoneMain {
 
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
-        this.html.querySelector('.nftSelectWrapper').style.display = 'none';
+        this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
+        this.html.querySelector('.valueSelection').style.display = 'none';
+        this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')
@@ -52,7 +55,8 @@ export class SendToAnyoneMain {
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
-            let assetId = this.html.querySelector('.nftSelect').dataset.assetId;
+            let assetId = this.html.querySelector('.nftSelect').dataset.assetid;
+            let assetAmount = 1
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
             }
@@ -63,6 +67,7 @@ export class SendToAnyoneMain {
                 assetType,
                 assetAddress,
                 assetId,
+                assetAmount,
                 amount,
                 token,
                 message

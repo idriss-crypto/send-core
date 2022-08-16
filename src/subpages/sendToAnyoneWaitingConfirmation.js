@@ -4,8 +4,8 @@ import twitter from "!!url-loader!../img/twitter.svg"
 import {create} from "fast-creator";
 
 export class SendToAnyoneWaitingConfirmation {
-    constructor(identifier, amountUSD, token, amountToken, assetId, assetType) {
-        this.html = create('div', {}, template({identifier, close, twitter, amountUSD, amountToken, assetId, token}));
+    constructor(identifier, amountUSD, token, amountToken, assetId, assetType, nftName="") {
+        this.html = create('div', {}, template({identifier, close, twitter, amountUSD, amountToken, assetId, token, nftName}));
         const subtitleCoin = this.html.querySelector('.subtitleCoin')
         const subtitleNFT = this.html.querySelector('.subtitleNFT')
         subtitleCoin.style.display = 'none'
