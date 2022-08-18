@@ -47,7 +47,7 @@ export class SendToAnyoneMain {
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
                 this.refreshVisibleCoins()
-                this.html.querySelector(".imagePreview").src = li.querySelector('img').src;
+                if (button.id == "nftButton") {this.html.querySelector(".imagePreview").src = li.querySelector('img').src;}
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
