@@ -23,6 +23,8 @@ export class SendToAnyoneMain {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
 
+        //ToDo: ignore nft selection when no NFTs found in wallet
+
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
@@ -45,6 +47,7 @@ export class SendToAnyoneMain {
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
                 this.refreshVisibleCoins()
+                this.html.querySelector(".imagePreview").src = li.querySelector('img').src;
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
