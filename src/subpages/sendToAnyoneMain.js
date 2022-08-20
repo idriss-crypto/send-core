@@ -30,6 +30,7 @@ export class SendToAnyoneMain {
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
         this.html.querySelector('.valueSelection').style.display = 'none';
+        // ToDo: check if IDriss is registered
         this.html.querySelector(".networkSelectWrapper").style.display = 'none';
 
 

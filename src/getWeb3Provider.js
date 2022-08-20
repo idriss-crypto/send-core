@@ -10,33 +10,31 @@ const tallyOpts= {
         display: {
             logo: tallyLogo,
                 name: "Tally",
-                description: "Coming Soon"
+                description: "Connect to your Tally Ho! Wallet",
         },
         package: true,
             connector: async () => {
             if (!window.ethereum?.isTally) {
                 window.open("https://tally.cash/community-edition", '_blank'); // <-- LOOK HERE
-                throw new Error("Tally not supported yet.");
+                return;
             }
 
             let provider = null;
             if (typeof window.ethereum !== 'undefined') {
-                /*
+
                 provider = window.ethereum
                 try {
                     await provider.request({ method: 'eth_requestAccounts' });
                 } catch (error) {
                     throw new Error("User Rejected");
                 }
-                */
-                throw new Error("Tally not supported yet.");
             } else {
-                throw new Error("No Tally Wallet found");
+                throw new Error("No Tally Ho! Wallet found");
             }
             console.log("Tally provider", provider);
             return provider;
-        }
-    }
+        },
+    },
 };
 const walletConnectOpts= {
     walletconnect: {
