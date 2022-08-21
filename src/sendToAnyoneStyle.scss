@@ -35,6 +35,13 @@
 
         > main {
             flex-grow: 1;
+
+            > button {
+                @include button;
+                width: 100%;
+                color: #fff;
+
+            }
         }
     }
 
@@ -364,11 +371,15 @@
         color: rgb(17 24 39)
     }
 
+    .errorTitle {
+        margin: 1rem 0 1rem;
+    }
+
     p {
         text-align: center;
         color: rgb(107 114 128);
         line-height: 1.5rem;
-        margin: 0.25rem 0 0;
+        margin: 0.5rem 0 0.5rem;
         font-size: 0.75rem;
         font-weight: 500;
 
@@ -407,7 +418,7 @@
             @include button;
             width: 100%;
             color: #fff;
-
+            margin: 1rem 0 0;
         }
 
         .link {

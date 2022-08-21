@@ -1,12 +1,16 @@
 <header class="noH1">
-    <img class="closeButton" src=close alt="close"/>
+    <img class="closeButton" src=close alt="close" />
 </header>
 <main>
-    <h2>Transaction aborted</h2>
-    <p>{{name}}: {{message}}</p>
+    <h2 class="errorTitle">Oops, something happened!</h2>
+    <p class="invisError">Error Report IDriss Send: {{name}}: {{message}}</p>
+    <p class="error">Clicking the button below will copy the error message to you clipboard and forward you to our Discord server.</p>
 </main>
 <footer>
+    <button type="button" class="discord">
+        <span>Let us know what happened!</span>
+    </button>
     <button type="button" class="close">
-        <span>Close</span>
+        <span>Retry</span>
     </button>
 </footer>

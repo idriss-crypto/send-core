@@ -9,20 +9,23 @@ const tallyOpts= {
     "custom-tally": {
         display: {
             logo: tallyLogo,
-                name: "Tally",
-                description: "Connect to your Tally Ho! Wallet",
+            name: "Tally",
+            description: "Connect to your Tally Ho! Wallet",
         },
         package: true,
-            connector: async () => {
-            if (!window.ethereum?.isTally) {
-                window.open("https://tally.cash/community-edition", '_blank'); // <-- LOOK HERE
-                return;
-            }
-
+        connector: async () => {
+            if (!isTallyInstalled()) {
+                    window.open("https://tally.cash/community-edition", '_blank'); // <-- LOOK HERE
+                    return;
+                }
             let provider = null;
             if (typeof window.ethereum !== 'undefined') {
-
-                provider = window.ethereum
+                let providers = window.ethereum.providers;
+                if (providers){
+                    provider = providers.find(p => p.isTally);
+                } else {
+                    provider = window.ethereum
+                }
                 try {
                     await provider.request({ method: 'eth_requestAccounts' });
                 } catch (error) {
@@ -39,25 +42,25 @@ const tallyOpts= {
 const walletConnectOpts= {
     walletconnect: {
         package: WalletConnectProvider,
-            options: {
+        options: {
             rpc: {
-                1: 'https://eth-mainnet.alchemyapi.io/v2/NcZapwC9N6OhvtRKvjGhc23st5VmG2hB'
+                137: "https://polygon-rpc.com/",
             },
-            network: "mainnet",
-        }
-    }
+            chainId: 137,
+        },
+    },
 };
 const metaMaskOpts= {
     "custom-metamask": {
         display: {
             logo: metamaskLogo,
-                name: "MetaMask",
-                description: "Connect to your MetaMask Wallet"
+            name: "MetaMask",
+            description: "Connect to your MetaMask Wallet",
         },
         package: true,
-            connector: async () => {
-            if (!window.ethereum?.isMetaMask) {
-                window.open("https://metamask.io/download/", '_blank'); // <-- LOOK HERE
+        connector: async () => {
+            if (!isMetaMaskInstalled()) {
+                window.open("https://metamask.io/download/", "_blank"); // <-- LOOK HERE
                 return;
             }
 
@@ -86,26 +89,26 @@ const walletLinkOpts= {
     'custom-walletlink': {
         display: {
             logo: coinbaseLogo,
-                name: 'Coinbase',
-                description: 'Scan with WalletLink to connect',
+            name: "Coinbase",
+            description: "Scan with WalletLink to connect",
         },
         options: {
-            appName: 'IDriss', // Your app name
-                rpc: "https://eth-mainnet.alchemyapi.io/v2/NcZapwC9N6OhvtRKvjGhc23st5VmG2hB",
-                chainId: 1
+            appName: "IDriss", // Your app name
+            rpc: "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+            chainId: 1,
         },
         package: WalletLink,
-            connector: async (_, options) => {
-            const {appName, networkUrl, chainId} = options
+        connector: async (_, options) => {
+            const { appName, networkUrl, chainId } = options;
             const walletLink = new WalletLink({
-                appName
+                appName,
             });
             const provider = walletLink.makeWeb3Provider(networkUrl, chainId);
             await provider.enable();
             return provider;
         },
-    }
-}
+    },
+};
 
 const providerOptions={
         ...walletConnectOpts,
@@ -114,6 +117,33 @@ const providerOptions={
         ...tallyOpts
     }
 
+function isMetaMaskInstalled(){
+    let providers = window.ethereum.providers;
+    let pMM;
+    if (providers){
+        pMM = providers.find(p => p.isMetaMask);
+    }
+    if (pMM) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+function isTallyInstalled(){
+    let providers = window.ethereum.providers;
+    let pTally;
+    if (providers){
+        pTally = providers.find(p => p.isTally);
+    }
+    if (pTally) {
+        return true
+    }
+    else {
+        return false
+    }
+}
 
 export async function getProvider() {
     const web3Modal = new Web3Modal({
