@@ -23,10 +23,14 @@ export class SendToAnyoneMain {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
 
+        //ToDo: ignore nft selection when no NFTs found in wallet
+        if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x0000000000000000000000000000000000000000", id: "1", image: "https://ipfs.io/ipfs/QmNWMJTqmqrxriJQE7dfndAto48RUpHDLr41HJMZvD3cFD?id=1", name: "No NFTs found"}]}
+
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
         this.html.querySelector('.valueSelection').style.display = 'none';
+        // ToDo: check if IDriss is registered
         this.html.querySelector(".networkSelectWrapper").style.display = 'none';
 
 
@@ -45,6 +49,7 @@ export class SendToAnyoneMain {
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
                 this.refreshVisibleCoins()
+                if (button.id == "nftButton") {this.html.querySelector(".imagePreview").src = li.querySelector('img').src;}
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
@@ -61,6 +66,7 @@ export class SendToAnyoneMain {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
             }
             if (assetType === 'erc721') assetAddress = this.html.querySelector('.nftSelect').dataset.address;
+            if (assetType === 'erc721' && assetAddress == "0x0000000000000000000000000000000000000000") return;
             this.html.dispatchEvent(Object.assign(new Event('sendMoney', {bubbles: true}), {
                 identifier,
                 network,

@@ -9,9 +9,15 @@ export class SendToAnyoneError {
         const name = error.name
         const message = error.message
         this.html = create('div', {}, template({name, message, close, success, link}));
+        this.html.querySelector('.invisError').style.display = "none";
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.close')?.addEventListener('click', (e) => {
-            this.html.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
+            this.html.dispatchEvent(Object.assign(new Event('closeError', {bubbles :true})))
+        });
+        this.html.querySelector('.discord')?.addEventListener('click', async (e) => {
+            const error = this.html.querySelector('.invisError').innerHTML
+            await navigator.clipboard.writeText(error);
+            this.html.dispatchEvent(Object.assign(new Event('discordSendError', {bubbles :true})))
         });
     }
 }

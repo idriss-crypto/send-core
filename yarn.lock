@@ -3307,10 +3307,10 @@ idna-uts46-hx@^2.3.1:
   dependencies:
     punycode "2.1.0"
 
-idriss-crypto@1.7.6-experimental:
-  version "1.7.6-experimental"
-  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.7.6-experimental.tgz#1ec2c0f8834c422a6fbdd06aacdb9134f3bddd20"
-  integrity sha512-0eKtmoUMkWHuqOaEWGo9T7aTQQfFbozKWpEjMxgTk0WcuMd0jwWB9RxpO3Uz45faMQRCyER/YJYC36EK3kaQCw==
+idriss-crypto@1.7.10-experimental:
+  version "1.7.10-experimental"
+  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.7.10-experimental.tgz#1380caef1a142236f0f690a795dcd619a8c4694b"
+  integrity sha512-PS9K4A3M77gWrH3/F62PtyQtqWuEJgDMSh3HTpllSmS6pnZYvDgG59B9aA0lhr6F0xN5kR1Kdu4liR2HJ1X9Aw==
   dependencies:
     "@types/node-fetch" "^2.5.12"
     node-fetch "^2.6.7"
