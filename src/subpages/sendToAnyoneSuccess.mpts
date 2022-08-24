@@ -35,7 +35,9 @@
     <p class="subtitle"><a href=explorerLink>View on Explorer<img src=link alt="" class="linkIcon"/></a></p>
     <br/>
     <div id="text-wrapper">
-            In order for others to claim, please send them the following link:
+            <p id="text-wrapper-inner">
+                In order for others to claim, please send them the following link:
+            </p>
             <div class="textWrap" onclick="copyLink();">
                 <span class="urlWrap" id="textContent">{{claimUrl}}</span>
             </div>
