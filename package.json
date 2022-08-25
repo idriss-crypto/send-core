@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/send-to-anyone-core",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "scripts": {
     "build": "webpack",
     "buildLocal": "webpack --watch --mode=none",
