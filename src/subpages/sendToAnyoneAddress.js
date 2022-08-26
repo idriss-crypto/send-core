@@ -38,28 +38,28 @@ export class SendToAnyoneAddress {
             let data = await this.idriss.resolve(event.value);
             if (data && event == this.lastEvent) {
                 if (Object.values(data).length == 0) {
-                    let item = document.createElement('div')
-                    item.className = 'empty';
-                    item.append("Nothing found. ");
-                    let a = document.createElement('a')
-                    a.textContent = 'Send anyway';
-                    a.href = 'https://www.idriss.xyz/send-to-anyone';
-                    a.onmousedown = () => {
+                    let nextButton = this.html.querySelector('.next');
+                    nextButton.children[0].innerHTML = "Nothing found. Send anyway!"
+                    nextButton.addEventListener('click', () => {
                         this.name = event.value;
+                        console.log(this.name, this.address)
                         this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
                             identifier: this.name,
                             recipient: this.address,
                             isIDrissRegistered: false
                         }))
-                    }
-                    a.target = '_blank';
-                    item.append(a)
-                    results.append(item)
+                    })
+                // ToDo: add one result <-> multiple result case
                 } else {
                     this.address = Object.values(data)[0];
                     this.name = event.value;
+                    let nextButton = this.html.querySelector('.next');
+                    nextButton.children[0].innerHTML = `Send to ${this.name}`;
+                    console.log(this.address, this.name)
+                    this.html.querySelector('.results').style.display = "block"
                 }
                 for (const elementsKey in data) {
+                    console.log(elementsKey)
                     let item = document.createElement('div')
                     let typeElement = document.createElement('div')
                     typeElement.className = 'type'

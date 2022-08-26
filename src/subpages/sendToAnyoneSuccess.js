@@ -38,7 +38,7 @@ export class SendToAnyoneSuccess {
             this.html.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
         });
         this.html.querySelector('.textWrap').onclick = () => {
-            let tooltip = this.html.querySelector("#tooltip")
+            let tooltip = this.html.querySelector(".tooltip")
              tooltip.style.visibility = "visible";
              setTimeout(async function () {
                             tooltip.style.visibility = "hidden";

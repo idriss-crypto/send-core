@@ -1,10 +1,10 @@
 <header>
-    <h1>Input destination</h1>
+    <h1>Send to:</h1>
     <img class="closeButton" src=close alt="close"/>
 </header>
 <main>
-    <input type="text"/>
-    <div class="results"></div>
+    <input autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>
+    <div class="results" ></div>
 </main>
 <footer>
     <button type="button" class="next">
