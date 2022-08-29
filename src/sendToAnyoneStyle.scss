@@ -460,6 +460,12 @@
             width: 1rem;
             margin-top: 0.25rem;
             margin-left: 0.25rem;
+            display: none;
+        }
+
+        .twitterWrap {
+            display: flex;
+            justify-content: center;
         }
 
         a {
