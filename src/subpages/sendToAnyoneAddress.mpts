@@ -10,4 +10,7 @@
     <button type="button" class="next">
         <span>Next</span>
     </button>
+    <button type="button" class="nextSTA" style="display: none">
+        <span>Nothing found. Send anyway!</span>
+    </button>
 </footer>
