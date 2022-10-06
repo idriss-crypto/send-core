@@ -10,28 +10,41 @@ import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
 export class SendToAnyoneMain {
-    constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null) {
+    constructor(identifier, isIDrissRegistered, ownedNFTs = [], showMessageBox = true, tokenFilter = null) {
+
+        console.log("IDriss is registered: ", isIDrissRegistered)
+
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
         ]
         //TODO: check, but probably only polygon will be used
-        // if (isIDrissRegistered === true) {
-        //     networks.push({name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'})
-        //     networks.push({name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'})
-        // }
+         if (isIDrissRegistered === true) {
+             networks.push({name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'})
+             networks.push({name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'})
+         }
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
 
         //ToDo: ignore nft selection when no NFTs found in wallet
-        if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x0000000000000000000000000000000000000000", id: "1", image: "https://ipfs.io/ipfs/QmNWMJTqmqrxriJQE7dfndAto48RUpHDLr41HJMZvD3cFD?id=1", name: "No NFTs found"}]}
+        if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x03e055692e77e56abf7f5570d9c64c194ba15616", id: "3847", image: "https://ipfs.io/ipfs/bafybeia5x6zd74ugwaj2nset5egfcibtyundvrevaavvm44udlk7nfyjui/IDriss_Logo_Rotating_GIF.gif", name: "No NFTs found"}]}
 
-        this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
+
+        let select;
+        if (isIDrissRegistered) {select = {"crypto": "isSelected", "nft": ""}}
+        else {select = {"crypto": "", "nft": "isSelected"}}
+
+        console.log(identifier, networks, this.filterTokens(tokenFilter), ownedNFTs, select)
+        this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, select, eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
         this.html.querySelector('.valueSelection').style.display = 'none';
+
+        console.log("hiding things based on is registered")
         // ToDo: check if IDriss is registered
-        this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+        if (isIDrissRegistered != true) this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+        // hide this instead
+        if (isIDrissRegistered === true) this.html.querySelector('.assetTypeSelection').style.display = 'none';
 
 
         this.html.querySelectorAll('.select').forEach(select => {
@@ -59,6 +72,7 @@ export class SendToAnyoneMain {
             if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20'
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
+            console.log("first .address for ", this.filterTokens({polygon: [token]}))
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
             let assetId = this.html.querySelector('.nftSelect').dataset.assetid;
             let assetAmount = 1
@@ -101,10 +115,10 @@ export class SendToAnyoneMain {
                         tokenSelect.style.display = '';
                         nftSelectWrapper.style.display = 'none';
                         break;
-                    // case 'erc20':
-                    //     valueSelection.style.display = 'none';
-                    //     tokenSelect.style.display = 'none';
-                    //     break;
+                    case 'erc20':
+                        valueSelection.style.display = 'none';
+                        tokenSelect.style.display = 'none';
+                        break;
                     case 'erc721':
                         nftSelectWrapper.style.display = '';
                         valueSelection.style.display = 'none';
@@ -128,12 +142,13 @@ export class SendToAnyoneMain {
                     messageBox.querySelector('textarea').value = '';
                 }
             }
+        this.html.querySelector('.assetTypeSelection .isSelected').click()
         this.refreshVisibleCoins();
     }
 
     refreshVisibleCoins() {
         // ToDo: check isIDrissRegistered -> Polygon
-        let network = "Polygon"
+        let network = this.html.querySelector('.networkSelect').dataset.network;
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';

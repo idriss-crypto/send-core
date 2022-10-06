@@ -24,11 +24,11 @@
 </header>
 <main>
     <div class="assetTypeSelection">
-        <button type="button" data-value="native" >
+        <button type="button" data-value="native" class=select.crypto>
             <span>Cryptocurrency</span>
         </button>
 
-        <button type="button" data-value="erc721" class="isSelected">
+        <button type="button" data-value="erc721" class=select.nft>
             <span>NFT</span>
         </button>
     </div>

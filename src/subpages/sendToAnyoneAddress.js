@@ -36,7 +36,7 @@ export class SendToAnyoneAddress {
             const results = document.createElement('div')
             results.className = 'results';
             this.html.querySelector('.results').replaceWith(results)
-            let data = await this.idriss.resolve(event.value);
+            let data = await this.idriss.resolve(event.value, {network:"evm"});
             if (data && event == this.lastEvent) {
                 if (Object.values(data).length == 0) {
                     let nextButton = this.html.querySelector('.nextSTA');
@@ -65,6 +65,14 @@ export class SendToAnyoneAddress {
                     nextButton.children[0].innerHTML = `Send to ${this.name}`;
                     console.log(this.address, this.name)
                     this.html.querySelector('.results').style.display = "block"
+                    // add event here that selects the default address and name
+                    nextButton.onmousedown = () => {
+                        this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
+                            identifier: this.name,
+                            recipient: this.address,
+                            isIDrissRegistered: true
+                        }))
+                    }
                 }
                 for (const elementsKey in data) {
                     console.log(elementsKey)

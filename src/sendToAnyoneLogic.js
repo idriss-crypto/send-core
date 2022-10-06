@@ -308,25 +308,6 @@ export const SendToAnyoneLogic = {
             }
         }
     },
-    // async checkApproval(selectedAccount_, tokenContractAddr_, amount_, network_) {
-    //     if (network_ === "Polygon") {
-    //         await this.switchtopolygon();
-    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-    //         let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressPolygon).call()
-    //         return allowance >= amount_
-    //     } else if (network_ === "ETH") {
-    //         await this.switchtoeth();
-    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-    //         let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressETH).call()
-    //         return allowance >= amount_
-    //     } else if (network_ === "BSC") {
-    //         await this.switchtobsc();
-    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-    //         let allowance = await tokenContract.methods.allowance(selectedAccount_, sendToAnyoneAddressBSC).call()
-    //         return allowance >= amount_
-    //     }
-    //     return false
-    // },
     // load oracle price data
     async loadOracle(ticker) {
         let abiOracle = [{
@@ -560,16 +541,6 @@ export const SendToAnyoneLogic = {
         }]
         return await new defaultWeb3.eth.Contract(abiOracle, oracleAddress[ticker]);
     },
-    //TODO: delete
-    // async loadSendToAnyonePolygon() {
-    //     return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressPolygon);
-    // },
-    // async loadSendToAnyoneETH() {
-    //     return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressETH);
-    // },
-    // async loadSendToAnyoneBSC() {
-    //     return await new this.web3.eth.Contract(abiSendToAnyoneContract, sendToAnyoneAddressBSC);
-    // },
     // calculate price in USD
     async getPrice(oracleContract) {
         let latestAnswer = oracleContract.methods.latestAnswer().call();
@@ -579,56 +550,5 @@ export const SendToAnyoneLogic = {
     // calculate price in wei (amount needed to send to anyone)
     getAmount(sendToAnyoneValue, tokenPrice, decimals) {
         return Math.round((sendToAnyoneValue / tokenPrice) * Math.pow(10, decimals))
-    },
-
-    //TODO: delete
-    // async loadTokenContract(tokenContractAddr_) {
-    //     let abiERC20 = [{
-    //         "constant": false,
-    //         "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"}],
-    //         "name": "approve",
-    //         "outputs": [{"name": "", "type": "bool"}],
-    //         "payable": false,
-    //         "stateMutability": "nonpayable",
-    //         "type": "function"
-    //     }, {
-    //         "constant": true,
-    //         "inputs": [{"name": "_owner", "type": "address"}],
-    //         "name": "balanceOf",
-    //         "outputs": [{"name": "balance", "type": "uint256"}],
-    //         "payable": false,
-    //         "stateMutability": "view",
-    //         "type": "function"
-    //     }, {
-    //         "constant": true,
-    //         "inputs": [{"name": "_owner", "type": "address"}, {"name": "_spender", "type": "address"}],
-    //         "name": "allowance",
-    //         "outputs": [{"name": "", "type": "uint256"}],
-    //         "payable": false,
-    //         "stateMutability": "view",
-    //         "type": "function"
-    //     }]
-    //     return await new this.web3.eth.Contract(abiERC20, tokenContractAddr_);
-    // },
-    // async getApproval(tokenContractAddr_, network_, selectedAccount, polygonGas) {
-    //     // max approval amount, adjust as needed
-    //     var approveAmount = 2n ** 255n;
-    //
-    //     if (network_ === "Polygon") {
-    //         await this.switchtopolygon();
-    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-    //         await tokenContract.methods.approve(sendToAnyoneAddressPolygon, approveAmount).send({
-    //             from: selectedAccount,
-    //             gasPrice: polygonGas
-    //         })
-    //     } else if (network_ === "ETH") {
-    //         await this.switchtoeth();
-    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-    //         await tokenContract.methods.approve(sendToAnyoneAddressETH, approveAmount).send({from: selectedAccount})
-    //     } else if (network_ === "BSC") {
-    //         await this.switchtobsc();
-    //         let tokenContract = await this.loadTokenContract(tokenContractAddr_)
-    //         await tokenContract.methods.approve(sendToAnyoneAddressBSC, approveAmount).send({from: selectedAccount})
-    //     }
-    // }
+    }
 }
