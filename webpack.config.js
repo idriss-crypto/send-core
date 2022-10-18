@@ -1,6 +1,3 @@
-const path = require('path');
-const fs = require('fs');
-const CopyPlugin = require("copy-webpack-plugin");
 const webpack = require('webpack');
 
 const setup = (mode) => {
@@ -18,6 +15,7 @@ const setup = (mode) => {
             WEBPACK_MODE: `'production'`,
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `''`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `''`,
+            DEFAULT_ERC1155_CONTRACT_ADDRESS: `''`,
         }
     } else if (mode === 'none') {
         // local node
@@ -25,14 +23,15 @@ const setup = (mode) => {
             POLYGON_RPC_ENDPOINT: `'http://localhost:8545'`,
             POLYGON_CHAIN_ID: `'1337'`,
             POLYGON_BLOCK_EXPLORER_ADDRESS: `'https://mumbai.polygonscan.com'`,
-            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'0x9f62EE65a8395824Ee0821eF2Dc4C947a23F0f25'`,
-            IDRISS_REGISTRY_CONTRACT_ADDRESS: `'0xA3307BF348ACC4bEDdd67CCA2f7F0c4349d347Db'`,
+            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'`,
+            IDRISS_REGISTRY_CONTRACT_ADDRESS: `'0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'`,
             REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS: `'0x6489A077e9D1382E87a493985C531bee2d484640'`,
-            PRICE_ORACLE_CONTRACT_ADDRESS: `'0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'`,
+            PRICE_ORACLE_CONTRACT_ADDRESS: `'0x5FbDB2315678afecb367f032d93F642f64180aa3'`,
             IDRISS_HOMEPAGE: `'http://localhost:8000/templates'`,
             WEBPACK_MODE: `'local'`,
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `'0xdb54fa574a3e8c6aC784e1a5cdB575A737622CFf'`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `'0x7A28cf37763279F774916b85b5ef8b64AB421f79'`,
+            DEFAULT_ERC1155_CONTRACT_ADDRESS: `'0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'`,
         }
     } else {
             // Mumbai - Polygon testnet
@@ -48,6 +47,7 @@ const setup = (mode) => {
             WEBPACK_MODE: `'development'`,
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `'0xdb54fa574a3e8c6aC784e1a5cdB575A737622CFf'`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `'0x7A28cf37763279F774916b85b5ef8b64AB421f79'`,
+            DEFAULT_ERC1155_CONTRACT_ADDRESS: `''`,
         }
     }
 }
