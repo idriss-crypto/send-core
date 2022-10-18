@@ -9,6 +9,8 @@ export class SendToAnyoneWaitingConfirmation {
         const subtitleCoin = this.html.querySelector('.subtitleCoin')
         const subtitleNFT = this.html.querySelector('.subtitleNFT')
         const treasuryMessage = this.html.querySelector(".linkContent");
+        const twitterIcon = this.html.querySelector(".twitterIcon");
+        if (identifier.startsWith("@")) twitterIcon.style.display = "block";
         subtitleCoin.style.display = 'none'
         subtitleNFT.style.display = 'none'
 

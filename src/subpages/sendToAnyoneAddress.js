@@ -32,34 +32,42 @@ export class SendToAnyoneAddress {
     async checkInputChanged() {
         if (new Date() - this.lastEvent?.date >= 500 && this.lastEvent?.input.value == this.lastEvent?.value && this.lastEvent?.value.length >= 3) {
             let event = this.lastEvent;
+            console.log(event)
             const results = document.createElement('div')
             results.className = 'results';
             this.html.querySelector('.results').replaceWith(results)
             let data = await this.idriss.resolve(event.value);
             if (data && event == this.lastEvent) {
                 if (Object.values(data).length == 0) {
-                    let item = document.createElement('div')
-                    item.className = 'empty';
-                    item.append("Nothing found. ");
-                    let a = document.createElement('a')
-                    a.textContent = 'Send anyway';
-                    a.href = 'https://www.idriss.xyz/send-to-anyone';
-                    a.onmousedown = () => {
+                    let nextButton = this.html.querySelector('.nextSTA');
+                    nextButton.style.display = "block";
+                    this.html.querySelector('.next').style.display = "none";
+                    var new_button = nextButton.cloneNode(true);
+                    nextButton.parentNode.replaceChild(new_button, nextButton)
+                    nextButton = this.html.querySelector('.nextSTA');
+                    nextButton.addEventListener('click', () => {
                         this.name = event.value;
+                        this.address = (function () { return; })();
+                        console.log(this.name, this.address)
                         this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
                             identifier: this.name,
                             recipient: this.address,
                             isIDrissRegistered: false
                         }))
-                    }
-                    a.target = '_blank';
-                    item.append(a)
-                    results.append(item)
+                    })
+                // ToDo: add one result <-> multiple result case
                 } else {
+                    this.html.querySelector('.next').style.display = "block";
+                    this.html.querySelector('.nextSTA').style.display = "none"
                     this.address = Object.values(data)[0];
                     this.name = event.value;
+                    let nextButton = this.html.querySelector('.next');
+                    nextButton.children[0].innerHTML = `Send to ${this.name}`;
+                    console.log(this.address, this.name)
+                    this.html.querySelector('.results').style.display = "block"
                 }
                 for (const elementsKey in data) {
+                    console.log(elementsKey)
                     let item = document.createElement('div')
                     let typeElement = document.createElement('div')
                     typeElement.className = 'type'
