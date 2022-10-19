@@ -14,7 +14,7 @@ export class SendToAnyoneWaitingConfirmation {
         subtitleCoin.style.display = 'none'
         subtitleNFT.style.display = 'none'
 
-        if (assetType === 'erc721') {
+        if (assetType === 'erc721' || assetType === 'erc1155') {
             subtitleNFT.style.display = ''
             treasuryMessage.innerHTML = "$1 in MATIC supplies IDriss treasury"
         } else {

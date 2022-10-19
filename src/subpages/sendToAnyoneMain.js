@@ -65,8 +65,12 @@ export class SendToAnyoneMain {
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
             }
-            if (assetType === 'erc721') assetAddress = this.html.querySelector('.nftSelect').dataset.address;
-            if (assetType === 'erc721' && assetAddress == "0x0000000000000000000000000000000000000000") return;
+            if (assetType === 'erc721') {
+                assetAddress = this.html.querySelector('.nftSelect').dataset.address;
+                amount = 1;
+                assetType = this.html.querySelector('.nftSelect').dataset.assettype.toLowerCase();
+            }
+            if (assetType === 'erc721' && assetAddress === "0x0000000000000000000000000000000000000000") return;
             this.html.dispatchEvent(Object.assign(new Event('sendMoney', {bubbles: true}), {
                 identifier,
                 network,
@@ -138,7 +142,7 @@ export class SendToAnyoneMain {
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';
         }
-        if (this.html.querySelector('.tokenSelect').dataset.network != network) {
+        if (this.html.querySelector('.tokenSelect').dataset.network !== network) {
             this.html.querySelector(`.tokenSelect li[data-network="${network}"]`).click();
         }
     }

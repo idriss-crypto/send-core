@@ -97,9 +97,10 @@ export const SendToAnyoneLogic = {
         assetTypes['native'] = 0
         assetTypes['erc20']  = 1
         assetTypes['erc721'] = 2
+        assetTypes['erc1155'] = 3
 
         let properAmount
-        if (assetType === 'erc721')
+        if (assetType === 'erc721' || assetType === 'erc1155')
             properAmount = 1
        else
            properAmount = (assetAmount ?? '').length > 0 ? assetAmount : amount
