@@ -260,8 +260,59 @@ const testNFTs = {
             },
             "timeLastUpdated": "2022-02-16T22:52:54.719Z"
         },
+        {
+            "contract": {
+                "address": DEFAULT_ERC1155_CONTRACT_ADDRESS
+            },
+            "id": {
+                "tokenId": "0x03",
+                "tokenMetadata": {
+                    "tokenType": "ERC1155"
+                }
+            },
+            "balance": "1",
+            "title": "Zapper Terminator (Gold)",
+            "description": "Though they can take on a humanoid form in meat-space, Terminators have yet to be observed sleeping, or taking a rest of any kind...",
+            "tokenUri": {
+                "raw": "ipfs://QmSknFJz1Z16xKGBJPF41DPsCzyzCYqBD8ZmVmnyaN1Vw4/20",
+                "gateway": "https://ipfs.io/ipfs/QmSknFJz1Z16xKGBJPF41DPsCzyzCYqBD8ZmVmnyaN1Vw4/20"
+            },
+            "media": [
+                {
+                    "raw": "ipfs://QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm",
+                    "gateway": "https://ipfs.io/ipfs/QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm"
+                }
+            ],
+            "metadata": {
+                "name": "Zapper Terminator (Gold)",
+                "image": "ipfs://QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm",
+                "description": "Though they can take on a humanoid form in meat-space, Terminators have yet to be observed sleeping, or taking a rest of any kind...",
+                "attributes": [
+                    {
+                        "value": "2",
+                        "trait_type": "Generation"
+                    },
+                    {
+                        "value": "Gold",
+                        "trait_type": "Rarity"
+                    },
+                    {
+                        "value": "Zapper Terminator",
+                        "trait_type": "Name"
+                    }
+                ],
+                "id": "3",
+                "avatar": "ipfs://QmZXPtGXK3pikNCRNUvjfaGeTwY5ja5zP2Zd2ZG9Q2zAAh/20.png"
+            },
+            "timeLastUpdated": "2022-10-18T09:12:04.993Z",
+            "contractMetadata": {
+                "name": "Zapper NFT V2",
+                "symbol": "ZPR NFT",
+                "tokenType": "ERC1155"
+            }
+        }
     ],
-    "totalCount": 2,
+    "totalCount": 3,
     "blockHash": "0xeb2d26af5b6175344a14091777535a2cb21c681665a734a8285f889981987630"
 }
 
