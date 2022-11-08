@@ -13,12 +13,10 @@ export class SendToAnyoneMain {
     constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null) {
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
+            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
         //TODO: check, but probably only polygon will be used
-        // if (isIDrissRegistered === true) {
-        //     networks.push({name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'})
-        //     networks.push({name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'})
-        // }
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
@@ -30,9 +28,10 @@ export class SendToAnyoneMain {
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
         this.html.querySelector('.valueSelection').style.display = 'none';
-        // ToDo: check if IDriss is registered
-        this.html.querySelector(".networkSelectWrapper").style.display = 'none';
 
+        if (!isIDrissRegistered) {
+            this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+        }
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')
@@ -132,12 +131,16 @@ export class SendToAnyoneMain {
                     messageBox.querySelector('textarea').value = '';
                 }
             }
-        this.refreshVisibleCoins();
+        this.refreshVisibleCoins(isIDrissRegistered);
     }
 
-    refreshVisibleCoins() {
-        // ToDo: check isIDrissRegistered -> Polygon
-        let network = "Polygon"
+    refreshVisibleCoins(isIDrissRegistered) {
+        let network
+        if (isIDrissRegistered) {
+            network = this.html.querySelector('.networkSelect').dataset.network;
+        } else {
+            network = "Polygon"
+        }
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';

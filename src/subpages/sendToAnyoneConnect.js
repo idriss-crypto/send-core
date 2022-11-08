@@ -13,12 +13,9 @@ export class SendToAnyoneConnect {
     constructor(identifier, isIDrissRegistered, showMessageBox = true, tokenFilter = null) {
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
+            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
-        //TODO: check, but probably only polygon will be used
-        // if (isIDrissRegistered === true) {
-        //     networks.push({name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'})
-        //     networks.push({name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'})
-        // }
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
@@ -26,7 +23,10 @@ export class SendToAnyoneConnect {
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.connectWallet').style.display = 'none';
-        this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+
+        if (!isIDrissRegistered) {
+            this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+        }
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')
@@ -42,7 +42,7 @@ export class SendToAnyoneConnect {
                 Object.assign(button.parentNode.dataset, li.dataset);
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
-                this.refreshVisibleCoins()
+                this.refreshVisibleCoins(isIDrissRegistered)
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
@@ -130,12 +130,16 @@ export class SendToAnyoneConnect {
                     messageBox.querySelector('textarea').value = '';
                 }
             }
-        this.refreshVisibleCoins();
+        this.refreshVisibleCoins(isIDrissRegistered);
     }
 
-    refreshVisibleCoins() {
-        // ToDo: check isIDrissRegistered -> Polygon
-        let network = "Polygon"
+    refreshVisibleCoins(isIDrissRegistered) {
+        let network
+        if (isIDrissRegistered) {
+            network = this.html.querySelector('.networkSelect').dataset.network;
+        } else {
+            network = "Polygon"
+        }
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';
