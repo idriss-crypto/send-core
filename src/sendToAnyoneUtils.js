@@ -162,17 +162,17 @@ const tokens = [
     },
 ]
 
-const getNFTMetadata = (address, tokenId, apiKey) => {
+const getNFTMetadata = (address, tokenId, apiKey, network) => {
     if (WEBPACK_MODE === 'production') {
-        const api = getAlchemyAPI(apiKey)
+        const api = getAlchemyAPI(apiKey, network)
         return api.nft.getNftMetadata(address, tokenId)
     }
     return Promise.resolve(testNFTs.ownedNfts[0])
 }
 
-const getNFTsForAddress = (address, apiKey) => {
+const getNFTsForAddress = (address, apiKey, network) => {
     if (WEBPACK_MODE === 'production') {
-        const api = getAlchemyAPI(apiKey)
+        const api = getAlchemyAPI(apiKey, network)
         return api.nft.getNftsForOwner(address)
     }
     return Promise.resolve(testNFTs)

@@ -3307,10 +3307,10 @@ idna-uts46-hx@^2.3.1:
   dependencies:
     punycode "2.1.0"
 
-idriss-crypto@1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.8.0.tgz#04111ebb2bf4cf4c1d20ffa163e632f5e26cbc77"
-  integrity sha512-rJQ14cK3RZ80342OJ4YTQpqD2qaEsgPQR1Lwc4ECeAZdV5G5YrFQnR3x1uouxLk/+P0p95Inc46BiJhESsqrkA==
+idriss-crypto@1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.8.2.tgz#c32e1fa1f87c9f095791c90ef525e38da871a9dc"
+  integrity sha512-GpnpidrbRy9fh+KsmHbqh1rrgyJ/xFaeD5WazHKz1U3sAjmULjfBxTGNiSv00qtQ5LtOnQup/pRcZ5TL3aVesw==
   dependencies:
     "@types/node-fetch" "^2.5.12"
     node-fetch "^2.6.7"
@@ -5534,10 +5534,6 @@ web3-bzz@1.7.4:
   version "1.7.4"
   resolved "https://registry.yarnpkg.com/web3-bzz/-/web3-bzz-1.7.4.tgz#9419e606e38a9777443d4ce40506ebd796e06075"
   integrity sha512-w9zRhyEqTK/yi0LGRHjZMcPCfP24LBjYXI/9YxFw9VqsIZ9/G0CRCnUt12lUx0A56LRAMpF7iQ8eA73aBcO29Q==
-  dependencies:
-    "@types/node" "^12.12.6"
-    got "9.6.0"
-    swarm-js "^0.1.40"
 
 web3-bzz@1.7.5:
   version "1.7.5"
