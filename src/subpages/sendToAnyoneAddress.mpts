@@ -11,6 +11,6 @@
         <span>Next</span>
     </button>
     <button type="button" class="nextSTA" style="display: none">
-        <span>Nothing found. Send anyway!</span>
+        <span>Next</span>
     </button>
 </footer>

@@ -36,7 +36,7 @@ export class SendToAnyoneAddress {
             const results = document.createElement('div')
             results.className = 'results';
             this.html.querySelector('.results').replaceWith(results)
-            let data = await this.idriss.resolve(event.value);
+            let data = await this.idriss.resolve(event.value, {network: "evm"});
             if (data && event == this.lastEvent) {
                 if (Object.values(data).length == 0) {
                     let nextButton = this.html.querySelector('.nextSTA');
@@ -59,12 +59,11 @@ export class SendToAnyoneAddress {
                 } else {
                     this.html.querySelector('.next').style.display = "block";
                     this.html.querySelector('.nextSTA').style.display = "none"
-                    this.address = Object.values(data)[0];
+                    this.address = data['Public ETH'] ?? Object.values(data)[0];
                     this.name = event.value;
                     let nextButton = this.html.querySelector('.next');
-                    nextButton.children[0].innerHTML = `Send to ${this.name}`;
                     console.log(this.address, this.name)
-                    this.html.querySelector('.results').style.display = "block"
+                    // this.html.querySelector('.results').style.display = "block"
                 }
                 for (const elementsKey in data) {
                     console.log(elementsKey)
