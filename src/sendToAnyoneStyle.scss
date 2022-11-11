@@ -30,7 +30,7 @@
 
     > div {
         display: flex;
-        min-height: 292px;
+        //min-height: 292px;
         flex-direction: column;
 
         > main {
@@ -390,7 +390,7 @@
 
     .messageBox {
         margin-top: .75rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: .25rem;
 
         &.isHidden {
             display: none;
@@ -480,7 +480,7 @@
             @include button;
             width: 100%;
             color: #fff;
-            margin: 1rem 0 0;
+            margin: 0.5rem 0 0;
         }
 
         .link {

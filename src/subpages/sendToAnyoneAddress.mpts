@@ -1,6 +1,5 @@
 <header>
-    <h1>Send to:</h1>
-    <img class="closeButton" src=close alt="close"/>
+    <h1>Send to</h1>
 </header>
 <main>
     <input autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>

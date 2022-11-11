@@ -1,5 +1,4 @@
 <header class="noH1">
-    <img class="closeButton" src=close alt="close"/>
 </header>
 <main>
     <div class="loader"/>

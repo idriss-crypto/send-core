@@ -1,5 +1,4 @@
 <header class="noH1">
-    <img class="closeButton" src=close alt="close" />
 </header>
 <main>
     <h2 class="errorTitle">Oops, something happened!</h2>
