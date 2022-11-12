@@ -20,17 +20,18 @@ export class SendToAnyoneSuccess {
             mode: 'cors',
             body: JSON.stringify(notificationBody)
         }
-        fetch(notificationUrl, notificationOptions)
-        .then((res) => {
-            if (res.status == 200) {
-                this.html.querySelector('#text-wrapper-inner').innerHTML = `We have sent a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`
-            } else {
-                this.html.querySelector('#text-wrapper-inner').innerHTML = `We could not send a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`
-            }
-            console.log(res)
-        })
-        .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = `We could not send a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`})
-
+        if (txnHash!="0x"){
+            fetch(notificationUrl, notificationOptions)
+            .then((res) => {
+                if (res.status == 200) {
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = `We have sent a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`
+                } else {
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = `We could not send a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`
+                }
+                console.log(res)
+            })
+            .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = `We could not send a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`})
+        }
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
         this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
         this.html.querySelector('.close')?.addEventListener('click', (e) => {
