@@ -23,7 +23,7 @@
         </div>
 </main>
 <footer>
-    <button type="button" class="close">
+    <button id="copyButton" type="button" class="close">
         <span>Copy</span>
     </button>
 </footer>

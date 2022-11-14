@@ -7,8 +7,8 @@ export class SendToAnyoneAddress {
     constructor() {
         this.html = create('div', {}, template({close}));
         const input = this.html.querySelector('input')
-        input.addEventListener('input', async e => {
-            this.lastEvent = {event: e, date: new Date(), input: e.target, value: e.target.value}
+        input.addEventListener('keyup', async e => {
+            this.lastEvent = {event: e, date: new Date(), input: e.target, value: e.target.value, key: e.key}
             setTimeout(() => this.checkInputChanged(), 500)
         })
         this.html.querySelector('.next').addEventListener('click', () => {
@@ -29,13 +29,23 @@ export class SendToAnyoneAddress {
     }
 
     async checkInputChanged() {
-        if (new Date() - this.lastEvent?.date >= 500 && this.lastEvent?.input.value == this.lastEvent?.value && this.lastEvent?.value.length >= 3) {
+        if (new Date() - this.lastEvent?.date >= 100 && this.lastEvent?.input.value == this.lastEvent?.value && this.lastEvent?.value.length >= 3) {
             let event = this.lastEvent;
             console.log(event)
             const results = document.createElement('div')
             results.className = 'results';
             this.html.querySelector('.results').replaceWith(results)
-            let data = await this.idriss.resolve(event.value, {network: "evm"});
+            let data;
+            try {
+                data = await this.idriss.resolve(event.value, {network: "evm"});
+                this.html.querySelector('.error').style.display = 'none';
+            } catch {
+                // ToDo: enable error here
+                console.log("Twitter name not found: ", data)
+                this.html.querySelector('.error').style.display = 'block';
+                return
+            }
+
             if (data && event == this.lastEvent) {
                 if (Object.values(data).length == 0) {
                     let nextButton = this.html.querySelector('.nextSTA');
@@ -45,6 +55,8 @@ export class SendToAnyoneAddress {
                     nextButton.parentNode.replaceChild(new_button, nextButton)
                     nextButton = this.html.querySelector('.nextSTA');
                     nextButton.addEventListener('click', () => {
+                        this.html.querySelector('#buttonNextSTASpinner').style.display = 'block';
+                        this.html.querySelector('#buttonNextSTA').style.display = 'none';
                         this.name = event.value;
                         this.address = (function () { return; })();
                         console.log(this.name, this.address)
@@ -54,6 +66,9 @@ export class SendToAnyoneAddress {
                             isIDrissRegistered: false
                         }))
                     })
+                    if (event.key == 'Enter') {
+                        this.html.querySelector('.nextSTA').click();
+                    }
                 // ToDo: add one result <-> multiple result case
                 } else {
                     this.html.querySelector('.next').style.display = "block";
@@ -61,7 +76,17 @@ export class SendToAnyoneAddress {
                     this.address = data['Public ETH'] ?? Object.values(data)[0];
                     this.name = event.value;
                     let nextButton = this.html.querySelector('.next');
-                    console.log(this.address, this.name)
+                    if (event.key == 'Enter') {
+                        console.log("Enter pressed")
+                        this.html.querySelector('#buttonNextSpinner').style.display = 'block';
+                        this.html.querySelector('#buttonNext').style.display = 'none';
+                        console.log(this.name, this.address)
+                        this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
+                            identifier: this.name,
+                            recipient: this.address,
+                            isIDrissRegistered: true
+                        }))
+                    }
                     // this.html.querySelector('.results').style.display = "block"
                 }
                 for (const elementsKey in data) {
@@ -89,6 +114,8 @@ export class SendToAnyoneAddress {
                     item.append(valueElement)
                     results.append(item)
                     item.onmousedown = () => {
+                        this.html.querySelector('.#buttonNextSpinner').style.display = 'block';
+                        this.html.querySelector('#buttonNext').style.display = 'none';
                         this.address = data[elementsKey];
                         this.name = event.value;
                         this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {

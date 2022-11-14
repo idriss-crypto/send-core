@@ -8,7 +8,7 @@ export class SendToAnyoneSuccess {
     constructor(identifier, explorerLink, claimPassword, isIDrissRegistered,
                 assetAmount, assetId, assetType, assetAddress, token, blockNumber, txnHash) {
         const idrissHost = IDRISS_HOMEPAGE
-        const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}&blockNumber=${blockNumber}`
+        const claimUrl = `${idrissHost}claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}&blockNumber=${blockNumber}`
         const notificationUrl = `${idrissHost}/sendNotification`
         const notificationBody = {
             'url': claimUrl,
@@ -35,8 +35,13 @@ export class SendToAnyoneSuccess {
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
         this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
-        this.html.querySelector('.close')?.addEventListener('click', (e) => {
-            this.html.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
+        this.html.querySelector('#copyButton')?.addEventListener('click', (e) => {
+            let tooltip = this.html.querySelector(".tooltip")
+             tooltip.style.display = "block";
+             setTimeout(async function () {
+                            tooltip.style.display = "none";
+                            await navigator.clipboard.writeText(claimUrl);
+                        }, 1000);
         });
         this.html.querySelector('.textWrap').onclick = () => {
             let tooltip = this.html.querySelector(".tooltip")

@@ -2,14 +2,27 @@
     <h1>Send To</h1>
 </header>
 <main>
-    <input autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>
+    <input id="selectedInput" autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>
     <div class="results" ></div>
+    <p class="error">Please check this input.</p>
 </main>
 <footer>
     <button type="button" class="next">
-        <span>Next</span>
+        <span id="buttonNext" >Next</span>
+        <div id="buttonNextSpinner" style="display: none;" class="spinnerWrapper">
+            <div class="spinner" role="status">
+                <span class="spinnerDot">•</span>
+            </div>
+            <span class="spinnerEnd"></span>
+        </div>
     </button>
     <button type="button" class="nextSTA" style="display: none">
-        <span>Next</span>
+        <span id="buttonNextSTA" >Next</span>
+        <div id="buttonNextSTASpinner" style="display: none;" class="spinnerWrapper">
+            <div class="spinner" role="status">
+                <span class="spinnerDot">•</span>
+            </div>
+            <span class="spinnerEnd"></span>
+        </div>
     </button>
 </footer>
