@@ -34,14 +34,15 @@ export class SendToAnyoneSuccess {
         }
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
         this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
+        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.close')?.addEventListener('click', (e) => {
             this.html.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
         });
         this.html.querySelector('.textWrap').onclick = () => {
             let tooltip = this.html.querySelector(".tooltip")
-             tooltip.style.visibility = "visible";
+             tooltip.style.display = "block";
              setTimeout(async function () {
-                            tooltip.style.visibility = "hidden";
+                            tooltip.style.display = "none";
                             await navigator.clipboard.writeText(claimUrl);
                         }, 1000);
         }

@@ -1,5 +1,5 @@
 <header>
-    <h1>Send to</h1>
+    <h1>Send To</h1>
 </header>
 <main>
     <input autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>

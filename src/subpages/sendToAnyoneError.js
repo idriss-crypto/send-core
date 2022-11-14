@@ -10,6 +10,7 @@ export class SendToAnyoneError {
         const message = error.message
         this.html = create('div', {}, template({name, message, close, success, link}));
         this.html.querySelector('.invisError').style.display = "none";
+        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.close')?.addEventListener('click', (e) => {
             this.html.dispatchEvent(Object.assign(new Event('closeError', {bubbles :true})))
         });

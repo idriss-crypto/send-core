@@ -3,7 +3,7 @@
 <main>
     <div class="loader"/>
     <h2>Waiting for Confirmation</h2>
-    <p class="subtitle subtitleCoin">Sending <strong>${{amountUSD}}</strong> (<span class="amountCoin">---</span> {{token}}) to <div class="twitterWrap"><img class="twitterIcon" src=twitter alt=""/> {{identifier}}</div></p>
+    <p class="subtitle subtitleCoin">Sending <strong>${{amountUSD}}</strong> (<span class="amountCoin">---</span> {{token}}) to <div class="twitterWrap">{{identifier}}<img class="twitterIcon" src=twitter alt=""/></div></p>
     <p class="subtitle subtitleNFT">Sending <strong>{{nftName}}</strong> NFT to <div class="twitterWrap"><img class="twitterIcon" src=twitter alt=""/> {{identifier}}</div></p>
     <p>Confirm this transaction in your wallet</p>
 </main>

@@ -1,15 +1,20 @@
 <header class="noH1">
+    <img class="closeButton" src=close alt="close"/>
 </header>
 <main>
 <script src="https://cdn.tailwindcss.com"></script>
 
     <img src=success alt="" class="success"/>
-    <h2>Transaction Submitted🥳</h2>
-    <p class="subtitle"><a href=explorerLink target="_blank">View on Explorer<img src=link alt="" class="linkIcon"/></a></p>
-    <br/>
+    <h2 class="h2Success">Transaction Submitted🥳</h2>
+    <p class="subtitle">
+        <span class="viewExplorer" style="display:none;">
+            <a href=explorerLink target="_blank">View on Explorer</a>
+            <img src=link alt="" class="linkIcon"/>
+        </span>
+    </p>
     <div id="text-wrapper">
             <p id="text-wrapper-inner">
-                In order for others to claim, please send them the following link:
+                Send the claim link to the recipient
             </p>
             <div class="textWrap">
                 <span class="urlWrap" id="textContent">{{claimUrl}}</span>
@@ -19,6 +24,6 @@
 </main>
 <footer>
     <button type="button" class="close">
-        <span>Close</span>
+        <span>Copy</span>
     </button>
 </footer>

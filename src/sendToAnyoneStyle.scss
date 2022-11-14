@@ -198,12 +198,13 @@
     .success {
         width: 7rem;
         height: 7rem;
-        margin: 1.5rem auto auto;
+        margin: 0 auto auto;
         display: block;
     }
 
     .tooltip {
-        visibility: hidden;
+        display: none;
+        position: absolute;
         width: 80px;
         background-color: black;
         color: #fff;
@@ -213,6 +214,8 @@
         margin: 0.5rem auto auto auto;
         font-size: 0.875rem;
         line-height: 1.25rem;
+        left: 0;
+        right: 0;
     }
 
     .urlWrap {
@@ -220,7 +223,7 @@
     }
 
     .textWrap {
-        height: 5rem;
+        height: 3.75rem;
         max-width: 16rem;
         padding: 0.25rem;
         align-content: center;
@@ -229,6 +232,7 @@
         border-color: #D1D5DB;
         border-style: solid;
         overflow-y: scroll;
+        margin-bottom: 0.75rem;
 
         &::-webkit-scrollbar {
             width: 6px;
@@ -390,7 +394,7 @@
 
     .messageBox {
         margin-top: .75rem;
-        margin-bottom: .25rem;
+        margin-bottom: .5rem;
 
         &.isHidden {
             display: none;
@@ -427,15 +431,34 @@
         color: rgb(17 24 39)
     }
 
+    .h2Success {
+        text-align: center;
+        margin: 1rem 0 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 500;
+        line-height: 1.5rem;
+        color: rgb(17 24 39)
+    }
+
+    .viewExplorer {
+        display: flex;
+        justify-content: center;
+    }
+
+    .closeButtonWrapper {
+        justify-content: space-between;
+        display: flex;
+    }
+
     .errorTitle {
-        margin: 1rem 0 1rem;
+        margin: 1rem auto 0.5rem;
     }
 
     p {
         text-align: center;
         color: rgb(107 114 128);
         line-height: 1.5rem;
-        margin: 0.5rem 0 0.5rem;
+        margin: 0.25rem 0 0.5rem;
         font-size: 0.75rem;
         font-weight: 500;
 
@@ -450,10 +473,12 @@
         font-weight: 400;
         font-size: 1.125rem;
         color: rgb(17 24 39);
+        margin: 0.25rem 0 0;
 
         .linkIcon {
             width: 1.25rem;
             height: 1.25rem;
+            margin-top: 0.2rem;
         }
 
         .twitterIcon {
@@ -464,7 +489,7 @@
         }
 
         .twitterWrap {
-            display: flex;
+            display: inline-flex;
             justify-content: center;
         }
 
@@ -480,7 +505,6 @@
             @include button;
             width: 100%;
             color: #fff;
-            margin: 0.5rem 0 0;
         }
 
         .link {
@@ -489,6 +513,7 @@
             line-height: 1.5rem;
             color: rgb(88 101 242);
             font-size: 0.75rem;
+            margin: 0.25rem 0 0;
         }
     }
 }
@@ -499,8 +524,8 @@ input[type="text"] {
     width: 100%;
     height: 38px;
     padding: 8px 12px;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    margin-top: 1rem;
     font-size: 14px;
     font-family: 'Segoe UI', sans-serif;
     line-height: 1.428571429;

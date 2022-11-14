@@ -1,15 +1,18 @@
 <header class="noH1">
 </header>
 <main>
-    <h2 class="errorTitle">Oops, something happened!</h2>
+    <div class="closeButtonWrapper">
+        <h2 class="errorTitle">Error</h2>
+        <img class="closeButton" src=close alt="close" />
+    </div>
     <p class="invisError">Error Report IDriss Send: {{name}}: {{message}}</p>
-    <p class="error">Clicking the button below will copy the error message to you clipboard and forward you to our Discord server.</p>
+    <p class="error">We saved the error code in your clipboard</p>
 </main>
 <footer>
     <button type="button" class="discord">
-        <span>Let us know what happened!</span>
+        <span>Report in Discord</span>
     </button>
-    <button type="button" class="close">
+    <button type="button" class="close" style="display:none;">
         <span>Retry</span>
     </button>
 </footer>
