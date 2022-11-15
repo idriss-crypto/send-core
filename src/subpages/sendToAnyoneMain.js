@@ -10,7 +10,7 @@ import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
 export class SendToAnyoneMain {
-    constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null) {
+    constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null, selectNFT = false) {
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
         ]
@@ -27,11 +27,12 @@ export class SendToAnyoneMain {
         if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x0000000000000000000000000000000000000000", id: "1", image: "https://ipfs.io/ipfs/QmNWMJTqmqrxriJQE7dfndAto48RUpHDLr41HJMZvD3cFD?id=1", name: "No NFTs found"}]}
 
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
-        this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
-        this.html.querySelector('.valueSelection').style.display = 'none';
-        // ToDo: check if IDriss is registered
-        this.html.querySelector(".networkSelectWrapper").style.display = 'none';
-
+        if (selectNFT) {
+            this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
+            this.html.querySelector('.valueSelection').style.display = 'none';
+            // ToDo: check if IDriss is registered
+            this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+        }
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')

@@ -26,10 +26,23 @@ export class SendToAnyoneAddress {
             reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
             priceOracleContractAddress: PRICE_ORACLE_CONTRACT_ADDRESS
         });
+
+        // do something here with focused input field
+//        this.html.addEventListener('keyup', () => {
+//            console.log(event)
+//            if (event.key=='Enter') {
+//                console.log('Turn on spinner')
+//            }
+//        })
+//
+//        this.html.querySelector('.next').addEventListener('click', () => {
+//            console.log('Turn on spinner')
+//        })
+
     }
 
     async checkInputChanged() {
-        if (new Date() - this.lastEvent?.date >= 100 && this.lastEvent?.input.value == this.lastEvent?.value && this.lastEvent?.value.length >= 3) {
+        if (new Date() - this.lastEvent?.date >= 500 && this.lastEvent?.input.value == this.lastEvent?.value && this.lastEvent?.value.length >= 3) {
             let event = this.lastEvent;
             console.log(event)
             const results = document.createElement('div')
@@ -38,11 +51,11 @@ export class SendToAnyoneAddress {
             let data;
             try {
                 data = await this.idriss.resolve(event.value, {network: "evm"});
-                this.html.querySelector('.error').style.display = 'none';
+                this.html.querySelector('.errorInput').style.display = 'none';
             } catch {
                 // ToDo: enable error here
                 console.log("Twitter name not found: ", data)
-                this.html.querySelector('.error').style.display = 'block';
+                this.html.querySelector('.errorInput').style.display = 'block';
                 return
             }
 
