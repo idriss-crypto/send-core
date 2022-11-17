@@ -8,7 +8,7 @@ export class SendToAnyoneSuccess {
     constructor(identifier, explorerLink, claimPassword, isIDrissRegistered,
                 assetAmount, assetId, assetType, assetAddress, token, blockNumber, txnHash) {
         const idrissHost = IDRISS_HOMEPAGE
-        const claimUrl = `${idrissHost}claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}&blockNumber=${blockNumber}`
+        const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}&blockNumber=${blockNumber}`
         const notificationUrl = `${idrissHost}/sendNotification`
         const notificationBody = {
             'url': claimUrl,
@@ -33,12 +33,12 @@ export class SendToAnyoneSuccess {
             .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = `We could not send a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`})
         }
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
-        this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
+        // this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('#copyButton')?.addEventListener('click', (e) => {
             let tooltip = this.html.querySelector(".tooltip")
-             tooltip.style.display = "block";
-             setTimeout(async function () {
+            tooltip.style.display = "block";
+            setTimeout(async function () {
                             tooltip.style.display = "none";
                             await navigator.clipboard.writeText(claimUrl);
                         }, 1000);

@@ -13,14 +13,14 @@
         </span>
     </p>
     <div id="text-wrapper">
-            <p id="text-wrapper-inner">
-                Send the claim link to the recipient
-            </p>
-            <div class="textWrap">
-                <span class="urlWrap" id="textContent">{{claimUrl}}</span>
-            </div>
-            <div class="tooltip">Copied!</div>
+        <p id="text-wrapper-inner">
+            Send the claim link to the recipient
+        </p>
+        <div class="textWrap">
+            <span class="urlWrap" id="textContent">{{claimUrl}}</span>
         </div>
+        <div class="tooltip">Copied!</div>
+    </div>
 </main>
 <footer>
     <button id="copyButton" type="button" class="close">
