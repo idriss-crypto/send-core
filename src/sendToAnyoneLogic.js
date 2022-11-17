@@ -182,6 +182,7 @@ export const SendToAnyoneLogic = {
                     return false;
                 } else {
                     throw err;
+                    return false;
                 }
             }
             return result;

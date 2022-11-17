@@ -27,11 +27,18 @@ export class SendToAnyoneMain {
         if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x0000000000000000000000000000000000000000", id: "1", image: "https://ipfs.io/ipfs/QmNWMJTqmqrxriJQE7dfndAto48RUpHDLr41HJMZvD3cFD?id=1", name: "No NFTs found"}]}
 
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
+        this.html.querySelector(".networkSelectWrapper").style.display = 'none';
         if (selectNFT) {
+            this.html.querySelector('.assetTypeSelection .isSelected')
+            console.log("Displaying nft stuff", selectNFT)
             this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
             this.html.querySelector('.valueSelection').style.display = 'none';
-            // ToDo: check if IDriss is registered
-            this.html.querySelector(".networkSelectWrapper").style.display = 'none';
+        } else {
+            if (this.html.querySelector('.assetTypeSelection .isSelected').dataset.value == 'erc721') {
+                this.html.querySelector('.assetTypeSelection .isSelected').classList.remove('isSelected');
+                this.html.querySelector('.assetTypeSelection').firstElementChild.classList.add('isSelected');
+            }
+            this.html.querySelector('.nftSelectWrapper').style.display = 'none';
         }
 
         this.html.querySelectorAll('.select').forEach(select => {
@@ -54,9 +61,10 @@ export class SendToAnyoneMain {
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
+            // network currently just polygon
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20'
+            if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;

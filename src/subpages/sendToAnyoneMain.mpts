@@ -22,7 +22,7 @@
      </style>
 </header>
 <main>
-    <div class="assetTypeSelection">
+    <div class="assetTypeSelection" style="display:none">
         <button type="button" data-value="native" >
             <span>Cryptocurrency</span>
         </button>

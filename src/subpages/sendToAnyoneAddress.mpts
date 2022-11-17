@@ -16,13 +16,4 @@
             <span class="spinnerEnd"></span>
         </div>
     </button>
-    <button type="button" class="nextSTA" style="display: none">
-        <span id="buttonNextSTA" >Next</span>
-        <div id="buttonNextSTASpinner" style="display: none;" class="spinnerWrapper">
-            <div class="spinner" role="status">
-                <span class="spinnerDot">•</span>
-            </div>
-            <span class="spinnerEnd"></span>
-        </div>
-    </button>
 </footer>
