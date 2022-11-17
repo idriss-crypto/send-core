@@ -24,13 +24,13 @@ export class SendToAnyoneSuccess {
             fetch(notificationUrl, notificationOptions)
             .then((res) => {
                 if (res.status == 200) {
-                    this.html.querySelector('#text-wrapper-inner').innerHTML = `We have sent a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = `Send the claim link to ${identifier}`
                 } else {
-                    this.html.querySelector('#text-wrapper-inner').innerHTML = `We could not send a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = `Send the claim link to ${identifier}`
                 }
                 console.log(res)
             })
-            .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = `We could not send a notification to ${identifier}. Please send them the following link to make sure your gift is arriving:`})
+            .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = `Send the claim link to ${identifier}`})
         }
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
         // this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
