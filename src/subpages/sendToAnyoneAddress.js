@@ -23,7 +23,6 @@ export class SendToAnyoneAddress {
 
     async checkIDriss () {
 
-
         console.log("checking IDriss")
         let inputChecked = this.html.children[1].children['selectedInput'].value;
 
@@ -38,14 +37,12 @@ export class SendToAnyoneAddress {
             data = await this.idriss.resolve(inputChecked, {network: "evm"});
             this.html.querySelector('.errorInput').style.display = 'none';
         } catch {
-            // ToDo: enable error here
             console.log("Twitter name not found: ", data)
             this.html.querySelector('.errorInput').style.display = 'block';
             this.html.querySelector('#buttonNextSpinner').style.display = 'none';
             this.html.querySelector('#buttonNext').style.display = 'block';
             return
         }
-
         if (Object.values(data).length == 0) {
             this.name = inputChecked;
             this.address = (function () { return; })();
@@ -55,7 +52,6 @@ export class SendToAnyoneAddress {
                 recipient: this.address,
                 isIDrissRegistered: false
             }))
-        // ToDo: add one result <-> multiple result case
         } else {
             this.address = data['Public ETH'] ?? Object.values(data)[0];
             this.name = inputChecked;
@@ -66,7 +62,5 @@ export class SendToAnyoneAddress {
                 isIDrissRegistered: true
             }))
         }
-
     }
-
 }
