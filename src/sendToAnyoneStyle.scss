@@ -60,12 +60,11 @@
             font-size: 1.125rem;
             margin: 0;
         }
-
-        .closeButton {
+    }
+    .closeButton {
             align-self: center;
             cursor: pointer;
         }
-    }
 
     //TODO: Mat, please make this pretty :-)
     .assetTypeSelection {
@@ -501,9 +500,10 @@
 
     .errorInput {
         display: none;
-        margin-top: 0.25rem;
+        margin-top: -0.75rem;
         color: #EF4444;
         font-weight: 500;
+        font-size: 0.75rem;
     }
 
     p {

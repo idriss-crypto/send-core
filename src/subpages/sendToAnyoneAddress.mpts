@@ -1,10 +1,10 @@
 <header>
-    <h1>Send To</h1>
+    <h1>Send Token To</h1>
 </header>
 <main>
     <input id="selectedInput" autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>
     <div class="results" ></div>
-    <p class="errorInput">Please check this input.</p>
+    <p class="errorInput">Enter a valid email, phone number, or Twitter username</p>
 </main>
 <footer>
     <button type="button" class="next">

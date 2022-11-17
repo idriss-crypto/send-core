@@ -3,7 +3,7 @@
 <main>
     <div class="closeButtonWrapper">
         <h2 class="errorTitle">Error</h2>
-        <img class="closeButton" src=close alt="close" />
+        <img class="closeButton" src=close alt="close"/>
     </div>
     <p class="invisError">Error Report IDriss Send: {{name}}: {{message}}</p>
     <p class="error">We saved the error code in your clipboard</p>
