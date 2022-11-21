@@ -83,7 +83,7 @@ close(){
             normal: amountNormal
         } = await SendToAnyoneLogic.calculateAmount(token, sendToAnyoneValue)
 
-        this.container.querySelector('.amountCoin').textContent = amountNormal;
+        this.container.querySelector('.amountCoin').textContent = Math.round(amountNormal*10**5)/10**5;
         let sendResult = await SendToAnyoneLogic.sendToAnyone(identifier ?? this.identifier, amountInteger,
             network ?? this.network, token ?? this.token, this.message ?? "",
             this.assetType, this.assetAmount, this.assetAddress, this.assetId)

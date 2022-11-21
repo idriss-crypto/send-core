@@ -4,9 +4,10 @@ import close from "!!url-loader!../img/close.svg"
 import {IdrissCrypto} from "idriss-crypto/browser";
 
 export class SendToAnyoneAddress {
-    constructor() {
+    constructor(type="token") {
         this.html = create('div', {}, template({close}));
-        const input = this.html.querySelector('input')
+        const input = this.html.querySelector('input');
+        if (type=='nft') { this.html.querySelector('#assetHeader').innerHTML = "NFT" }
         input.addEventListener('keyup', async e => {
             if (e.key == 'Enter') { await this.checkIDriss(); }
         })

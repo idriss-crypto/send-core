@@ -1,5 +1,5 @@
 <header>
-    <h1>Send Token To</h1>
+    <h1>Send <span id="assetHeader">Token</span> To</h1>
 </header>
 <main>
     <input id="selectedInput" autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>
