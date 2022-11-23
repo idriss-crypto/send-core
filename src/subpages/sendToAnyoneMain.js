@@ -13,12 +13,10 @@ export class SendToAnyoneMain {
     constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null, selectNFT = false) {
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
+            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
         //TODO: check, but probably only polygon will be used
-        // if (isIDrissRegistered === true) {
-        //     networks.push({name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'})
-        //     networks.push({name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'})
-        // }
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
@@ -29,16 +27,19 @@ export class SendToAnyoneMain {
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
         this.html.querySelector(".networkSelectWrapper").style.display = 'none';
         if (selectNFT) {
-            this.html.querySelector('.assetTypeSelection .isSelected')
+            this.html.querySelector('.assetTypeSelection .isSelected').classList.remove('isSelected');
+            this.html.querySelector('.assetTypeSelection').children[1].classList.add('isSelected');
             console.log("Displaying nft stuff", selectNFT)
             this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
             this.html.querySelector('.valueSelection').style.display = 'none';
         } else {
-            if (this.html.querySelector('.assetTypeSelection .isSelected').dataset.value == 'erc721') {
-                this.html.querySelector('.assetTypeSelection .isSelected').classList.remove('isSelected');
-                this.html.querySelector('.assetTypeSelection').firstElementChild.classList.add('isSelected');
-            }
+            this.html.querySelector('.assetTypeSelection .isSelected').classList.remove('isSelected');
+            this.html.querySelector('.assetTypeSelection').firstElementChild.classList.add('isSelected');
             this.html.querySelector('.nftSelectWrapper').style.display = 'none';
+        }
+
+        if (!isIDrissRegistered) {
+            this.html.querySelector(".networkSelectWrapper").style.display = 'none';
         }
 
         this.html.querySelectorAll('.select').forEach(select => {
@@ -61,7 +62,6 @@ export class SendToAnyoneMain {
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
-            // network currently just polygon
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
             if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
@@ -73,8 +73,12 @@ export class SendToAnyoneMain {
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
             }
-            if (assetType === 'erc721') assetAddress = this.html.querySelector('.nftSelect').dataset.address;
-            if (assetType === 'erc721' && assetAddress == "0x0000000000000000000000000000000000000000") return;
+            if (assetType === 'erc721') {
+                assetAddress = this.html.querySelector('.nftSelect').dataset.address;
+                amount = 1;
+                assetType = this.html.querySelector('.nftSelect').dataset.assettype.toLowerCase();
+            }
+            if (assetType === 'erc721' && assetAddress === "0x0000000000000000000000000000000000000000") return;
             this.html.dispatchEvent(Object.assign(new Event('sendMoney', {bubbles: true}), {
                 identifier,
                 network,
@@ -136,17 +140,21 @@ export class SendToAnyoneMain {
                     messageBox.querySelector('textarea').value = '';
                 }
             }
-        this.refreshVisibleCoins();
+        this.refreshVisibleCoins(isIDrissRegistered);
     }
 
-    refreshVisibleCoins() {
-        // ToDo: check isIDrissRegistered -> Polygon
-        let network = "Polygon"
+    refreshVisibleCoins(isIDrissRegistered) {
+        let network
+        if (isIDrissRegistered) {
+            network = this.html.querySelector('.networkSelect').dataset.network;
+        } else {
+            network = "Polygon"
+        }
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';
         }
-        if (this.html.querySelector('.tokenSelect').dataset.network != network) {
+        if (this.html.querySelector('.tokenSelect').dataset.network !== network) {
             this.html.querySelector(`.tokenSelect li[data-network="${network}"]`).click();
         }
     }

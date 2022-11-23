@@ -33,7 +33,8 @@ export class SendToAnyoneSuccess {
             .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = `Send the claim link to ${identifier}`})
         }
         this.html = create('div', {}, template({identifier, close, success, link, explorerLink, claimUrl}));
-        // this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
+        this.html.querySelector('#text-wrapper').style.display = isIDrissRegistered ? 'none' : '';
+        this.html.querySelector('.viewExplorer').style.display = isIDrissRegistered ? '' : 'none';
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('#copyButton')?.addEventListener('click', (e) => {
             let tooltip = this.html.querySelector(".tooltip")
