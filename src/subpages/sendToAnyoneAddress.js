@@ -18,7 +18,6 @@ export class SendToAnyoneAddress {
             sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
             idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
             reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
-            priceOracleContractAddress: PRICE_ORACLE_CONTRACT_ADDRESS
         });
     }
 
@@ -55,11 +54,13 @@ export class SendToAnyoneAddress {
             }))
         } else {
             this.address = data['Public ETH'] ?? Object.values(data)[0];
+            this.walletTag = data['Public ETH'] ? 'Public ETH' : Object.keys(data)[0];
             this.name = inputChecked;
-            console.log(this.name, this.address)
+            console.log(this.name, this.address, this.walletTag)
             this.html.dispatchEvent(Object.assign(new Event('next', {bubbles: true}), {
                 identifier: this.name,
                 recipient: this.address,
+                walletTag: this.walletTag,
                 isIDrissRegistered: true
             }))
         }

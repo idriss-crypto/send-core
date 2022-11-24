@@ -25,11 +25,9 @@ export class SendToAnyoneMain {
         if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x0000000000000000000000000000000000000000", id: "1", image: "https://ipfs.io/ipfs/QmNWMJTqmqrxriJQE7dfndAto48RUpHDLr41HJMZvD3cFD?id=1", name: "No NFTs found"}]}
 
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), ownedNFTs, eth_logo, usdc_logo, arrow, pen, close}));
-        this.html.querySelector(".networkSelectWrapper").style.display = 'none';
         if (selectNFT) {
             this.html.querySelector('.assetTypeSelection .isSelected').classList.remove('isSelected');
             this.html.querySelector('.assetTypeSelection').children[1].classList.add('isSelected');
-            console.log("Displaying nft stuff", selectNFT)
             this.html.querySelector('.tokenSelectWrapper').style.display = 'none';
             this.html.querySelector('.valueSelection').style.display = 'none';
         } else {
@@ -56,7 +54,8 @@ export class SendToAnyoneMain {
                 Object.assign(button.parentNode.dataset, li.dataset);
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
-                this.refreshVisibleCoins()
+                this.refreshVisibleCoins(isIDrissRegistered)
+                if (selectNFT) this.refreshVisibleNFTs(isIDrissRegistered)
                 if (button.id == "nftButton") {this.html.querySelector(".imagePreview").src = li.querySelector('img').src;}
             }
         })
@@ -141,6 +140,34 @@ export class SendToAnyoneMain {
                 }
             }
         this.refreshVisibleCoins(isIDrissRegistered);
+        if (selectNFT) this.refreshVisibleNFTs(isIDrissRegistered)
+    }
+
+    refreshVisibleNFTs(isIDrissRegistered) {
+        this.html.querySelector('.nftSelectWrapper').style.display = 'block';
+        this.html.querySelector('.errorNFT').style.display = 'none';
+
+        let network
+        if (isIDrissRegistered) {
+            network = this.html.querySelector('.networkSelect').dataset.network;
+        } else {
+            network = "Polygon"
+        }
+
+        let nfts = this.html.querySelectorAll('.nftSelect li')
+        let count = 0
+        for (let nft of nfts) {
+            nft.style.display = nft.dataset.network == network ? '' : 'none';
+            count = nft.style.display == '' ? count + 1 : count;
+        }
+        if (count === 0) {
+            this.html.querySelector('.nftSelectWrapper').style.display = 'none';
+            this.html.querySelector('.errorNFT').style.display = 'block';
+        }
+
+        if (this.html.querySelector('.nftSelect').dataset.network !== network) {
+            if (count>0) this.html.querySelector(`.nftSelect li[data-network="${network}"]`).click();
+        }
     }
 
     refreshVisibleCoins(isIDrissRegistered) {
@@ -150,6 +177,7 @@ export class SendToAnyoneMain {
         } else {
             network = "Polygon"
         }
+        console.log("refreshing coins: ", network)
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';

@@ -16,12 +16,11 @@ export default function getAlchemyAPI (apiKey, network) {
             apiNetwork = Network.MATIC_MAINNET
     }
 
-    if (!api) {
-        const config = {
-            apiKey: apiKey,
-            network: Network.MATIC_MAINNET,
-        };
-        api = new Alchemy(config);
-    }
+    const config = {
+        apiKey: apiKey,
+        network: apiNetwork,
+    };
+    api = new Alchemy(config);
+
     return api
 }
