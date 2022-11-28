@@ -26,4 +26,7 @@
     <button id="copyButton" type="button" class="close">
         <span>Copy</span>
     </button>
+    <button id="closeSuccessButton" type="button" class="close">
+        <span>Close</span>
+    </button>
 </footer>
