@@ -1,0 +1,58 @@
+<div class="multi-send-wrapper">
+    <header>
+        <h1>Distribute <span id="assetHeader">Tokens</span></h1>
+        <div class="multiSlider">
+            <div>
+                <label>
+                    <input type="checkbox" id="Toggle" />
+                    <div class="slider" ></div>
+                    <span>NFT</span>
+                </label>
+            </div>
+        </div>
+    </header>
+    <main>
+        <p class="errorNFT errorAsset">Please connect a wallet that owns NFTs</p>
+
+        <div class="select-wrapper assetSelectWrapper tokenSelectWrapper">
+            <label class="assetType">{{assetType}}:</label>
+            <div class="select assetSelect tokenSelect" data-address=assets.0.address data-assetType=assets.0.type data-assetId=assets.0.id data-symbol=assets.0.symbol>
+                <button type="button" id="tokenButton">
+                    <img src=assets.0.image alt=""/>
+                    <span class="name">{{assets.0.name}}</span>
+                    <span id="AmountPlaceholder" class="amountOwned">{{assets.0.balance}}</span>
+                    <img class="arrow" src=arrow/>
+                </button>
+                <ul tabindex="-1" role="listbox">
+                    <:foreach collection=assets item=asset>
+                        <li role="option" data-address=asset.address data-assetType=asset.type data-assetId=asset.id data-symbol=asset.symbol>
+                            <img src=asset.image alt=""/>
+                            <span class="name">{{asset.name}}</span>
+                            <span id="AmountPlaceholder" class="amountOwned">{{asset.balance}}</span>
+                        </li>
+                    </:foreach>
+                </ul>
+            </div>
+        </div>
+        <div class="select-wrapper amountSelection" id="AmountSelection">
+            <label>Amount per recipient:</label>
+            <div class="input-wrapper">
+                <input id="InputCustomAmount" type="text" placeholder="0.00" />
+            </div>
+        </div>
+        <div class="select-wrapper">
+            <label>Recipients:</label>
+            <div id="TextArea" class="recipients-wrapper">
+                <textarea required name="recipients" cols="20" rows="2" maxlength="45" placeholder="hello@idriss.xyz                 +16506655942                 @IDriss_xyz             ---------------- paste or drag a file here ---------------- "></textarea>
+            </div>
+        </div>
+        <p class="nft-mint-wrapper">
+            <a id="MintNFTLink" href="https://mintnft.today/" target="_blank" rel="noopener noreferrer">Don't have NFTs? Mint here</a>
+        </p>
+    </main>
+    <footer>
+        <button type="button" class="next">
+            <span id="buttonNext" >Next</span>
+        </button>
+    </footer>
+</div>
