@@ -423,6 +423,10 @@
         }
     }
 
+    .next {
+        min-height: 42px;
+        }
+
     .spinnerWrapper {
         display: flex;
         margin-left: 0.25rem;
@@ -443,6 +447,7 @@
             };
             width: 1.25rem;
             height: 1.25rem;
+            border-style: solid;
             border-radius: 9999px;
             border-width: 2px;
             border-color: #ffffff;
@@ -450,7 +455,7 @@
             .spinnerDot {
                 color: #000000;
                 font-size: 1.25rem;
-                line-height: 1.75rem;
+                line-height: 2.5rem;
             }
         }
 

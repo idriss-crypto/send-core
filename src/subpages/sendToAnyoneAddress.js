@@ -26,7 +26,7 @@ export class SendToAnyoneAddress {
         console.log("checking IDriss")
         let inputChecked = this.html.children[1].children['selectedInput'].value;
 
-        this.html.querySelector('#buttonNextSpinner').style.display = 'block';
+        this.html.querySelector('#buttonNextSpinner').style.display = '';
         this.html.querySelector('#buttonNext').style.display = 'none';
 
         // figure out buttons
