@@ -159,12 +159,18 @@ export class MultiSendToAnyone {
                 console.log(result)
                 textToDisplay = dataset.split('\n').map(data => data.split(',')[0]).join('\n');
                 //ToDo: filter non-RegEx strings
+                //result.forEach(hasAmount)
                 //ToDo: check if same amount holds true, hide amount selection otherwise "Do you want to send an individual amount to everyone, as indicated in your file? If not, choose "same amount" here"
                 console.log(textToDisplay)
                 resolve(textToDisplay)
             });
             fileReader.readAsText(file);
         });
+    }
+
+    hasAmount(res) {
+        if (res.length>1) return true
+        return false
     }
 
     handleSlider() {

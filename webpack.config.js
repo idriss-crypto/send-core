@@ -12,7 +12,7 @@ const setup = (mode) => {
             POLYGON_BLOCK_EXPLORER_ADDRESS: `'https://polygonscan.com'`,
             ETH_BLOCK_EXPLORER_ADDRESS: `'https://etherscan.io'`,
             BSC_BLOCK_EXPLORER_ADDRESS: `'https://bscscan.com'`,
-            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'0x8f291AEad22C8D2C7b03d8897E4196f85bE0F7DA'`,
+            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'0x6619b88f4931fF58754cb814d0cc650c3A2C3655'`,
             IDRISS_REGISTRY_CONTRACT_ADDRESS: `'0x2eccb53ca2d4ef91a79213fddf3f8c2332c2a814'`,
             REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS: `'0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64'`,
             POLYGON_PRICE_ORACLE_CONTRACT_ADDRESS: `'0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'`,
@@ -26,6 +26,7 @@ const setup = (mode) => {
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `''`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `''`,
             DEFAULT_ERC1155_CONTRACT_ADDRESS: `''`,
+            MAGIC_API: `'pk_live_75AE254AAEBDCF4B'`
         }
     } else if (mode === 'none') {
         // local node
@@ -62,7 +63,7 @@ const setup = (mode) => {
             POLYGON_BLOCK_EXPLORER_ADDRESS: `'https://polygonscan.com'`,
             ETH_BLOCK_EXPLORER_ADDRESS: `'https://etherscan.io'`,
             BSC_BLOCK_EXPLORER_ADDRESS: `'https://bscscan.com'`,
-            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'0x8f291AEad22C8D2C7b03d8897E4196f85bE0F7DA'`,
+            SEND_TO_ANYONE_CONTRACT_ADDRESS: `'0x6619b88f4931fF58754cb814d0cc650c3A2C3655'`,
             IDRISS_REGISTRY_CONTRACT_ADDRESS: `'0x2eccb53ca2d4ef91a79213fddf3f8c2332c2a814'`,
             REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS: `'0x561f1b5145897A52A6E94E4dDD4a29Ea5dFF6f64'`,
             POLYGON_PRICE_ORACLE_CONTRACT_ADDRESS: `'0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'`,
@@ -76,6 +77,7 @@ const setup = (mode) => {
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `''`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `''`,
             DEFAULT_ERC1155_CONTRACT_ADDRESS: `''`,
+            MAGIC_API: `'pk_live_75AE254AAEBDCF4B'`
         }
     }
 }

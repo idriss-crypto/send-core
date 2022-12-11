@@ -2,6 +2,7 @@ import Web3 from "web3/dist/web3.min.js";
 import { tokens, walletTypeDefault, getCoin } from "./sendToAnyoneUtils";
 import { IdrissCrypto } from "idriss-crypto/browser";
 
+
 const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
 
 let oracleAddress = {
