@@ -200,6 +200,101 @@ export const SendToAnyoneLogic = {
             return result;
         }
     },
+    async multiSendToAnyone(recipient, network, token, message, assetType, assetAddress, assetId) {
+        console.log(this.provider);
+        console.log(this.idriss);
+
+        let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
+        const assetTypes = {};
+        assetTypes["native"] = 0;
+        assetTypes["erc20"] = 1;
+        assetTypes["erc721"] = 2;
+        assetTypes["erc1155"] = 3;
+
+        let properAmount;
+        if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;
+        else properAmount = (assetAmount ?? "").length > 0 ? assetAmount : amount;
+
+        const asset = {
+            amount: `${properAmount}`,
+            type: assetTypes[assetType],
+            assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
+            assetId: assetId === "" ? 0 : assetId,
+        };
+
+        const walletType = walletTag
+            ? {
+                  coin: getCoin(walletTag),
+                  network: "evm",
+                  walletTag: walletTag,
+              }
+            : walletTypeDefault;
+
+        // let contract;
+        let polygonGas;
+
+        // switch to selected payment option's network
+        // exchange if statement for suitable check depending on selected network in dropdown
+        if (network === "Polygon") {
+            try {
+                await this.switchtopolygon();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+            polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
+        } else if (network === "ETH") {
+            try {
+                await this.switchtoeth();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else if (network === "BSC") {
+            try {
+                await this.switchtobsc();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else {
+            return false;
+        }
+
+        // exchanged for redundant multiple get accounts calls
+        const accounts = await this.web3.eth.getAccounts();
+        let selectedAccount = accounts[0];
+
+        if (accounts.length > 0) {
+            let result;
+
+            try {
+                const transactionOptions = {
+                    from: selectedAccount,
+                    gas: 400000,
+                    ...(polygonGas && { gasPrice: polygonGas }),
+                };
+                console.log(recipient, walletType, asset, message, transactionOptions);
+                result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
+            } catch (err) {
+                console.log("error", err);
+                // Transaction failed or user has denied
+                // catch different errors?
+                // code 4001 user denied
+                if (err.code == 4001) {
+                    console.log("Transaction denied.");
+                    return false;
+                } else {
+                    throw err;
+                }
+            }
+            return result;
+        }
+    },
+
     async switchtopolygon() {
         console.log("Checking chain...");
         const chainId = await this.web3.eth.getChainId();

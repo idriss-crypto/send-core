@@ -99,37 +99,54 @@ export class MultiSendToAnyone {
             }
         })
 
+
+//        this.html.querySelector('.multiSend')?.addEventListener('click', (e) => {
 //
-//        this.html.querySelector('.send')?.addEventListener('click', (e) => {
-//            let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
-//            let network = this.html.querySelector('.networkSelect').dataset.network;
-//            let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-//            if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
+//            let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
+//            console.log(content)
+//            // if individual is turned on
+//            const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+//            // if individual is turned off
+//            // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
+//            console.log(result)
+//            // potentially also add for pasting (or real-time updating?)
+//            await result.forEach(function(el) {el[0] = el[0].replace(/\s+/g, '')})
+//            console.log(result)
+//
+//        // Add stuff from below
+//            let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "token";
+//            let token = this.html.querySelector('.assetSelect').dataset.symbol;
+//            if (assetType === 'token' && token !== 'MATIC') assetType = 'erc20';
 //            let message = this.html.querySelector('.messageBox textarea').value;
-//            let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
 //            let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
-//            let assetId = this.html.querySelector('.nftSelect').dataset.assetid;
-//            let assetAmount = 1
+//            let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
 //            if (WEBPACK_MODE !== 'production') {
 //                assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
 //            }
-//            if (assetType === 'erc721') {
-//                assetAddress = this.html.querySelector('.nftSelect').dataset.address;
+//            if (assetType === 'erc1155') {
+//                assetAddress = this.html.querySelector('.assetSelect').dataset.address;
 //                amount = 1;
-//                assetType = this.html.querySelector('.nftSelect').dataset.assetType.toLowerCase();
+//                assetType = this.html.querySelector('.assetSelect').dataset.assetType.toLowerCase();
 //            }
-//            if (assetType === 'erc721' && assetAddress === "0x0000000000000000000000000000000000000000") return;
-//            this.html.dispatchEvent(Object.assign(new Event('sendMoney', {bubbles: true}), {
-//                identifier,
-//                network,
+//            if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
+//            this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
+//                result,
 //                assetType,
 //                assetAddress,
 //                assetId,
-//                assetAmount,
-//                amount,
-//                token,
+//                asset,
 //                message
 //            }))
+//
+//
+////            const asset = {
+////                type: assetTypes[assetType],
+////                assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
+////                assetId: assetId === "" ? 0 : assetId,
+////            };
+//
+//            await result.forEach(this.getWalletType(asset))
+//
 //        });
 
 // ToDo: show/hide elements here?
@@ -201,6 +218,7 @@ export class MultiSendToAnyone {
         });
     }
 
+    // Delete this function later
     async multiSend(e){
 
         let content = this.html.querySelector('textarea[name="recipients"]').innerHTML

@@ -51,8 +51,8 @@
         </p>
     </main>
     <footer>
-        <button type="button" class="next">
-            <span id="buttonNext" >Next</span>
+        <button type="button" class="multiSend">
+            <span id="buttonNext" >Send</span>
         </button>
     </footer>
 </div>
