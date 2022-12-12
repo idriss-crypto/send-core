@@ -3420,7 +3420,7 @@ idna-uts46-hx@^2.3.1:
   dependencies:
     punycode "2.1.0"
 
-idriss-crypto@1.8.3:
+idriss-crypto@^1.8.3:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.8.3.tgz#36987a3facc796bea06a9c5ebdb2ae78c4d97936"
   integrity sha512-aYaCrty5PHqAj6NCjMnNT2VcPkwwIRe5C9jXoh4a7VdfxO56HftCNFq14nB/TYoFeIVIRbIlWWT+YDiuNDwTRg==

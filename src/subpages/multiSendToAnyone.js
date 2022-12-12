@@ -3,6 +3,22 @@ import arrow from "!!url-loader!../img/arrow.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
+import {IdrissCrypto} from "idriss-crypto/browser";
+import { walletTypeDefault, getCoin } from "../sendToAnyoneUtils";
+
+
+
+let hasAmount;
+let sameAmount;
+let firstAmount;
+let multiSendArr;
+
+const assetTypes = {};
+assetTypes["native"] = 0;
+assetTypes["erc20"] = 1;
+assetTypes["erc721"] = 2;
+assetTypes["erc1155"] = 3;
+
 
 export class MultiSendToAnyone {
     constructor(ownedAssets = [], assetFilter = null, selectNFT = false, networkFilter = {"networks":["polygon"]}) {
@@ -24,6 +40,12 @@ export class MultiSendToAnyone {
                 "network": "Polygon"
             }
         ];
+
+        this.idriss = new IdrissCrypto(POLYGON_RPC_ENDPOINT, {
+            sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
+            idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
+            reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
+        });
 
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'}
@@ -47,8 +69,13 @@ export class MultiSendToAnyone {
             this.handleSlider();
         })
 
+        this.html.querySelector('.next').addEventListener('click', async () => {
+            await this.multiSend();
+        })
+
         this.html.addEventListener('drop', async (e) => {
             console.log("Dropped a file")
+            this.html.querySelector('textarea[name="recipients"]').innerHTML = "Processing ...";
             let csvContent = await this.prepareMultiSend(e);
             this.html.querySelector('textarea[name="recipients"]').innerHTML = csvContent;
         })
@@ -121,10 +148,9 @@ export class MultiSendToAnyone {
 //                    messageBox.querySelector('textarea').value = '';
 //                }
 //            }
-        //ToDo:  refresh visible assets
+        // this.refreshVisibleAssets();
     }
 
-    prepareCSVDownload(){console.log('data:text/csv;base64,' + btoa(temp1.value))}
 
     async prepareMultiSend(e){
         console.log(e)
@@ -151,15 +177,22 @@ export class MultiSendToAnyone {
 
         return new Promise(resolve => {
             const fileReader = new FileReader();
+            hasAmount = false
+            sameAmount = true;
 
             fileReader.addEventListener("load", () => {
-                const dataset = fileReader.result;
-                console.log(dataset)
-                const result = dataset.split('\n').map(data => data.split(','));
+                const handlesRaw = fileReader.result;
+                console.log(handlesRaw)
+                const result = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(','));
                 console.log(result)
-                textToDisplay = dataset.split('\n').map(data => data.split(',')[0]).join('\n');
                 //ToDo: filter non-RegEx strings
-                //result.forEach(hasAmount)
+                result.forEach(this.hasAmount)
+                if (hasAmount) result.forEach(this.fixAmount)
+                console.log(hasAmount)
+                textToDisplay = result.join('\n');
+                if (hasAmount) firstAmount = result[0][1]
+                result.forEach(this.isSameAmount)
+                console.log(sameAmount)
                 //ToDo: check if same amount holds true, hide amount selection otherwise "Do you want to send an individual amount to everyone, as indicated in your file? If not, choose "same amount" here"
                 console.log(textToDisplay)
                 resolve(textToDisplay)
@@ -168,9 +201,69 @@ export class MultiSendToAnyone {
         });
     }
 
+    async multiSend(e){
+
+        let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
+        console.log(content)
+        // if individual is turned on
+        const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+        // if individual is turned off
+        // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
+        console.log(result)
+        // potentially also add for pasting (or real-time updating?)
+        await result.forEach(function(el) {el[0] = el[0].replace(/\s+/g, '')})
+        console.log(result)
+
+//        //ToDo: define class names in widget, make sure assets are displayed correctly like in main,
+//        // refreshVisibleAssets added with click
+//        let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
+//        let asset = this.html.querySelector('.assetSelect').dataset.symbol;
+//        if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
+//
+//        //ToDo: define filterAssets --> define token?
+//        let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
+//        //ToDo: what to do for ERC20 & native
+//        let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
+//
+//
+//        // let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address;
+//        // get from json, is this valid here? --> define token and network?
+//        const asset = {
+//            type: assetTypes[assetType],
+//            assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
+//            assetId: assetId === "" ? 0 : assetId,
+//        };
+//
+//        await result.forEach(this.getWalletType(asset))
+//        console.log(multiSendArr)
+
+    }
+
+    // ToDo: rename to prepArray or so
+    async getWalletType(res, asset) {
+        let resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
+        const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
+        const walletType = walletTag
+                ? {
+                      coin: getCoin(walletTag),
+                      network: "evm",
+                      walletTag: walletTag,
+                  }
+                : walletTypeDefault;
+        asset.amount = res[1]
+        multiSendArr.push({"beneficiary": res[0], "walletType": walletType, "asset": asset})
+    }
+
     hasAmount(res) {
-        if (res.length>1) return true
-        return false
+        if (res.length>1) hasAmount = true;
+    }
+
+    fixAmount(res) {
+        if (res[1] == '') res[1] = 1;
+    }
+
+    isSameAmount(res) {
+        if(res[1] != firstAmount) sameAmount = false
     }
 
     handleSlider() {
