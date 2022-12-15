@@ -178,23 +178,15 @@ export const SendToAnyoneLogic = {
             return result;
         }
     },
+
     async multiSendToAnyone(recipients, token, message, assetType, assetAddress, assetIds, walletTags) {
         console.log(this.provider);
         console.log(this.idriss);
 
         let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
 
-        let properAmount;
-        if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;
-        else properAmount = (assetAmount ?? "").length > 0 ? assetAmount : amount;
-
-        const asset = {
-            amount: `${properAmount}`,
-            type: assetTypes[assetType],
-            assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
-            assetId: assetId === "" ? 0 : assetId,
-        };
-
+        //ToDo: resolve everythinng here? or on page?
+        // add loop to add wallet for every person -> optimize double resolving
         const walletType = walletTag
             ? {
                   coin: getCoin(walletTag),

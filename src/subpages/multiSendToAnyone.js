@@ -3,9 +3,7 @@ import arrow from "!!url-loader!../img/arrow.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
-import {IdrissCrypto} from "idriss-crypto/browser";
 import { walletTypeDefault, getCoin } from "../sendToAnyoneUtils";
-
 
 
 let hasAmount;
@@ -40,12 +38,6 @@ export class MultiSendToAnyone {
                 "network": "Polygon"
             }
         ];
-
-        this.idriss = new IdrissCrypto(POLYGON_RPC_ENDPOINT, {
-            sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
-            idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
-            reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
-        });
 
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'}
@@ -100,54 +92,58 @@ export class MultiSendToAnyone {
         })
 
 
-//        this.html.querySelector('.multiSend')?.addEventListener('click', (e) => {
-//
-//            let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
-//            console.log(content)
-//            // if individual is turned on
-//            const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
-//            // if individual is turned off
-//            // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
-//            console.log(result)
-//            // potentially also add for pasting (or real-time updating?)
-//            await result.forEach(function(el) {el[0] = el[0].replace(/\s+/g, '')})
-//            console.log(result)
-//
-//        // Add stuff from below
-//            let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "token";
-//            let token = this.html.querySelector('.assetSelect').dataset.symbol;
-//            if (assetType === 'token' && token !== 'MATIC') assetType = 'erc20';
-//            let message = this.html.querySelector('.messageBox textarea').value;
-//            let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
-//            let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
-//            if (WEBPACK_MODE !== 'production') {
-//                assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
-//            }
-//            if (assetType === 'erc1155') {
-//                assetAddress = this.html.querySelector('.assetSelect').dataset.address;
-//                amount = 1;
-//                assetType = this.html.querySelector('.assetSelect').dataset.assetType.toLowerCase();
-//            }
-//            if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
-//            this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
-//                result,
-//                assetType,
-//                assetAddress,
-//                assetId,
-//                asset,
-//                message
-//            }))
-//
-//
-////            const asset = {
-////                type: assetTypes[assetType],
-////                assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
-////                assetId: assetId === "" ? 0 : assetId,
-////            };
-//
-//            await result.forEach(this.getWalletType(asset))
-//
-//        });
+        this.html.querySelector('.multiSend')?.addEventListener('click', (e) => {
+
+            let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
+            console.log(content)
+            // if individual is turned on
+            const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+            // if individual is turned off
+            // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
+            console.log(result)
+            // potentially also add for pasting (or real-time updating?)
+            await result.forEach(function(el) {el[0] = el[0].replace(/\s+/g, '')})
+            console.log(result)
+
+        // Add stuff from below
+            let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "token";
+            if (assetType === 'token' && token !== 'MATIC') assetType = 'erc20';
+            let token = this.html.querySelector('.assetSelect').dataset.symbol;
+            let message = this.html.querySelector('.messageBox textarea').value;
+            let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
+            let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
+            if (WEBPACK_MODE !== 'production') {
+                assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
+            }
+            if (assetType === 'erc1155') {
+                assetAddress = this.html.querySelector('.assetSelect').dataset.address;
+                assetType = this.html.querySelector('.assetSelect').dataset.assetType.toLowerCase();
+            }
+            if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
+
+
+            let properAmount;
+            if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;
+
+            //todo: loop over recipients?
+            // forEach(assetType, assetId, assetAddress)
+            else properAmount = (assetAmount ?? "").length > 0 ? assetAmount : amount;
+
+            const asset = {
+                amount: `${properAmount}`,
+                type: assetTypes[assetType],
+                assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
+                assetId: assetId === "" ? 0 : assetId,
+            };
+
+            // ToDo: what about messages?
+            this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
+                recipients,
+            }))
+
+            await result.forEach(this.getWalletType(asset))
+
+        });
 
 // ToDo: show/hide elements here?
 //        const toggleMessageBox = this.html.querySelector('.toggleMessageBox');
