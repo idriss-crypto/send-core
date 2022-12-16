@@ -20,32 +20,34 @@ assetTypes["erc1155"] = 3;
 
 export class MultiSendToAnyone {
     constructor(ownedAssets = [], assetFilter = null, selectNFT = false, networkFilter = {"networks":["polygon"]}) {
-        ownedAssets = [
-            {
-                "name": "IDriss Logo",
-                "address": "0x2953399124f0cbb46d2cbacd8a89cf0599974963",
-                "id": "104646746365016723314061203747530081823371947018124724650840385937829649186817",
-                "type": "ERC1155",
-                "image": "https://i.seadn.io/gae/mLZLriTgIaWR5om8vLydrhESR7M8TzL6atXtZ8TN_wWEQEIW-5MK-9N4ukfelTVsgBUaTtzkkbnKhzLfW9Q0fvaMUlmPv9H4HBIV?w=500&auto=format",
-                "network": "Polygon"
-            },
-            {
-                "name": "Spirits Of Eastern Europe #2",
-                "address": "0x2953399124f0cbb46d2cbacd8a89cf0599974963",
-                "id": "92684618316586457942843142044618663200253618197452727397604755407033069469697",
-                "type": "ERC1155",
-                "image": "https://i.seadn.io/gae/biwkRon23U60JLJcHRp36_U23arYNwLTr4x-ApN11zsryxBy_ZQ1rZpkittDvYxkoBQm5yLNtr9Nq5OAo6kg9liUvkEEc-9fJwnqDg?w=500&auto=format",
-                "network": "Polygon"
-            }
-        ];
+//        ownedAssets = [
+//            {
+//                "name": "IDriss Logo",
+//                "address": "0x2953399124f0cbb46d2cbacd8a89cf0599974963",
+//                "id": "104646746365016723314061203747530081823371947018124724650840385937829649186817",
+//                "type": "ERC1155",
+//                "image": "https://i.seadn.io/gae/mLZLriTgIaWR5om8vLydrhESR7M8TzL6atXtZ8TN_wWEQEIW-5MK-9N4ukfelTVsgBUaTtzkkbnKhzLfW9Q0fvaMUlmPv9H4HBIV?w=500&auto=format",
+//                "network": "Polygon"
+//            },
+//            {
+//                "name": "Spirits Of Eastern Europe #2",
+//                "address": "0x2953399124f0cbb46d2cbacd8a89cf0599974963",
+//                "id": "92684618316586457942843142044618663200253618197452727397604755407033069469697",
+//                "type": "ERC1155",
+//                "image": "https://i.seadn.io/gae/biwkRon23U60JLJcHRp36_U23arYNwLTr4x-ApN11zsryxBy_ZQ1rZpkittDvYxkoBQm5yLNtr9Nq5OAo6kg9liUvkEEc-9fJwnqDg?w=500&auto=format",
+//                "network": "Polygon"
+//            }
+//        ];
 
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'}
         ]
 
+
         if (networkFilter) {
             ownedAssets = this.filterNetwork(networkFilter, ownedAssets)
         }
+
 
         for (let [key, value] of Object.entries(ownedAssets)) {
             if (!ownedAssets[key].balance) ownedAssets[key].balance = 0;
@@ -53,17 +55,15 @@ export class MultiSendToAnyone {
             if (!ownedAssets[key].image) ownedAssets[key].image = ownedAssets[key].logoURI
         }
 
-        console.log(ownedAssets)
-
         this.html = create('div', {}, template({assets: ownedAssets, assetType: selectNFT ? "NFT" : "Token", arrow}));
 
         this.html.querySelector('input[type=checkbox]')?.addEventListener('change', (e) => {
             this.handleSlider();
         })
 
-        this.html.querySelector('.next').addEventListener('click', async () => {
-            await this.multiSend();
-        })
+//        this.html.querySelector('.next').addEventListener('click', async () => {
+//            await this.multiSend();
+//        })
 
         this.html.addEventListener('drop', async (e) => {
             console.log("Dropped a file")
@@ -92,8 +92,8 @@ export class MultiSendToAnyone {
         })
 
 
-        this.html.querySelector('.multiSend')?.addEventListener('click', (e) => {
-
+        this.html.querySelector('.multiSend')?.addEventListener('click', async (e) => {
+            console.log("next clicked")
             let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
             console.log(content)
             // if individual is turned on
@@ -104,12 +104,15 @@ export class MultiSendToAnyone {
             // potentially also add for pasting (or real-time updating?)
             await result.forEach(function(el) {el[0] = el[0].replace(/\s+/g, '')})
             console.log(result)
+            if (result.length === 0) return;
 
         // Add stuff from below
             let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "token";
-            if (assetType === 'token' && token !== 'MATIC') assetType = 'erc20';
             let token = this.html.querySelector('.assetSelect').dataset.symbol;
-            let message = this.html.querySelector('.messageBox textarea').value;
+            if (assetType === 'token' && token !== 'MATIC') assetType = 'erc20';
+            // no message box atm
+            // let message = this.html.querySelector('.messageBox textarea').value;
+            // or just from selected asset?
             let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
             let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
             if (WEBPACK_MODE !== 'production') {
@@ -135,6 +138,8 @@ export class MultiSendToAnyone {
 
             await result.forEach(this.prepareRecipients(asset))
 
+            console.log(multiSendArr)
+
         });
 
 // ToDo: show/hide elements here?
@@ -153,7 +158,9 @@ export class MultiSendToAnyone {
 //                    messageBox.querySelector('textarea').value = '';
 //                }
 //            }
-        // this.refreshVisibleAssets();
+
+
+         this.refreshVisibleAssets();
     }
 
 
@@ -185,18 +192,18 @@ export class MultiSendToAnyone {
             hasAmount = false
             sameAmount = true;
 
-            fileReader.addEventListener("load", () => {
+            fileReader.addEventListener("load", async () => {
                 const handlesRaw = fileReader.result;
                 console.log(handlesRaw)
                 const result = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(','));
                 console.log(result)
                 //ToDo: filter non-RegEx strings
-                result.forEach(this.hasAmount)
-                if (hasAmount) result.forEach(this.fixAmount)
+                await result.forEach(this.hasAmount)
+                if (hasAmount) await result.forEach(this.fixAmount)
                 console.log(hasAmount)
                 textToDisplay = result.join('\n');
                 if (hasAmount) firstAmount = result[0][1]
-                result.forEach(this.isSameAmount)
+                await result.forEach(this.isSameAmount)
                 console.log(sameAmount)
                 //ToDo: check if same amount holds true, hide amount selection otherwise "Do you want to send an individual amount to everyone, as indicated in your file? If not, choose "same amount" here"
                 console.log(textToDisplay)
