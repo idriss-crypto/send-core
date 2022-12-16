@@ -4,7 +4,7 @@ import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 import { walletTypeDefault, getCoin } from "../sendToAnyoneUtils";
-
+import {IdrissCrypto} from "idriss-crypto/browser";
 
 let hasAmount;
 let sameAmount;
@@ -121,16 +121,8 @@ export class MultiSendToAnyone {
             }
             if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
 
-
-            let properAmount;
-            if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;
-
-            //todo: loop over recipients?
-            // forEach(assetType, assetId, assetAddress)
-            else properAmount = (assetAmount ?? "").length > 0 ? assetAmount : amount;
-
+            // ToDo: does this handle all asset classes correctly?
             const asset = {
-                amount: `${properAmount}`,
                 type: assetTypes[assetType],
                 assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
                 assetId: assetId === "" ? 0 : assetId,
@@ -141,7 +133,7 @@ export class MultiSendToAnyone {
                 recipients,
             }))
 
-            await result.forEach(this.getWalletType(asset))
+            await result.forEach(this.prepareRecipients(asset))
 
         });
 
@@ -253,8 +245,14 @@ export class MultiSendToAnyone {
 
     }
 
-    // ToDo: rename to prepArray or so
-    async getWalletType(res, asset) {
+    async prepareRecipients(res, asset) {
+        console.log(res)
+        console.log(asset)
+        let properAmount;
+        let assetAmount = 1
+        if (asset.assetType > 1 ) properAmount = 1;
+        else properAmount = (res[1] ?? "").length > 0 ? assetAmount : res[1];
+        console.log(properAmount)
         let resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
         const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
         const walletType = walletTag
@@ -264,7 +262,8 @@ export class MultiSendToAnyone {
                       walletTag: walletTag,
                   }
                 : walletTypeDefault;
-        asset.amount = res[1]
+
+        asset.amount = `${properAmount}`,
         multiSendArr.push({"beneficiary": res[0], "walletType": walletType, "asset": asset})
     }
 

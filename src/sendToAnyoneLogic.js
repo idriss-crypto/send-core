@@ -179,21 +179,8 @@ export const SendToAnyoneLogic = {
         }
     },
 
-    async multiSendToAnyone(recipients, token, message, assetType, assetAddress, assetIds, walletTags) {
+    async multiSendToAnyone(recipients) {
         console.log(this.provider);
-        console.log(this.idriss);
-
-        let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
-
-        //ToDo: resolve everythinng here? or on page?
-        // add loop to add wallet for every person -> optimize double resolving
-        const walletType = walletTag
-            ? {
-                  coin: getCoin(walletTag),
-                  network: "evm",
-                  walletTag: walletTag,
-              }
-            : walletTypeDefault;
 
         // let contract;
         let polygonGas;
