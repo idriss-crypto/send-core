@@ -9,17 +9,25 @@ import {IdrissCrypto} from "idriss-crypto/browser";
 let hasAmount;
 let sameAmount;
 let firstAmount;
-let multiSendArr;
+let multiSendArr = [];
+let asset;
 
 const assetTypes = {};
 assetTypes["native"] = 0;
 assetTypes["erc20"] = 1;
 assetTypes["erc721"] = 2;
 assetTypes["erc1155"] = 3;
+let idriss;
 
 
 export class MultiSendToAnyone {
     constructor(ownedAssets = [], assetFilter = null, selectNFT = false, networkFilter = {"networks":["polygon"]}) {
+        this.idriss = new IdrissCrypto(POLYGON_RPC_ENDPOINT, {
+            sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
+            idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
+            reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
+        });
+        console.log("IDriss: ", this.idriss)
 //        ownedAssets = [
 //            {
 //                "name": "IDriss Logo",
@@ -48,7 +56,6 @@ export class MultiSendToAnyone {
             ownedAssets = this.filterNetwork(networkFilter, ownedAssets)
         }
 
-
         for (let [key, value] of Object.entries(ownedAssets)) {
             if (!ownedAssets[key].balance) ownedAssets[key].balance = 0;
             if (!ownedAssets[key].type) ownedAssets[key].type =  ownedAssets[key].symbol === "MATIC" ? "native" : "ERC20";
@@ -60,10 +67,6 @@ export class MultiSendToAnyone {
         this.html.querySelector('input[type=checkbox]')?.addEventListener('change', (e) => {
             this.handleSlider();
         })
-
-//        this.html.querySelector('.next').addEventListener('click', async () => {
-//            await this.multiSend();
-//        })
 
         this.html.addEventListener('drop', async (e) => {
             console.log("Dropped a file")
@@ -94,52 +97,8 @@ export class MultiSendToAnyone {
 
         this.html.querySelector('.multiSend')?.addEventListener('click', async (e) => {
             console.log("next clicked")
-            let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
-            console.log(content)
-            // if individual is turned on
-            const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
-            // if individual is turned off
-            // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
-            console.log(result)
-            // potentially also add for pasting (or real-time updating?)
-            await result.forEach(function(el) {el[0] = el[0].replace(/\s+/g, '')})
-            console.log(result)
-            if (result.length === 0) return;
-
-        // Add stuff from below
-            let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "token";
-            let token = this.html.querySelector('.assetSelect').dataset.symbol;
-            if (assetType === 'token' && token !== 'MATIC') assetType = 'erc20';
-            // no message box atm
-            // let message = this.html.querySelector('.messageBox textarea').value;
-            // or just from selected asset?
-            let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
-            let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
-            if (WEBPACK_MODE !== 'production') {
-                assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
-            }
-            if (assetType === 'erc1155') {
-                assetAddress = this.html.querySelector('.assetSelect').dataset.address;
-                assetType = this.html.querySelector('.assetSelect').dataset.assetType.toLowerCase();
-            }
-            if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
-
-            // ToDo: does this handle all asset classes correctly?
-            const asset = {
-                type: assetTypes[assetType],
-                assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
-                assetId: assetId === "" ? 0 : assetId,
-            };
-
-            // ToDo: what about messages?
-            this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
-                recipients,
-            }))
-
-            await result.forEach(this.prepareRecipients(asset))
-
-            console.log(multiSendArr)
-
+            console.log("IDriss after click: ", this.idriss)
+            this.multiSend();
         });
 
 // ToDo: show/hide elements here?
@@ -158,7 +117,6 @@ export class MultiSendToAnyone {
 //                    messageBox.querySelector('textarea').value = '';
 //                }
 //            }
-
 
          this.refreshVisibleAssets();
     }
@@ -198,12 +156,12 @@ export class MultiSendToAnyone {
                 const result = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(','));
                 console.log(result)
                 //ToDo: filter non-RegEx strings
-                await result.forEach(this.hasAmount)
-                if (hasAmount) await result.forEach(this.fixAmount)
+                await result.forEach((element) => this.checkAmount(element))
+                if (hasAmount) await result.forEach((element) => this.fixAmount(element))
                 console.log(hasAmount)
                 textToDisplay = result.join('\n');
                 if (hasAmount) firstAmount = result[0][1]
-                await result.forEach(this.isSameAmount)
+                await result.forEach((element) => this.isSameAmount(element))
                 console.log(sameAmount)
                 //ToDo: check if same amount holds true, hide amount selection otherwise "Do you want to send an individual amount to everyone, as indicated in your file? If not, choose "same amount" here"
                 console.log(textToDisplay)
@@ -213,9 +171,8 @@ export class MultiSendToAnyone {
         });
     }
 
-    // Delete this function later
-    async multiSend(e){
-
+    async multiSend(){
+        console.log(this.idriss)
         let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
         console.log(content)
         // if individual is turned on
@@ -224,43 +181,62 @@ export class MultiSendToAnyone {
         // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
         console.log(result)
         // potentially also add for pasting (or real-time updating?)
-        await result.forEach(function(el) {el[0] = el[0].replace(/\s+/g, '')})
+        await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
         console.log(result)
+        if (result.length === 0) return;
+        console.log(this.html.querySelector('.assetSelect'))
+        // Add stuff from below
+        let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "native";
+        let token = this.html.querySelector('.assetSelect').dataset.symbol;
+        if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
+        // no message box atm
+        // let message = this.html.querySelector('.messageBox textarea').value;
+        // or just from selected asset?
+        let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
+        let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
+        if (WEBPACK_MODE !== 'production') {
+            assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
+        }
+        if (assetType === 'erc1155') {
+            assetAddress = this.html.querySelector('.assetSelect').dataset.address;
+            assetType = this.html.querySelector('.assetSelect').dataset.assetType.toLowerCase();
+        }
+        if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
 
-//        //ToDo: define class names in widget, make sure assets are displayed correctly like in main,
-//        // refreshVisibleAssets added with click
-//        let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
-//        let asset = this.html.querySelector('.assetSelect').dataset.symbol;
-//        if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
-//
-//        //ToDo: define filterAssets --> define token?
-//        let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
-//        //ToDo: what to do for ERC20 & native
-//        let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
-//
-//
-//        // let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address;
-//        // get from json, is this valid here? --> define token and network?
-//        const asset = {
-//            type: assetTypes[assetType],
-//            assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
-//            assetId: assetId === "" ? 0 : assetId,
-//        };
-//
-//        await result.forEach(this.getWalletType(asset))
-//        console.log(multiSendArr)
+        // ToDo: does this handle all asset classes correctly?
+        asset = {
+            type: assetTypes[assetType],
+            assetContractAddress: assetAddress,
+            assetId: assetId === "" ? 0 : assetId,
+        };
+
+        console.log(asset)
+
+        for (let element of result) {
+            let elemToPush = await this.prepareRecipients(element)
+            multiSendArr.push(elemToPush)
+        }
+
+        console.log(multiSendArr)
+
+//            // ToDo: what about messages?
+//            this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
+//                multiSendArr,
+//            }))
 
     }
 
-    async prepareRecipients(res, asset) {
+    async prepareRecipients(res) {
+        console.log(this.idriss)
         console.log(res)
         console.log(asset)
         let properAmount;
         let assetAmount = 1
-        if (asset.assetType > 1 ) properAmount = 1;
+        if (asset.type > 1 ) properAmount = 1;
         else properAmount = (res[1] ?? "").length > 0 ? assetAmount : res[1];
         console.log(properAmount)
         let resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
+        console.log(resolved)
         const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
         const walletType = walletTag
                 ? {
@@ -270,11 +246,12 @@ export class MultiSendToAnyone {
                   }
                 : walletTypeDefault;
 
-        asset.amount = `${properAmount}`,
-        multiSendArr.push({"beneficiary": res[0], "walletType": walletType, "asset": asset})
+        asset.amount = `${properAmount}`
+        console.log({"beneficiary": res[0], "walletType": walletType, "asset": asset})
+        return {"beneficiary": res[0], "walletType": walletType, "asset": asset}
     }
 
-    hasAmount(res) {
+    checkAmount(res) {
         if (res.length>1) hasAmount = true;
     }
 
