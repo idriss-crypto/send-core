@@ -3,8 +3,7 @@
 <main>
     <div class="loader"/>
     <h2>Waiting for Confirmation</h2>
-    <p class="subtitle subtitleCoin">Sending <span class="amountCoin">---</span> {{token}} to multiple recipients</p>
-    <p class="subtitle subtitleNFT">Sending <strong>{{nftName}}</strong> to multiple recipients</p>
+    <p class="subtitle subtitleNFT">Sending <strong>{{assetName}}</strong> to multiple recipients</p>
     <p>Confirm this transaction in your wallet</p>
 </main>
 <footer>

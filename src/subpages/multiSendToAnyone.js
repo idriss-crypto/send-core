@@ -70,9 +70,9 @@ export class MultiSendToAnyone {
 
         this.html.addEventListener('drop', async (e) => {
             console.log("Dropped a file")
-            this.html.querySelector('textarea[name="recipients"]').innerHTML = "Processing ...";
+            this.html.querySelector('textarea[name="recipients"]').value = "Processing ...";
             let csvContent = await this.prepareMultiSend(e);
-            this.html.querySelector('textarea[name="recipients"]').innerHTML = csvContent;
+            this.html.querySelector('textarea[name="recipients"]').value = csvContent;
         })
 
         this.html.querySelectorAll('.select').forEach(select => {
@@ -172,8 +172,9 @@ export class MultiSendToAnyone {
     }
 
     async multiSend(){
-        console.log(this.idriss)
-        let content = this.html.querySelector('textarea[name="recipients"]').innerHTML
+        console.log("Calling multiSend()")
+        multiSendArr = []
+        let content = this.html.querySelector('textarea[name="recipients"]').value;
         console.log(content)
         // if individual is turned on
         const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
@@ -220,9 +221,10 @@ export class MultiSendToAnyone {
         console.log(multiSendArr)
 
 //            // ToDo: what about messages?
-//            this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
-//                multiSendArr,
-//            }))
+        this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
+            multiSendArr,
+            token
+        }))
 
     }
 
@@ -233,8 +235,8 @@ export class MultiSendToAnyone {
         let properAmount;
         let assetAmount = 1
         if (asset.type > 1 ) properAmount = 1;
-        else properAmount = (res[1] ?? "").length > 0 ? assetAmount : res[1];
-        console.log(properAmount)
+        // ToDo: figure out assetAmount
+        else properAmount = (res[1] ?? "").length > 0 ? res[1] : assetAmount;
         let resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
         console.log(resolved)
         const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
@@ -247,6 +249,7 @@ export class MultiSendToAnyone {
                 : walletTypeDefault;
 
         asset.amount = `${properAmount}`
+        // ToDo: when uploading only unknown IDriss handles, there is a BigNumber bug
         console.log({"beneficiary": res[0], "walletType": walletType, "asset": asset})
         return {"beneficiary": res[0], "walletType": walletType, "asset": asset}
     }
@@ -272,7 +275,6 @@ export class MultiSendToAnyone {
         this.refreshVisibleAssets();
     }
 
-    //ToDo: rewrite refreshVisibleAssets()
     refreshVisibleAssets() {
         console.log("Refresh triggered")
         let slider = this.html.querySelector('#Toggle');

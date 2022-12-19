@@ -9,7 +9,7 @@
     </p>
 </main>
 <footer>
-    <button id="copyButton" type="button" class="close">
+    <button id="downloadButton" type="button" class="close">
         <span>Download</span>
     </button>
 </footer>

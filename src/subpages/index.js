@@ -6,3 +6,5 @@ export {SendToAnyoneSuccess} from "./sendToAnyoneSuccess";
 export {SendToAnyoneWaitingApproval} from "./sendToAnyoneWaitingApproval";
 export {SendToAnyoneWaitingConfirmation} from "./sendToAnyoneWaitingConfirmation";
 export {MultiSendToAnyone} from "./multiSendToAnyone";
+export {MultiSendToAnyoneApproval} from "./multiSendToAnyoneApproval";
+export {MultiSendToAnyoneSuccess} from "./multiSendToAnyoneSuccess";
