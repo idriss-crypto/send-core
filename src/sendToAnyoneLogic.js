@@ -179,10 +179,10 @@ export const SendToAnyoneLogic = {
         }
     },
 
-    async multiSendToAnyone(recipients) {
+    async multiSendToAnyone(recipients_) {
         console.log(this.provider);
         let network = "Polygon"
-        console.log("Final recipients: ", recipients)
+        console.log("Final recipients: ", recipients_)
 
         // let contract;
         let polygonGas;
@@ -209,7 +209,8 @@ export const SendToAnyoneLogic = {
                     gas: 400000,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                result = await this.idriss.multitransferToIDriss(recipients, transactionOptions);
+                // the devil is here
+                // result = await this.idriss.multitransferToIDriss(recipients_, transactionOptions);
             } catch (err) {
                 console.log("error", err);
                 // Transaction failed or user has denied

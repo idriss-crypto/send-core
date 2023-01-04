@@ -8,7 +8,8 @@ import {IdrissCrypto} from "idriss-crypto/browser";
 
 let hasAmount;
 let sameAmount;
-let firstAmount;
+let currentAmount;
+let currentSame;
 let multiSendArr = [];
 let asset;
 
@@ -17,7 +18,7 @@ assetTypes["native"] = 0;
 assetTypes["erc20"] = 1;
 assetTypes["erc721"] = 2;
 assetTypes["erc1155"] = 3;
-let idriss;
+
 
 
 export class MultiSendToAnyone {
@@ -97,30 +98,50 @@ export class MultiSendToAnyone {
 
         this.html.querySelector('.multiSend')?.addEventListener('click', async (e) => {
             console.log("next clicked")
-            console.log("IDriss after click: ", this.idriss)
             this.multiSend();
         });
 
-// ToDo: show/hide elements here?
-//        const toggleMessageBox = this.html.querySelector('.toggleMessageBox');
-//        const messageBox = this.html.querySelector('.messageBox');
-//        if (!showMessageBox)
-//            toggleMessageBox.style.display = 'none';
-//        else
-//            toggleMessageBox.onclick = () => {
-//                if (messageBox.classList.contains('isHidden')) {
-//                    messageBox.classList.remove('isHidden')
-//                    toggleMessageBox.lastChild.textContent = 'No message'
-//                } else {
-//                    messageBox.classList.add('isHidden')
-//                    toggleMessageBox.lastChild.textContent = 'Add a message'
-//                    messageBox.querySelector('textarea').value = '';
-//                }
-//            }
+        this.html.querySelector('#InputCustomAmount')?.addEventListener('input', (e) => {
+            const tempAmount = this.html.querySelector('#InputCustomAmount').value? this.html.querySelector('#InputCustomAmount').value : '1';
+            if (tempAmount === currentAmount) return
 
-         this.refreshVisibleAssets();
+            currentAmount = tempAmount;
+            currentSame = tempAmount;
+            this.modifyTextbox();
+        })
+
+        this.html.querySelector('textarea[name="recipients"]')?.addEventListener('input', async (e) => {
+            const content = this.html.querySelector('textarea[name="recipients"]').value;
+            let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+            await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
+            if (result.length === 0) return;
+            sameAmount = false;
+            for (let element of result){
+                await this.isSameAmount(element)
+            }
+            console.log("same amount? ", sameAmount)
+            if (sameAmount) {
+            console.log("same amount, should be placed in input field")
+            console.log(result[0])
+                this.html.querySelector('#InputCustomAmount').value = result[0][1]
+            } else {
+                this.html.querySelector('#InputCustomAmount').value = ''
+            }
+        })
+
+        this.html.querySelector('textarea[name="recipients"]').placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n---------- paste or drag a file here ----------";
+        this.refreshVisibleAssets();
     }
 
+    async modifyTextbox() {
+        const content = this.html.querySelector('textarea[name="recipients"]').value;
+        let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+        await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
+        if (result.length === 0) return;
+        result = result.map(data => [data[0], currentAmount]);
+        let textToDisplay = result.join('\n');
+        this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay;
+    }
 
     async prepareMultiSend(e){
         console.log(e)
@@ -153,17 +174,28 @@ export class MultiSendToAnyone {
             fileReader.addEventListener("load", async () => {
                 const handlesRaw = fileReader.result;
                 console.log(handlesRaw)
-                const result = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(','));
+                let result = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(','));
                 console.log(result)
                 //ToDo: filter non-RegEx strings
-                await result.forEach((element) => this.checkAmount(element))
-                if (hasAmount) await result.forEach((element) => this.fixAmount(element))
+                for (let element of result) {
+                    await this.checkAmount(element);
+                }
+                if (hasAmount) {
+                    for (let element of result) {
+                        await this.fixAmount(element)
+                    }
+                } else {
+                    result = result.map(data => [data[0], '1']);
+                }
+                console.log(result)
                 console.log(hasAmount)
                 textToDisplay = result.join('\n');
-                if (hasAmount) firstAmount = result[0][1]
-                await result.forEach((element) => this.isSameAmount(element))
-                console.log(sameAmount)
-                //ToDo: check if same amount holds true, hide amount selection otherwise "Do you want to send an individual amount to everyone, as indicated in your file? If not, choose "same amount" here"
+                if (hasAmount) currentSame = result[0][1]
+                for (let element of result){
+                    await this.isSameAmount(element)
+                }
+                console.log("Is same amount? ", sameAmount)
+                // ToDo: check if same amount holds true
                 console.log(textToDisplay)
                 resolve(textToDisplay)
             });
@@ -185,8 +217,6 @@ export class MultiSendToAnyone {
         await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
         console.log(result)
         if (result.length === 0) return;
-        console.log(this.html.querySelector('.assetSelect'))
-        // Add stuff from below
         let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "native";
         let token = this.html.querySelector('.assetSelect').dataset.symbol;
         if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
@@ -212,15 +242,17 @@ export class MultiSendToAnyone {
         };
 
         console.log(asset)
-
+        console.log("before running prepare")
         for (let element of result) {
             let elemToPush = await this.prepareRecipients(element)
             multiSendArr.push(elemToPush)
         }
+        console.log("after running prepare")
 
         console.log(multiSendArr)
 
 //            // ToDo: what about messages?
+        console.log("invoking event ", multiSendArr)
         this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
             multiSendArr,
             token
@@ -263,7 +295,7 @@ export class MultiSendToAnyone {
     }
 
     isSameAmount(res) {
-        if(res[1] != firstAmount) sameAmount = false
+        if(res[1] != currentSame) sameAmount = false
     }
 
     handleSlider() {

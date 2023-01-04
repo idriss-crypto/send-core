@@ -616,46 +616,31 @@
 }
 
 .multiSendToAnyone-popup {
+
+
+    // come here
     padding: 0.75rem;
+    margin: auto;
     margin-top: 2.5rem;
     justify-content: center;
     width: 24rem;
+    border-width: 1px;
     border-radius: 0.375rem;
     border-color: #000000;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
-    > div {
-        display: flex;
-        //min-height: 292px;
-        flex-direction: column;
-
-        > main {
-            flex-grow: 1;
-            font-family: 'Segoe UI', sans-serif;
-
-            > button {
-                @include button;
-                width: 100%;
-                color: #fff;
-
-            }
-        }
-    }
 
     header {
+
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-family: 'Segoe UI', sans-serif;
 
         h1 {
-            color: rgb(17 24 39);
-            line-height: 1.5rem;
-            font-weight: 500;
+            color: #111827;
             font-size: 1.125rem;
-            margin: 0;
-
+            line-height: 1.75rem;
+            font-weight: 500;
+            line-height: 1.5rem;
         }
 
         .multiSlider {
@@ -669,18 +654,38 @@
                 text-align: right;
 
                 label {
+
                     display: inline-flex;
                     position: relative;
                     margin-top: 0.75rem;
                     align-items: center;
                     cursor: pointer;
 
-                    span {
-                        margin-left: 0.75rem;
-                        color: #6B7280;
-                        font-size: 0.875rem;
-                        line-height: 1.25rem;
+                    .slider {
+                        background-color: #E5E7EB;
+                        height: 1.25rem;
+                        width: 2.25rem;
+                        border-radius: 9999px;
+
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            background-color: #ffffff;
+                            transition-property: all;
+                            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                            transition-duration: 150ms;
+                            width: 1rem;
+                            height: 1rem;
+                            border: solid;
+                            box-sizing: border-box;
+                            border-radius: 9999px;
+                            border-width: 1px;
+                            border-color: #D1D5DB;
+                            top: 2px;
+                            left: 2px;
+                        }
                     }
+
 
                     input {
                         position: absolute;
@@ -690,200 +695,34 @@
                         margin: -1px;
                         overflow: hidden;
                         clip: rect(0, 0, 0, 0);
-                        whiteSpace: nowrap;
-                        borderWidth: 0;
+                        white-space: nowrap;
+                        border-width: 0;
+
+                        &:focus + .slider {
+                            outline: 0;
+                        }
+
+                        &:checked + .slider {
+                            background: #5865F2;
+
+                            &:after {
+                                transform: translateX(100%);
+
+                                border-color: #ffffff;
+                            }
+                        }
                     }
 
-                    .slider {
-                        -webkit-text-size-adjust: 100%;
-                        tab-size: 4;
-                        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-                        font-feature-settings: normal;
-                        line-height: inherit;
-                        --tw-border-opacity: 1;
-                        text-align: right;
-                        cursor: pointer;
-                        box-sizing: border-box;
-                        border-width: 0;
-                        border-style: solid;
-                        border-color: #e5e7eb;
-                        --tw-border-spacing-x: 0;
-                        --tw-border-spacing-y: 0;
-                        --tw-translate-x: 0;
-                        --tw-translate-y: 0;
-                        --tw-rotate: 0;
-                        --tw-skew-x: 0;
-                        --tw-skew-y: 0;
-                        --tw-scale-x: 1;
-                        --tw-scale-y: 1;
-                        --tw-pan-x: ;
-                        --tw-pan-y: ;
-                        --tw-pinch-zoom: ;
-                        --tw-scroll-snap-strictness: proximity;
-                        --tw-ordinal: ;
-                        --tw-slashed-zero: ;
-                        --tw-numeric-figure: ;
-                        --tw-numeric-spacing: ;
-                        --tw-numeric-fraction: ;
-                        --tw-ring-inset: ;
-                        --tw-ring-offset-width: 0px;
-                        --tw-ring-offset-color: #fff;
-                        --tw-ring-color: rgb(59 130 246 / 0.5);
-                        --tw-ring-offset-shadow: 0 0 #0000;
-                        --tw-ring-shadow: 0 0 #0000;
-                        --tw-shadow: 0 0 #0000;
-                        --tw-shadow-colored: 0 0 #0000;
-                        --tw-blur: ;
-                        --tw-brightness: ;
-                        --tw-contrast: ;
-                        --tw-grayscale: ;
-                        --tw-hue-rotate: ;
-                        --tw-invert: ;
-                        --tw-saturate: ;
-                        --tw-sepia: ;
-                        --tw-drop-shadow: ;
-                        --tw-backdrop-blur: ;
-                        --tw-backdrop-brightness: ;
-                        --tw-backdrop-contrast: ;
-                        --tw-backdrop-grayscale: ;
-                        --tw-backdrop-hue-rotate: ;
-                        --tw-backdrop-invert: ;
-                        --tw-backdrop-opacity: ;
-                        --tw-backdrop-saturate: ;
-                        --tw-backdrop-sepia: ;
-                        height: 1.25rem;
-                        width: 2.25rem;
-                        border-radius: 9999px;
-                        --tw-bg-opacity: 1;
-                        background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+                    span {
+                        margin-left: 0.75rem;
+                        color: #6B7280;
+                        font-size: 0.875rem;
+                        line-height: 1.25rem;
                     }
+
+
                 }
             }
-        }
-    }
-
-    .input-wrapper {
-        margin-top: 0.25rem;
-    }
-
-    input[type="text"] {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
-        background-color: #ffffff;
-        color: #000000;
-        color: #9CA3AF;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        border-radius: 0.375rem;
-        border-width: 1px;
-        border-color: #D1D5DB;
-        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-
-
-    .closeButton {
-            align-self: center;
-            cursor: pointer;
-        }
-
-    .loader {
-        margin-left: auto;
-        margin-right: auto;
-        width: 6rem;
-        height: 6rem;
-        border-radius: 50%;
-        border: 10px solid rgb(229 231 235);
-        border-top-color: #11dd74;
-        animation: spin 1s infinite linear;
-    }
-
-    .success {
-        width: 7rem;
-        height: 7rem;
-        margin: 0 auto auto;
-        display: block;
-    }
-
-    .tooltip {
-        display: none;
-        position: absolute;
-        width: 80px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 0px 5px;
-        margin: 0.5rem auto auto auto;
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        left: 0;
-        right: 0;
-    }
-
-    .urlWrap {
-        word-wrap: break-word;
-    }
-
-    .textWrap {
-        height: 3.75rem;
-        max-width: 16rem;
-        padding: 0.25rem;
-        align-content: center;
-        border-radius: 0.375rem;
-        border-width: 1px;
-        border-color: #D1D5DB;
-        border-style: solid;
-        overflow-y: scroll;
-        margin-bottom: 0.75rem;
-
-        &::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        &::-webkit-scrollbar-track {
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        &::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.2);
-        }
-
-        &::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        &::-webkit-scrollbar-thumb:active {
-            background: rgba(0, 0, 0, .9);
-        }
-    }
-
-    .textWrap:hover {
-        cursor: pointer;
-    }
-
-    .nft-mint-wrapper {
-        display: block;
-        margin-top: 0;
-        margin-left: 0.25rem;
-        margin-bottom: 1rem;
-        color: #6B7280;
-        font-size: 0.875rem;
-        line-height: 1.25rem;
-        text-align: right;
-
-        a {
-            text-decoration: underline;
-            display: none;
-
-            &:hover {
-             cursor: pointer;
-             }
         }
     }
 
@@ -891,25 +730,24 @@
         margin-top: 0.5rem;
 
         label {
-            color: rgb(107 114 128);
+            color: #6B7280;
             font-size: 0.875rem;
             line-height: 1.25rem;
-
         }
 
-        .inpupt-wrapper {
+        .input-wrapper {
             display: flex;
             margin-top: 0.25rem;
             justify-content: space-between;
 
             input {
+                margin-top: 0rem;
                 padding-top: 0.5rem;
                 padding-bottom: 0.5rem;
                 padding-left: 0.75rem;
                 padding-right: 0.75rem;
                 background-color: #ffffff;
                 color: #000000;
-                color: #9CA3AF;
                 justify-content: center;
                 align-items: center;
                 width: 100%;
@@ -917,6 +755,19 @@
                 border-width: 1px;
                 border-color: #D1D5DB;
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+                &:focus {
+                    border-color: #6366F1;
+                    box-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+                    --ring-color: #6366F1;
+                    outline: 0;
+                }
+
+                &:placeholder {
+                    color: #9CA3AF;
+                    font-size: 0.875rem;
+                    line-height: 1.25rem;
+                }
             }
         }
 
@@ -930,7 +781,6 @@
                 padding-right: 0.75rem;
                 color: #374151;
                 line-height: 1.25;
-                color: #9CA3AF;
                 width: 100%;
                 height: 11rem;
                 border-radius: 0.375rem;
@@ -939,10 +789,22 @@
                 appearance: none;
                 resize: none;
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+                 &:focus {
+                    border-color: #6366F1;
+                    box-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+                    --ring-color: #6366F1;
+                    outline: 0;
+                }
+
+                &:placeholder {
+                    color: #9CA3AF;
+                    font-size: 0.875rem;
+                    line-height: 1.25rem;
+                }
+
             }
         }
-
-
 
         .select {
             margin-top: 0.25rem;
@@ -1044,124 +906,27 @@
                 }
             }
         }
-
-        .imagePreview {
-                margin: 0.75rem;
-                width: 90%;
-                border-radius: 0.375rem;
-                border-width: 1px;
-                border-color: #d1d5db;
-                border-style: solid;
-                display: flex;
-            }
     }
 
-    .toggleMessageBox {
-        color: rgb(107 114 128);
+
+    .nft-mint-wrapper {
+        display: block;
+        margin-top: 0;
+        margin-left: 0.25rem;
+        margin-bottom: 1rem;
+        color: #6B7280;
         font-size: 0.875rem;
         line-height: 1.25rem;
         text-align: right;
-        display: block;
-        margin: 0.75rem 0 0.75rem 0.25rem;
-        cursor: pointer;
 
-        strong {
-            text-decoration-line: underline;
-            font-weight: inherit;
-        }
-    }
+        a {
+            text-decoration: underline;
+            display: none;
 
-    .spinnerWrapper {
-        display: flex;
-        margin-left: 0.25rem;
-        justify-content: center;
-        align-items: center;
-
-        .spinner {
-            display: inline-block;
-            animation: spin 1s linear infinite;
-
-            @keyframes spin {
-              from {
-                transform: rotate(0deg);
-              }
-              to {
-                transform: rotate(360deg);
-              }
-            };
-            width: 1.25rem;
-            height: 1.25rem;
-            border-radius: 9999px;
-            border-width: 2px;
-            border-color: #ffffff;
-
-            .spinnerDot {
-                color: #000000;
-                font-size: 1.25rem;
-                line-height: 1.75rem;
-            }
-        }
-
-        .spinnerEnd {
-            margin-left: 0.25rem;
-            color: #ffffff;
-            font-size: 1rem;
-            line-height: 1.5rem;
-            font-weight: 500;
-
-            @media (min-width: 640px) {
-              font-size: 0.875rem;
-            line-height: 1.25rem;
+            &:hover {
+             cursor: pointer;
              }
         }
-    }
-
-    .messageBox {
-        margin-top: .75rem;
-        margin-bottom: .5rem;
-
-        &.isHidden {
-            display: none;
-        }
-
-        textarea {
-            box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
-            font-family: 'Segoe UI', sans-serif;
-            color: rgb(55 65 81);
-            line-height: 1.25;
-            padding: 0.5rem 0.75rem;
-            border-color: rgb(209 213 219);
-            border-width: 1px;
-            border-radius: 0.375rem;
-            -webkit-appearance: none;
-            appearance: none;
-            resize: none;
-            width: 100%;
-            height: 4rem;
-            box-sizing: border-box;
-
-            &:focus {
-                border-color: rgb(99, 102, 241);
-            }
-        }
-    }
-
-    h2 {
-        text-align: center;
-        margin: 2rem 0 0;
-        font-size: 1.25rem;
-        font-weight: 500;
-        line-height: 1.5rem;
-        color: rgb(17 24 39)
-    }
-
-    .h2Success {
-        text-align: center;
-        margin: 1rem 0 0.75rem;
-        font-size: 1.25rem;
-        font-weight: 500;
-        line-height: 1.5rem;
-        color: rgb(17 24 39)
     }
 
     .viewExplorer {
@@ -1173,10 +938,6 @@
     .closeButtonWrapper {
         justify-content: space-between;
         display: flex;
-    }
-
-    .errorTitle {
-        margin: 1rem auto 0.5rem;
     }
 
     .errorInput {
@@ -1206,39 +967,6 @@
             color: rgb(17 221 116);
         }
     }
-
-    .subtitle {
-
-        line-height: 1.5rem;
-        font-weight: 400;
-        font-size: 1.125rem;
-        color: rgb(17 24 39);
-        margin: 0.25rem 0 0;
-
-        .linkIcon {
-            width: 1.25rem;
-            height: 1.25rem;
-            margin-top: 0.2rem;
-        }
-
-        .twitterIcon {
-            width: 1rem;
-            margin-top: 0.25rem;
-            margin-left: 0.25rem;
-            display: none;
-        }
-
-        .twitterWrap {
-            display: inline-flex;
-            justify-content: center;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: inherit;
-        }
-    }
-
 
 
     footer {
