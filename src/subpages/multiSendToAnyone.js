@@ -21,6 +21,7 @@ assetTypes["erc721"] = 2;
 assetTypes["erc1155"] = 3;
 
 
+// ToDo: add binary 'gotBalances' modifier to optimize performance
 
 export class MultiSendToAnyone {
     constructor(ownedAssets = [], selectedAccount = "0x", assetFilter = null, selectNFT = false, networkFilter = {"networks":["polygon"]}) {
@@ -302,7 +303,8 @@ export class MultiSendToAnyone {
     handleSlider() {
         console.log("Slider clicked")
         let slider = this.html.querySelector('#Toggle');
-        this.html.querySelector('.assetType').innerHTML = slider.checked? "NFT:" : "Token:";
+        this.html.querySelector('.assetType').textContent = slider.checked? "NFT:" : "Token:";
+        this.html.querySelector('#assetHeader').textContent = slider.checked? "NFT" : "Token";
         this.html.querySelector('.nft-mint-wrapper').firstElementChild.style.display = slider.checked ? 'block': 'none';
         this.html.querySelector('.amountSelection').style.display = slider.checked ? 'none' : 'block';
         this.refreshVisibleAssets();
@@ -341,15 +343,17 @@ export class MultiSendToAnyone {
                  })
             }
 
-
             asset.querySelector(".amountOwned").textContent = newAssetBalance;
 
             asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
+            asset.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
+
             count = asset.style.display == '' ? count + 1 : count;
 
             const button = asset.parentNode.parentNode.querySelector('button');
             console.log("Button is ", button)
             if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
+            button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
         }
         if (count === 0) {
             this.html.querySelector('.assetSelectWrapper').style.display = 'none';
