@@ -3,7 +3,8 @@ import arrow from "!!url-loader!../img/arrow.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
-import { walletTypeDefault, getCoin } from "../sendToAnyoneUtils";
+import { walletTypeDefault, getCoin, loadToken } from "../sendToAnyoneUtils";
+import { defaultWeb3 } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
 
 let hasAmount;
@@ -22,13 +23,15 @@ assetTypes["erc1155"] = 3;
 
 
 export class MultiSendToAnyone {
-    constructor(ownedAssets = [], assetFilter = null, selectNFT = false, networkFilter = {"networks":["polygon"]}) {
+    constructor(ownedAssets = [], selectedAccount = "0x", assetFilter = null, selectNFT = false, networkFilter = {"networks":["polygon"]}) {
         this.idriss = new IdrissCrypto(POLYGON_RPC_ENDPOINT, {
             sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
             idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
             reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
         });
         console.log("IDriss: ", this.idriss)
+
+        this.selectedAccount = selectedAccount;
 //        ownedAssets = [
 //            {
 //                "name": "IDriss Logo",
@@ -88,6 +91,7 @@ export class MultiSendToAnyone {
                 const button = li.parentNode.parentNode.querySelector('button')
                 button.querySelector('.name').textContent = li.querySelector('.name').textContent;
                 button.querySelector('img').src = li.querySelector('img').src;
+                button.querySelector('.amountOwned').textContent = li.querySelector('.amountOwned').textContent;
                 Object.assign(button.parentNode.dataset, li.dataset);
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
@@ -234,7 +238,6 @@ export class MultiSendToAnyone {
         }
         if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
 
-        // ToDo: does this handle all asset classes correctly?
         asset = {
             type: assetTypes[assetType],
             assetContractAddress: assetAddress,
@@ -242,12 +245,10 @@ export class MultiSendToAnyone {
         };
 
         console.log(asset)
-        console.log("before running prepare")
         for (let element of result) {
             let elemToPush = await this.prepareRecipients(element)
             multiSendArr.push(elemToPush)
         }
-        console.log("after running prepare")
 
         console.log(multiSendArr)
 
@@ -307,8 +308,7 @@ export class MultiSendToAnyone {
         this.refreshVisibleAssets();
     }
 
-    refreshVisibleAssets() {
-        console.log("Refresh triggered")
+    async refreshVisibleAssets() {
         let slider = this.html.querySelector('#Toggle');
 
         let assets = this.html.querySelectorAll('.assetSelect li')
@@ -317,8 +317,39 @@ export class MultiSendToAnyone {
 
         let count = 0
         for (let asset of assets) {
+            let assetBalance = asset.querySelector(".amountOwned").textContent;
+            let newAssetBalance = assetBalance;
+            if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
+                let tokenContract = await loadToken(defaultWeb3, asset.dataset.address);
+                try {
+                    newAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
+                } catch {
+                    newAssetBalance = '0';
+                }
+            }
+
+            if (assetBalance === '0' && asset.dataset.assettype == "native") {
+                await defaultWeb3.eth.getBalance(this.selectedAccount, function(error, result){
+                    if(error){
+                       console.log(error)
+                       newAssetBalance = '0';
+                    }
+                    else{
+                       console.log(" I have ", result, " MATIC.")
+                       newAssetBalance = result;
+                    }
+                 })
+            }
+
+
+            asset.querySelector(".amountOwned").textContent = newAssetBalance;
+
             asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
             count = asset.style.display == '' ? count + 1 : count;
+
+            const button = asset.parentNode.parentNode.querySelector('button');
+            console.log("Button is ", button)
+            if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
         }
         if (count === 0) {
             this.html.querySelector('.assetSelectWrapper').style.display = 'none';
