@@ -179,141 +179,145 @@ const getNFTsForAddress = (address, apiKey, network) => {
 };
 
 const testNFTs = {
-    "ownedNfts": [
+    ownedNfts: [
         {
-            "contract": {
-                "address": DEFAULT_NFT_CONTRACT_ADDRESS
+            contract: {
+                address: DEFAULT_NFT_CONTRACT_ADDRESS,
             },
-            "id": {
-                "tokenId": "1",
-                "tokenMetadata": {
-                    "tokenType": "ERC721"
-                }
+            id: {
+                tokenId: "1",
+                tokenMetadata: {
+                    tokenType: "ERC721",
+                },
             },
-            "title": "DuskBreaker #1",
-            "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
-            "tokenUri": {
-                "raw": "https://duskbreakers.gg/api/breakers/1",
-                "gateway": "https://duskbreakers.gg/api/breakers/1"
+            title: "DuskBreaker #1",
+            description:
+                "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+            tokenUri: {
+                raw: "https://duskbreakers.gg/api/breakers/1",
+                gateway: "https://duskbreakers.gg/api/breakers/1",
             },
-            "media": [
+            media: [
                 {
-                    "raw": "https://duskbreakers.gg/breaker_images/1.png",
-                    "gateway": "https://duskbreakers.gg/breaker_images/1.png"
-                }
+                    raw: "https://duskbreakers.gg/breaker_images/1.png",
+                    gateway: "https://duskbreakers.gg/breaker_images/1.png",
+                },
             ],
-            "metadata": {
-                "name": "DuskBreaker #1",
-                "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
-                "image": "https://duskbreakers.gg/breaker_images/1.png",
-                "external_url": "https://duskbreakers.gg",
-                "attributes": [
+            metadata: {
+                name: "DuskBreaker #1",
+                description:
+                    "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+                image: "https://duskbreakers.gg/breaker_images/1.png",
+                external_url: "https://duskbreakers.gg",
+                attributes: [
                     {
-                        "value": "Big Smile (Purple)",
-                        "trait_type": "Mouth"
+                        value: "Big Smile (Purple)",
+                        trait_type: "Mouth",
                     },
                     {
-                        "value": "Yellow",
-                        "trait_type": "Background"
-                    }
-                ]
-            },
-            "timeLastUpdated": "2022-02-16T22:52:54.719Z"
-        },
-        {
-            "contract": {
-                "address": DEFAULT_NFT_CONTRACT_ADDRESS
-            },
-            "id": {
-                "tokenId": "2",
-                "tokenMetadata": {
-                    "tokenType": "ERC721"
-                }
-            },
-            "title": "DuskBreaker #2",
-            "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
-            "tokenUri": {
-                "raw": "https://duskbreakers.gg/api/breakers/2",
-                "gateway": "https://duskbreakers.gg/api/breakers/2"
-            },
-            "media": [
-                {
-                    "raw": "https://duskbreakers.gg/breaker_images/2.png",
-                    "gateway": "https://duskbreakers.gg/breaker_images/2.png"
-                }
-            ],
-            "metadata": {
-                "name": "DuskBreaker #2",
-                "description": "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
-                "image": "https://duskbreakers.gg/breaker_images/2.png",
-                "external_url": "https://duskbreakers.gg",
-                "attributes": [
-                    {
-                        "value": "Big Smile (Purple)",
-                        "trait_type": "Mouth"
+                        value: "Yellow",
+                        trait_type: "Background",
                     },
-                    {
-                        "value": "Yellow",
-                        "trait_type": "Background"
-                    }
-                ]
-            },
-            "timeLastUpdated": "2022-02-16T22:52:54.719Z"
-        },
-        {
-            "contract": {
-                "address": DEFAULT_ERC1155_CONTRACT_ADDRESS
-            },
-            "id": {
-                "tokenId": "0x03",
-                "tokenMetadata": {
-                    "tokenType": "ERC1155"
-                }
-            },
-            "balance": "1",
-            "title": "Zapper Terminator (Gold)",
-            "description": "Though they can take on a humanoid form in meat-space, Terminators have yet to be observed sleeping, or taking a rest of any kind...",
-            "tokenUri": {
-                "raw": "ipfs://QmSknFJz1Z16xKGBJPF41DPsCzyzCYqBD8ZmVmnyaN1Vw4/20",
-                "gateway": "https://ipfs.io/ipfs/QmSknFJz1Z16xKGBJPF41DPsCzyzCYqBD8ZmVmnyaN1Vw4/20"
-            },
-            "media": [
-                {
-                    "raw": "ipfs://QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm",
-                    "gateway": "https://ipfs.io/ipfs/QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm"
-                }
-            ],
-            "metadata": {
-                "name": "Zapper Terminator (Gold)",
-                "image": "ipfs://QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm",
-                "description": "Though they can take on a humanoid form in meat-space, Terminators have yet to be observed sleeping, or taking a rest of any kind...",
-                "attributes": [
-                    {
-                        "value": "2",
-                        "trait_type": "Generation"
-                    },
-                    {
-                        "value": "Gold",
-                        "trait_type": "Rarity"
-                    },
-                    {
-                        "value": "Zapper Terminator",
-                        "trait_type": "Name"
-                    }
                 ],
-                "id": "3",
-                "avatar": "ipfs://QmZXPtGXK3pikNCRNUvjfaGeTwY5ja5zP2Zd2ZG9Q2zAAh/20.png"
             },
-            "timeLastUpdated": "2022-10-18T09:12:04.993Z",
-            "contractMetadata": {
-                "name": "Zapper NFT V2",
-                "symbol": "ZPR NFT",
-                "tokenType": "ERC1155"
-            }
-        }
+            timeLastUpdated: "2022-02-16T22:52:54.719Z",
+        },
+        {
+            contract: {
+                address: DEFAULT_NFT_CONTRACT_ADDRESS,
+            },
+            id: {
+                tokenId: "2",
+                tokenMetadata: {
+                    tokenType: "ERC721",
+                },
+            },
+            title: "DuskBreaker #2",
+            description:
+                "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+            tokenUri: {
+                raw: "https://duskbreakers.gg/api/breakers/2",
+                gateway: "https://duskbreakers.gg/api/breakers/2",
+            },
+            media: [
+                {
+                    raw: "https://duskbreakers.gg/breaker_images/2.png",
+                    gateway: "https://duskbreakers.gg/breaker_images/2.png",
+                },
+            ],
+            metadata: {
+                name: "DuskBreaker #2",
+                description:
+                    "Breakers have the honor of serving humanity through their work on The Dusk. They are part of a select squad of 10,000 recruits who spend their days exploring a mysterious alien spaceship filled with friends, foes, and otherworldly technology.",
+                image: "https://duskbreakers.gg/breaker_images/2.png",
+                external_url: "https://duskbreakers.gg",
+                attributes: [
+                    {
+                        value: "Big Smile (Purple)",
+                        trait_type: "Mouth",
+                    },
+                    {
+                        value: "Yellow",
+                        trait_type: "Background",
+                    },
+                ],
+            },
+            timeLastUpdated: "2022-02-16T22:52:54.719Z",
+        },
+        {
+            contract: {
+                address: DEFAULT_ERC1155_CONTRACT_ADDRESS,
+            },
+            id: {
+                tokenId: "0x03",
+                tokenMetadata: {
+                    tokenType: "ERC1155",
+                },
+            },
+            balance: "1",
+            title: "Zapper Terminator (Gold)",
+            description: "Though they can take on a humanoid form in meat-space, Terminators have yet to be observed sleeping, or taking a rest of any kind...",
+            tokenUri: {
+                raw: "ipfs://QmSknFJz1Z16xKGBJPF41DPsCzyzCYqBD8ZmVmnyaN1Vw4/20",
+                gateway: "https://ipfs.io/ipfs/QmSknFJz1Z16xKGBJPF41DPsCzyzCYqBD8ZmVmnyaN1Vw4/20",
+            },
+            media: [
+                {
+                    raw: "ipfs://QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm",
+                    gateway: "https://ipfs.io/ipfs/QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm",
+                },
+            ],
+            metadata: {
+                name: "Zapper Terminator (Gold)",
+                image: "ipfs://QmYzbTvmPUgabLHukU7uDGnSvgTJt5gMkrNHctEbrLVM6h/20.webm",
+                description: "Though they can take on a humanoid form in meat-space, Terminators have yet to be observed sleeping, or taking a rest of any kind...",
+                attributes: [
+                    {
+                        value: "2",
+                        trait_type: "Generation",
+                    },
+                    {
+                        value: "Gold",
+                        trait_type: "Rarity",
+                    },
+                    {
+                        value: "Zapper Terminator",
+                        trait_type: "Name",
+                    },
+                ],
+                id: "3",
+                avatar: "ipfs://QmZXPtGXK3pikNCRNUvjfaGeTwY5ja5zP2Zd2ZG9Q2zAAh/20.png",
+            },
+            timeLastUpdated: "2022-10-18T09:12:04.993Z",
+            contractMetadata: {
+                name: "Zapper NFT V2",
+                symbol: "ZPR NFT",
+                tokenType: "ERC1155",
+            },
+        },
     ],
-    "totalCount": 3,
-    "blockHash": "0xeb2d26af5b6175344a14091777535a2cb21c681665a734a8285f889981987630",
+    totalCount: 3,
+    blockHash: "0xeb2d26af5b6175344a14091777535a2cb21c681665a734a8285f889981987630",
 };
 
 const walletTypeDefault = {
@@ -333,197 +337,18 @@ const coinsTags = {
 };
 
 function getCoin(walletTag) {
-    return Object.keys(coinsTags).find(key => coinsTags[key].includes(walletTag))
+    return Object.keys(coinsTags).find((key) => coinsTags[key].includes(walletTag));
 }
 
 const tokenABI = [
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Approval",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Transfer",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			}
-		],
-		"name": "allowance",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "transfer",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
+    { inputs: [{ internalType: "address", name: "account", type: "address" }], name: "balanceOf", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
+    { inputs: [], name: "decimals", outputs: [{ internalType: "uint8", name: "", type: "uint8" }], stateMutability: "view", type: "function" },
+    { inputs: [], name: "name", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
+    { inputs: [], name: "symbol", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
 ];
 
 async function loadToken(web3, tokenAddress) {
     return await new web3.eth.Contract(tokenABI, tokenAddress);
-};
+}
 
 export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken };

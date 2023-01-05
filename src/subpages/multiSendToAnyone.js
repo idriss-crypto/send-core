@@ -74,6 +74,7 @@ export class MultiSendToAnyone {
 
         this.html.addEventListener('drop', async (e) => {
             console.log("Dropped a file")
+            e.preventDefault();
             this.html.querySelector('textarea[name="recipients"]').value = "Processing ...";
             let csvContent = await this.prepareMultiSend(e);
             this.html.querySelector('textarea[name="recipients"]').value = csvContent;
@@ -149,7 +150,6 @@ export class MultiSendToAnyone {
 
     async prepareMultiSend(e){
         console.log(e)
-        e.preventDefault();
         let file;
         let textToDisplay;
 
@@ -312,11 +312,38 @@ export class MultiSendToAnyone {
     async getTokenBalance(address) {
         console.log(this.selectedAccount,  defaultWeb3)
         let tokenContract = await loadToken(defaultWeb3, address);
+        let tempNewAssetBalance;
         try {
-            newAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
+            tempNewAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
+            let newBalanceDecimals = await tokenContract.methods.decimals().call();
+            if (tempNewAssetBalance != '0') newAssetBalance = parseInt(tempNewAssetBalance)/10**parseInt(newBalanceDecimals)
         } catch {
-            newAssetBalance = '0';
+            tempNewAssetBalance = '0';
         }
+        return tempNewAssetBalance + ""
+    }
+
+    async getTokenData(address) {
+        console.log(this.selectedAccount,  defaultWeb3)
+        let tokenContract = await loadToken(defaultWeb3, address);
+        console.log(tokenContract)
+        let tempAssetBalance;
+        let tempTokenDecimals;
+        let tempTokenSymbol;
+        let tempTokenName;
+        let tempAdjustedBalance = '0';
+
+        try {
+            tempAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
+            tempTokenDecimals = await tokenContract.methods.decimals().call();
+            tempTokenSymbol = await tokenContract.methods.symbol().call();
+            tempTokenName = await tokenContract.methods.name().call();
+            if (tempAssetBalance != '0') tempAdjustedBalance = (parseInt(tempAssetBalance)/10**parseInt(tempTokenDecimals)) + ""
+        } catch (error) {
+        console.log(error)
+            return false
+        }
+        return {tempAssetBalance, tempAdjustedBalance, tempTokenDecimals, tempTokenSymbol, tempTokenName}
     }
 
     async refreshVisibleAssets() {
@@ -335,7 +362,7 @@ export class MultiSendToAnyone {
                 console.log("getting balance for token")
                 if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
 
-                    newAssetBalance = this.getTokenBalance(asset.dataset.address)
+                    newAssetBalance = this.geTokenBalance(asset.dataset.address)
                 }
 
                 if (assetBalance === '0' && asset.dataset.assettype == "native") {
@@ -347,6 +374,7 @@ export class MultiSendToAnyone {
                         else{
                            console.log(" I have ", result, " MATIC.")
                            newAssetBalance = result;
+                           if (newAssetBalance != '0') newAssetBalance = parseInt(newAssetBalance)/10**18
                         }
                     })
                 }
@@ -378,6 +406,15 @@ export class MultiSendToAnyone {
             }
         }
 
+    }
+
+    async setCustomAsset() {
+        let customAddress = this.html.querySelector('.customAssetAddress').value;
+        let slider = this.html.querySelector('#Toggle');
+        let selectedAssetType = slider.checked? "NFT:" : "Token:";
+
+        let customToken = slider.checked? "NFT:" : await this.getTokenData(customAddress);
+        console.log(customToken)
     }
 
     filterAssets(assetFilter) {
