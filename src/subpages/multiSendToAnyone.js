@@ -11,6 +11,7 @@ let hasAmount;
 let sameAmount;
 let currentAmount;
 let currentSame;
+let gotBalance = false;
 let multiSendArr = [];
 let asset;
 
@@ -20,8 +21,6 @@ assetTypes["erc20"] = 1;
 assetTypes["erc721"] = 2;
 assetTypes["erc1155"] = 3;
 
-
-// ToDo: add binary 'gotBalances' modifier to optimize performance
 
 export class MultiSendToAnyone {
     constructor(ownedAssets = [], selectedAccount = "0x", assetFilter = null, selectNFT = false, networkFilter = {"networks":["polygon"]}) {
@@ -310,6 +309,16 @@ export class MultiSendToAnyone {
         this.refreshVisibleAssets();
     }
 
+    async getTokenBalance(address) {
+        console.log(this.selectedAccount,  defaultWeb3)
+        let tokenContract = await loadToken(defaultWeb3, address);
+        try {
+            newAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
+        } catch {
+            newAssetBalance = '0';
+        }
+    }
+
     async refreshVisibleAssets() {
         let slider = this.html.querySelector('#Toggle');
 
@@ -319,40 +328,38 @@ export class MultiSendToAnyone {
 
         let count = 0
         for (let asset of assets) {
+            const button = asset.parentNode.parentNode.querySelector('button');
             let assetBalance = asset.querySelector(".amountOwned").textContent;
             let newAssetBalance = assetBalance;
-            if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
-                let tokenContract = await loadToken(defaultWeb3, asset.dataset.address);
-                try {
-                    newAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
-                } catch {
-                    newAssetBalance = '0';
+            if (!gotBalance) {
+                console.log("getting balance for token")
+                if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
+
+                    newAssetBalance = this.getTokenBalance(asset.dataset.address)
                 }
-            }
 
-            if (assetBalance === '0' && asset.dataset.assettype == "native") {
-                await defaultWeb3.eth.getBalance(this.selectedAccount, function(error, result){
-                    if(error){
-                       console.log(error)
-                       newAssetBalance = '0';
-                    }
-                    else{
-                       console.log(" I have ", result, " MATIC.")
-                       newAssetBalance = result;
-                    }
-                 })
+                if (assetBalance === '0' && asset.dataset.assettype == "native") {
+                    await defaultWeb3.eth.getBalance(this.selectedAccount, function(error, result){
+                        if(error){
+                           console.log(error)
+                           newAssetBalance = '0';
+                        }
+                        else{
+                           console.log(" I have ", result, " MATIC.")
+                           newAssetBalance = result;
+                        }
+                    })
+                }
+                gotBalance = true;
             }
-
             asset.querySelector(".amountOwned").textContent = newAssetBalance;
+            if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
 
             asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
             asset.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
 
             count = asset.style.display == '' ? count + 1 : count;
 
-            const button = asset.parentNode.parentNode.querySelector('button');
-            console.log("Button is ", button)
-            if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
             button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
         }
         if (count === 0) {
