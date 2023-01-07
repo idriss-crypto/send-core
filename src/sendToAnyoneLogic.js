@@ -210,7 +210,7 @@ export const SendToAnyoneLogic = {
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 // the devil is here
-                // result = await this.idriss.multitransferToIDriss(recipients_, transactionOptions);
+                result = await this.idriss.multitransferToIDriss(recipients_, transactionOptions);
             } catch (err) {
                 console.log("error", err);
                 // Transaction failed or user has denied
