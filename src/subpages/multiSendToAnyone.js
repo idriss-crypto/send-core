@@ -417,6 +417,22 @@ export class MultiSendToAnyone {
         console.log(customToken)
     }
 
+    async calculateAmount() {
+
+        let amount = this.html.querySelector('#InputCustomAmount').value? this.html.querySelector('#InputCustomAmount').value : '1';
+
+        let token = this.html.querySelector('.assetSelect').dataset.symbol;
+        let tempAdjustedBalance;
+
+        // ToDo: assetAddress can be custom
+        let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
+
+        let tokenContract = await loadToken(defaultWeb3, assetAddress);
+        let tempTokenDecimals = await tokenContract.methods.decimals().call();
+        if (tempAssetBalance != '0') tempAdjustedBalance = parseInt(parseFloat(amount.replace(/,/g, "."))*10**parseInt(tempTokenDecimals)) + ""
+
+    }
+
     filterAssets(assetFilter) {
         if (!assetFilter) {
             return tokens;
