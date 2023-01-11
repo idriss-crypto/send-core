@@ -227,7 +227,7 @@ export class MultiSendToAnyone {
         // no message box atm
         // let message = this.html.querySelector('.messageBox textarea').value;
         // or just from selected asset?
-        let assetAddress = this.filterAssets({polygon: [token]})[0]?.address;
+        let assetAddress = this.html.querySelector('.assetSelect').dataset.address;
         let assetId = this.html.querySelector('.assetSelect').dataset.assetid;
         if (WEBPACK_MODE !== 'production') {
             assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
@@ -244,11 +244,15 @@ export class MultiSendToAnyone {
             assetId: assetId === "" ? 0 : assetId,
         };
 
-        console.log(asset)
+        asset = Object.fromEntries(Object.entries(asset).filter(([k,v]) => v!=='undefined'));
+
+
+        console.log("asset now1: ", asset)
         for (let element of result) {
             let elemToPush = await this.prepareRecipients(element)
             multiSendArr.push(elemToPush)
         }
+        console.log("asset now2: ", asset)
 
         console.log(multiSendArr)
 
@@ -362,7 +366,7 @@ export class MultiSendToAnyone {
                 console.log("getting balance for token")
                 if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
 
-                    newAssetBalance = this.geTokenBalance(asset.dataset.address)
+                    newAssetBalance = this.getTokenBalance(asset.dataset.address)
                 }
 
                 if (assetBalance === '0' && asset.dataset.assettype == "native") {
