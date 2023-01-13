@@ -50,5 +50,11 @@
 <footer>
     <button type="button" class="multiSend">
         <span id="buttonNext" >Send</span>
+        <div id="buttonNextSpinner" style="display: none;" class="spinnerWrapper">
+            <div class="spinner" role="status">
+                <span class="spinnerDot">•</span>
+            </div>
+        <span class="spinnerEnd"></span>
+    </div>
     </button>
 </footer>

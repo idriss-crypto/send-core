@@ -15,6 +15,10 @@ let gotBalance = false;
 let multiSendArr = [];
 let asset;
 
+const regPh = /^(\+\(?\d{1,4}\s?)\)?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/;
+const regM = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+const regT = /^@[a-zA-Z0-9_]{1,15}$/;
+
 const assetTypes = {};
 assetTypes["native"] = 0;
 assetTypes["erc20"] = 1;
@@ -209,18 +213,28 @@ export class MultiSendToAnyone {
 
     async multiSend(){
         console.log("Calling multiSend()")
+        this.html.querySelector('#buttonNextSpinner').style.display = '';
+        this.html.querySelector('#buttonNext').style.display = 'none';
+
         multiSendArr = []
         let content = this.html.querySelector('textarea[name="recipients"]').value;
         console.log(content)
         // if individual is turned on
-        const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+        let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
         // if individual is turned off
         // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
         console.log(result)
         // potentially also add for pasting (or real-time updating?)
-        await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
+        for (let i = 0; i< result.length; i++) {
+            result[i][0] = result[i][0].replace(/\s+/g, '');
+        }
+        result = result.filter(recipient => this.isMatch(recipient[0]))
         console.log(result)
-        if (result.length === 0) return;
+        if (result.length === 0) {
+            this.html.querySelector('#buttonNextSpinner').style.display = 'none';
+            this.html.querySelector('#buttonNext').style.display = 'block';
+            return;
+        }
         let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "native";
         let token = this.html.querySelector('.assetSelect').dataset.symbol;
         if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
@@ -253,7 +267,7 @@ export class MultiSendToAnyone {
         }
 
 
-//            // ToDo: what about messages?
+        // ToDo: what about messages?
         console.log("invoking event ", multiSendArr)
         this.html.dispatchEvent(Object.assign(new Event('multiSendMoney', {bubbles: true}), {
             multiSendArr,
@@ -262,13 +276,26 @@ export class MultiSendToAnyone {
 
     }
 
+    // for the future, also need library change to accept other strings
+    isMatch(identifier) {
+        //if (defaultWeb3.utils.isAddress(identifier)) return true;
+        //if (defaultWeb3ETH.eth.ens.recordExists(identifier)) return true;
+        if (identifier.match(regPh) || identifier.match(regM) || identifier.match(regT)) return true
+        return false
+    }
+
     async prepareRecipients(res) {
         let properAmount;
         let assetAmount = 1
         if (asset.type > 1 ) properAmount = 1;
         // ToDo: figure out assetAmount
         else properAmount = (res[1] ?? "").length > 0 ? res[1] : assetAmount;
-        let resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
+        let resolved = {}
+        try {
+            resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
+        } catch {
+            console.log()
+        }
         const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
         const walletType = walletTag
                 ? {
