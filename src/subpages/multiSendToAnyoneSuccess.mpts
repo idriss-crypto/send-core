@@ -5,7 +5,7 @@
     <img src=success alt="" class="success"/>
     <h2 class="h2Success">Transaction Submitted🥳</h2>
     <p class="subtitle">
-        <p class="text-xs leading-6 font-medium text-gray-500 mt-5" >Download a distribution report</p>
+        <p id="text-wrapper-inner" >Download a distribution report</p>
     </p>
 </main>
 <footer>

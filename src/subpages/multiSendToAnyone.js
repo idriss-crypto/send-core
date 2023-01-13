@@ -247,14 +247,11 @@ export class MultiSendToAnyone {
         asset = Object.fromEntries(Object.entries(asset).filter(([k,v]) => v!=='undefined'));
 
 
-        console.log("asset now1: ", asset)
         for (let element of result) {
             let elemToPush = await this.prepareRecipients(element)
             multiSendArr.push(elemToPush)
         }
-        console.log("asset now2: ", asset)
 
-        console.log(multiSendArr)
 
 //            // ToDo: what about messages?
         console.log("invoking event ", multiSendArr)
@@ -266,16 +263,12 @@ export class MultiSendToAnyone {
     }
 
     async prepareRecipients(res) {
-        console.log(this.idriss)
-        console.log(res)
-        console.log(asset)
         let properAmount;
         let assetAmount = 1
         if (asset.type > 1 ) properAmount = 1;
         // ToDo: figure out assetAmount
         else properAmount = (res[1] ?? "").length > 0 ? res[1] : assetAmount;
         let resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
-        console.log(resolved)
         const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
         const walletType = walletTag
                 ? {
@@ -304,7 +297,6 @@ export class MultiSendToAnyone {
     }
 
     handleSlider() {
-        console.log("Slider clicked")
         let slider = this.html.querySelector('#Toggle');
         this.html.querySelector('.assetType').textContent = slider.checked? "NFT:" : "Token:";
         this.html.querySelector('#assetHeader').textContent = slider.checked? "NFT" : "Token";
@@ -314,7 +306,6 @@ export class MultiSendToAnyone {
     }
 
     async getTokenBalance(address) {
-        console.log(this.selectedAccount,  defaultWeb3)
         let tokenContract = await loadToken(defaultWeb3, address);
         let tempNewAssetBalance;
         try {
@@ -328,9 +319,7 @@ export class MultiSendToAnyone {
     }
 
     async getTokenData(address) {
-        console.log(this.selectedAccount,  defaultWeb3)
         let tokenContract = await loadToken(defaultWeb3, address);
-        console.log(tokenContract)
         let tempAssetBalance;
         let tempTokenDecimals;
         let tempTokenSymbol;
@@ -344,7 +333,7 @@ export class MultiSendToAnyone {
             tempTokenName = await tokenContract.methods.name().call();
             if (tempAssetBalance != '0') tempAdjustedBalance = (parseInt(tempAssetBalance)/10**parseInt(tempTokenDecimals)) + ""
         } catch (error) {
-        console.log(error)
+            console.log(error)
             return false
         }
         return {tempAssetBalance, tempAdjustedBalance, tempTokenDecimals, tempTokenSymbol, tempTokenName}
@@ -355,7 +344,6 @@ export class MultiSendToAnyone {
 
         let assets = this.html.querySelectorAll('.assetSelect li')
 
-        console.log("Assets: ", assets)
 
         let count = 0
         for (let asset of assets) {
@@ -363,7 +351,6 @@ export class MultiSendToAnyone {
             let assetBalance = asset.querySelector(".amountOwned").textContent;
             let newAssetBalance = assetBalance;
             if (!gotBalance) {
-                console.log("getting balance for token")
                 if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
 
                     newAssetBalance = this.getTokenBalance(asset.dataset.address)
@@ -376,7 +363,6 @@ export class MultiSendToAnyone {
                            newAssetBalance = '0';
                         }
                         else{
-                           console.log(" I have ", result, " MATIC.")
                            newAssetBalance = result;
                            if (newAssetBalance != '0') newAssetBalance = parseInt(newAssetBalance)/10**18
                         }
