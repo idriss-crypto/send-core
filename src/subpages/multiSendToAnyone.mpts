@@ -43,6 +43,9 @@
     <div id="TextArea" class="recipients-wrapper">
         <textarea required name="recipients" ></textarea>
     </div>
+    <p class="unique-recipients-wrapper">
+        <a id="###">Unique recipients: 0</a>
+    </p>
 </div>
 <p class="nft-mint-wrapper">
     <a id="MintNFTLink" href="https://mintnft.today/" target="_blank" rel="noopener noreferrer">Don't have NFTs? Mint here</a>

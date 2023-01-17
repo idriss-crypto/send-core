@@ -914,6 +914,25 @@
         }
     }
 
+    .unique-recipients-wrapper {
+        display: block;
+        margin-top: 0;
+        margin-left: 0.25rem;
+        margin-bottom: 1rem;
+        text-align: right;
+        color: rgb(107 114 128);
+        line-height: 1.25rem;
+        margin: 0 0.1rem 0 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 400;
+
+        a {
+
+            &:hover {
+             cursor: pointer;
+             }
+        }
+    }
 
     .nft-mint-wrapper {
         display: block;
