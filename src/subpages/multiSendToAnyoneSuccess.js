@@ -8,34 +8,32 @@ export class MultiSendToAnyoneSuccess {
     constructor(explorerLink, token, data=null) {
 
         const idrissHost = IDRISS_HOMEPAGE
-        const claimData = data;
-        const notificationUrl = `${idrissHost}/sendNotification`
+        const notificationUrl = `${idrissHost}/multi-notification`
 
-        for (let claimableAsset of claimData) {
-            let txnHash = "0x"
-            const notificationBody = {
-                'url': claimableAsset[2],
-                'txnHash': txnHash,
-                'token': token
-            }
-            const notificationOptions = {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                mode: 'cors',
-                body: JSON.stringify(notificationBody)
-            }
-            if (txnHash!="0x"){
-                fetch(notificationUrl, notificationOptions)
-                .then((res) => {
-                    if (res.status == 200) {
-                        this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
-                    } else {
-                        this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
-                    }
-                    console.log(res)
-                })
-                .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."})
-            }
+        let txnHash = "0x"
+        // let txnHash = data.transactionHash? data.transactionHash : data.transactionReceipt.transactionHash;
+        const notificationBody = {
+            'txnHash': txnHash,
+            'token': token,
+            'data': data
+        }
+        const notificationOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            mode: 'cors',
+            body: JSON.stringify(notificationBody)
+        }
+        if (txnHash!="0x"){
+            fetch(notificationUrl, notificationOptions)
+            .then((res) => {
+                if (res.status == 200) {
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
+                } else {
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
+                }
+                console.log(res)
+            })
+            .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."})
         }
 
         this.html = create('div', {}, template({close, success}));

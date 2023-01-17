@@ -12,7 +12,8 @@ export class SendToAnyoneSuccess {
         const notificationUrl = `${idrissHost}/sendNotification`
         const notificationBody = {
             'url': claimUrl,
-            'txnHash': txnHash
+            'txnHash': txnHash,
+            'token': token
         }
         const notificationOptions = {
             method: 'POST',
