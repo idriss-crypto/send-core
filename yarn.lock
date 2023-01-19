@@ -3423,9 +3423,14 @@ idna-uts46-hx@^2.3.1:
   dependencies:
     punycode "2.1.0"
 
-"idriss-crypto@link:../ts-library":
-  version "0.0.0"
-  uid ""
+idriss-crypto@^1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.8.4.tgz#70d88b2f8d9b6b6a740d3f16213c064485832dbf"
+  integrity sha512-kEAr/GE7BJOpckvyy9n6OTqGsX60oopEiwWGqaCI04Y8a8poMOWMtQbhGIo9RgYWGvQZNPP0txHaAys0+429DQ==
+  dependencies:
+    "@types/node-fetch" "^2.5.12"
+    node-fetch "^2.6.7"
+    web3 "^1.7.4"
 
 ieee754@^1.1.13, ieee754@^1.2.1:
   version "1.2.1"

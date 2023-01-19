@@ -44,7 +44,7 @@
         <textarea required name="recipients" ></textarea>
     </div>
     <p class="unique-recipients-wrapper">
-        <a id="###">Unique recipients: 0</a>
+        <a >Unique recipients: 0</a>
     </p>
 </div>
 <p class="nft-mint-wrapper">

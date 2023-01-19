@@ -306,7 +306,6 @@ export class MultiSendToAnyone {
                 : walletTypeDefault;
 
         asset.amount = `${properAmount}`
-        // ToDo: when uploading only unknown IDriss handles, there is a BigNumber bug
         console.log({"beneficiary": res[0], "walletType": walletType, "asset": asset})
         return {"beneficiary": res[0], "walletType": walletType, "asset": asset}
     }

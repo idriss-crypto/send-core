@@ -7,11 +7,14 @@ import {create} from "fast-creator";
 export class MultiSendToAnyoneSuccess {
     constructor(explorerLink, token, data=null) {
 
+        this.html = create('div', {}, template({close, success}));
+
         const idrissHost = IDRISS_HOMEPAGE
         const notificationUrl = `${idrissHost}/multi-notification`
 
-        let txnHash = "0x"
-        // let txnHash = data.transactionHash? data.transactionHash : data.transactionReceipt.transactionHash;
+        //let txnHash = "0x"
+        const explorerArray = explorerLink.split('/')
+        const txnHash = explorerArray[explorerArray.length-1]
         const notificationBody = {
             'txnHash': txnHash,
             'token': token,
@@ -27,6 +30,7 @@ export class MultiSendToAnyoneSuccess {
             fetch(notificationUrl, notificationOptions)
             .then((res) => {
                 if (res.status == 200) {
+                    // all notifications sent
                     this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
                 } else {
                     this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
@@ -36,7 +40,7 @@ export class MultiSendToAnyoneSuccess {
             .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."})
         }
 
-        this.html = create('div', {}, template({close, success}));
+
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         console.log("data is ", claimData)
         this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
