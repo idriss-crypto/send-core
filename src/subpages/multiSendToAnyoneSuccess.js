@@ -27,7 +27,7 @@ export class MultiSendToAnyoneSuccess {
             mode: 'cors',
             body: JSON.stringify(notificationBody)
         }
-        if (txnHash!="0x"){
+        if (txnHash!="0x" && claimData){
             fetch(notificationUrl, notificationOptions)
             .then((res) => {
                 if (res.status == 200) {
