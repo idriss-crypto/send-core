@@ -209,7 +209,6 @@ export const SendToAnyoneLogic = {
                     gas: 400000,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                // the devil is here
                 result = await this.idriss.multitransferToIDriss(recipients_, transactionOptions);
             } catch (err) {
                 console.log("error", err);

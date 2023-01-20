@@ -11,6 +11,7 @@ export class MultiSendToAnyoneSuccess {
 
         const idrissHost = IDRISS_HOMEPAGE
         const notificationUrl = `${idrissHost}/multi-notification`
+        const claimData = data;
 
         //let txnHash = "0x"
         const explorerArray = explorerLink.split('/')
