@@ -82,6 +82,54 @@ export const SendToAnyoneLogic = {
         return { integer, normal };
     },
 
+
+    async calculateTokenAmount(assetAddress, decimalValue, userAssetType) {
+        console.log(decimalValue)
+        console.log(userAssetType)
+        console.log(assetAddress)
+
+        const BN = defaultWeb3.utils.BN;
+        const ten = new BN(10);
+
+        let decimals;
+        console.log(assetTypes)
+        console.log(userAssetType == assetTypes.native)
+
+        if (userAssetType == assetTypes.native) {decimals="18"}
+        else if (userAssetType == assetTypes.erc20) {
+            let tokenContract = await this.loadERC20(assetAddress);
+            console.log(tokenContract)
+            decimals = await tokenContract.methods.decimals().call();
+        } else { return "1" }
+
+        console.log(decimals)
+        const base = ten.pow(new BN(decimals));
+
+        // expect values to be non-negative and start with number, i.e., not ".xxx"
+
+        // Split it into a whole and fractional part
+        let comps = decimalValue.split('.');
+        let whole = comps[0]
+        let fraction = comps[1];
+        console.log(comps, whole, fraction, base, decimals)
+
+        if (!whole) { whole = '0'; }
+        if (!fraction) { fraction = '0'; }
+        if (fraction.length > parseInt(decimals)) {
+            throw new Error('Too many decimal places');
+        }
+
+        while (fraction.length < parseInt(decimals)) {
+            fraction += '0';
+        }
+
+        whole = new BN(whole);
+        fraction = new BN(fraction);
+        let wei = (whole.mul(base)).add(fraction);
+
+        return wei.toString()
+    },
+
     async switchNetwork(network) {
         if (network === "Polygon") {
             try {
@@ -476,6 +524,232 @@ export const SendToAnyoneLogic = {
             { inputs: [], name: "version", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
         ];
         return await new defaultWeb3.eth.Contract(abiOracle, oracleAddress[ticker]);
+    },
+
+    async loadERC20(address) {
+        let abiERC20 = [
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_spender",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "approve",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "name": "balance",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "transfer",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_spender",
+                "type": "address"
+            }
+        ],
+        "name": "allowance",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    }
+];
+        return await new defaultWeb3.eth.Contract(abiERC20, address);
     },
 
     // calculate price in USD

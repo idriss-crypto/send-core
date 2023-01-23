@@ -5,6 +5,7 @@ import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 import { walletTypeDefault, getCoin, loadToken } from "../sendToAnyoneUtils";
 import { defaultWeb3 } from "../sendToAnyoneLogic";
+import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
 
 let hasAmount;
@@ -248,7 +249,7 @@ export class MultiSendToAnyone {
         }
         if (assetType === 'erc1155') {
             assetAddress = this.html.querySelector('.assetSelect').dataset.address;
-            assetType = this.html.querySelector('.assetSelect').dataset.assetType.toLowerCase();
+            assetType = this.html.querySelector('.assetSelect').dataset.assettype.toLowerCase();
         }
         if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
 
@@ -285,11 +286,8 @@ export class MultiSendToAnyone {
     }
 
     async prepareRecipients(res) {
-        let properAmount;
-        let assetAmount = 1
-        if (asset.type > 1 ) properAmount = 1;
-        // ToDo: figure out assetAmount
-        else properAmount = (res[1] ?? "").length > 0 ? res[1] : assetAmount;
+        let properAmount = await SendToAnyoneLogic.calculateTokenAmount(asset.assetContractAddress, res[1], asset.type);
+        console.log(properAmount)
         let resolved = {}
         try {
             resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
