@@ -8,9 +8,9 @@ import { defaultWeb3 } from "../sendToAnyoneLogic";
 import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
 
-let hasAmount;
-let sameAmount;
-let currentAmount;
+let hasAmount = false;
+let sameAmount = false;
+let currentAmount=0;
 let currentSame;
 let gotBalance = false;
 let multiSendArr = [];
@@ -112,45 +112,101 @@ export class MultiSendToAnyone {
         });
 
         this.html.querySelector('#InputCustomAmount')?.addEventListener('input', (e) => {
+            this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
+            // if empty, check this.hasAmounts? custom : 0.00
+            if (!this.html.querySelector('#InputCustomAmount').value) return;
             const tempAmount = this.html.querySelector('#InputCustomAmount').value? this.html.querySelector('#InputCustomAmount').value : '1';
+
+            console.log(tempAmount, currentAmount)
+            // check logic
             if (tempAmount === currentAmount) return
 
+            console.log("Still checking amount function")
             currentAmount = tempAmount;
             currentSame = tempAmount;
-            this.modifyTextbox();
+            this.modifyAmountInput();
+            this.modifyRecipients();
         })
 
         this.html.querySelector('textarea[name="recipients"]')?.addEventListener('input', async (e) => {
+            console.log(e)
             const content = this.html.querySelector('textarea[name="recipients"]').value;
             let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
             await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
-            if (result.length === 0) return;
-            sameAmount = false;
+            if (result.length === 0) {
+                this.html.querySelector('.unique-recipients-wrapper').style.visibility = "hidden";
+                this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
+                return
+            }
             for (let element of result){
                 await this.isSameAmount(element)
             }
-            console.log("same amount? ", sameAmount)
-            if (sameAmount) {
-            console.log("same amount, should be placed in input field")
-            console.log(result[0])
-                this.html.querySelector('#InputCustomAmount').value = result[0][1]
+            console.log("same amount? ", this.sameAmount)
+
+            // check logic: placeholder changed, but only when this.hasAmount == true
+            if (this.sameAmount) {
+                console.log("same amount, should be placed in input field")
+                console.log(result[0])
+                this.html.querySelector('#InputCustomAmount').placeholder = "Custom"
             } else {
-                this.html.querySelector('#InputCustomAmount').value = ''
+                this.html.querySelector('#InputCustomAmount').placeholder = "Custom"
             }
+            this.modifyRecipients(e.inputType);
         })
 
         this.html.querySelector('textarea[name="recipients"]').placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n---------- paste or drag a file here ----------";
         this.refreshVisibleAssets();
     }
 
-    async modifyTextbox() {
+    async modifyAmountInput() {
         const content = this.html.querySelector('textarea[name="recipients"]').value;
         let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
-        await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
+        for (let i = 0; i< result.length; i++) {
+            result[i][0] = result[i][0].replace(/\s+/g, '');
+        }
+        console.log("Still checking amount function1")
         if (result.length === 0) return;
+        console.log("Still checking amount function2")
+        console.log(currentAmount)
         result = result.map(data => [data[0], currentAmount]);
         let textToDisplay = result.join('\n');
         this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay;
+    }
+
+
+    async modifyRecipients(inputType="") {
+        let content = this.html.querySelector('textarea[name="recipients"]').value;
+
+        // if individual amounts entered
+        let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+        console.log(result)
+        if (!result[result.length - 1][1] || !this.isMatch(result[result.length - 1][0])) {
+            this.html.querySelector(".multiSend").disabled = true;
+            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "Some of you input is invalid";
+            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.style.color =  "red";
+            this.html.querySelector('.unique-recipients-wrapper').style.visibility = "visible";
+            return
+        }
+        this.html.querySelector(".multiSend").disabled = false;
+
+        // if same amounts entered
+        // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
+
+        let recipients = []
+        for (let i = 0; i< result.length; i++) {
+            result[i][0] = result[i][0].replace(/\s+/g, '');
+            recipients.push(result[i][0])
+        }
+        console.log(result)
+
+        let textToDisplay = result.join('\n');
+
+        this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay.concat((inputType == "insertLineBreak")? "\n" : "");
+
+        let uniqueRes = new Set(recipients).size;
+        this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "Unique recipients: " + uniqueRes.toString();
+        this.html.querySelector('.unique-recipients-wrapper').firstElementChild.style.color =  "#6B7280";
+        this.html.querySelector('.unique-recipients-wrapper').style.visibility = (uniqueRes==0)? "hidden" : "visible";
     }
 
     async prepareMultiSend(e){
@@ -177,8 +233,6 @@ export class MultiSendToAnyone {
 
         return new Promise(resolve => {
             const fileReader = new FileReader();
-            hasAmount = false
-            sameAmount = true;
 
             fileReader.addEventListener("load", async () => {
                 const handlesRaw = fileReader.result;
@@ -189,7 +243,7 @@ export class MultiSendToAnyone {
                 for (let element of result) {
                     await this.checkAmount(element);
                 }
-                if (hasAmount) {
+                if (this.hasAmount) {
                     for (let element of result) {
                         await this.fixAmount(element)
                     }
@@ -197,9 +251,9 @@ export class MultiSendToAnyone {
                     result = result.map(data => [data[0], '1']);
                 }
                 console.log(result)
-                console.log(hasAmount)
+                console.log(this.hasAmount)
                 textToDisplay = result.join('\n');
-                if (hasAmount) currentSame = result[0][1]
+                if (this.hasAmount) currentSame = result[0][1]
                 for (let element of result){
                     await this.isSameAmount(element)
                 }
@@ -229,7 +283,7 @@ export class MultiSendToAnyone {
         for (let i = 0; i< result.length; i++) {
             result[i][0] = result[i][0].replace(/\s+/g, '');
         }
-        result = result.filter(recipient => this.isMatch(recipient[0]))
+
         console.log(result)
         if (result.length === 0) {
             this.html.querySelector('#buttonNextSpinner').style.display = 'none';
@@ -279,7 +333,7 @@ export class MultiSendToAnyone {
 
     // for the future, also need library change to accept other strings
     isMatch(identifier) {
-        //if (defaultWeb3.utils.isAddress(identifier)) return true;
+        if (defaultWeb3.utils.isAddress(identifier)) return true;
         //if (defaultWeb3ETH.eth.ens.recordExists(identifier)) return true;
         if (identifier.match(regPh) || identifier.match(regM) || identifier.match(regT)) return true
         return false
@@ -309,15 +363,16 @@ export class MultiSendToAnyone {
     }
 
     checkAmount(res) {
-        if (res.length>1) hasAmount = true;
+        if (res.length>1) this.hasAmount = true;
     }
 
     fixAmount(res) {
         if (res[1] == '') res[1] = 1;
     }
 
+    // logic broken
     isSameAmount(res) {
-        if(res[1] != currentSame) sameAmount = false
+        if(res[1] != currentSame) this.sameAmount = false
     }
 
     handleSlider() {
