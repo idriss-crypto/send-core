@@ -8,13 +8,17 @@ import { defaultWeb3 } from "../sendToAnyoneLogic";
 import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
 
-let hasAmount = false;
-let sameAmount = false;
-let currentAmount=0;
+let hasAmount;
+let sameAmount;
+let currentAmount;
 let currentSame;
 let gotBalance = false;
+let customAmount = false;
 let multiSendArr = [];
 let asset;
+let recipientsNoAmount = []
+let content=""
+let result = []
 
 const regPh = /^(\+\(?\d{1,4}\s?)\)?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/;
 const regM = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
@@ -108,48 +112,48 @@ export class MultiSendToAnyone {
 
         this.html.querySelector('.multiSend')?.addEventListener('click', async (e) => {
             console.log("next clicked")
-            this.multiSend();
+            await this.checkValidity()? this.multiSend() : console.log("not valid");
         });
+
 
         this.html.querySelector('#InputCustomAmount')?.addEventListener('input', (e) => {
             this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
             // if empty, check this.hasAmounts? custom : 0.00
             if (!this.html.querySelector('#InputCustomAmount').value) return;
-            const tempAmount = this.html.querySelector('#InputCustomAmount').value? this.html.querySelector('#InputCustomAmount').value : '1';
-
-            console.log(tempAmount, currentAmount)
-            // check logic
-            if (tempAmount === currentAmount) return
 
             console.log("Still checking amount function")
-            currentAmount = tempAmount;
-            currentSame = tempAmount;
+
             this.modifyAmountInput();
             this.modifyRecipients();
         })
 
         this.html.querySelector('textarea[name="recipients"]')?.addEventListener('input', async (e) => {
-            console.log(e)
-            const content = this.html.querySelector('textarea[name="recipients"]').value;
-            let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
-            await result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
-            if (result.length === 0) {
+            this.content = this.html.querySelector('textarea[name="recipients"]').value;
+            this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+            this.recipientsNoAmount = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(',')[0])
+            await this.result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
+            await this.recipientsNoAmount.forEach((element) => {element = element.replace(/\s+/g, '')})
+            if (this.result.length === 0) {
                 this.html.querySelector('.unique-recipients-wrapper').style.visibility = "hidden";
                 this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
                 return
             }
-            for (let element of result){
+
+            this.sameAmount = true;
+            this.currentSame = this.result[0][1];
+            console.log(this.result)
+            for (let element of this.result){
                 await this.isSameAmount(element)
             }
             console.log("same amount? ", this.sameAmount)
-
-            // check logic: placeholder changed, but only when this.hasAmount == true
             if (this.sameAmount) {
                 console.log("same amount, should be placed in input field")
-                console.log(result[0])
-                this.html.querySelector('#InputCustomAmount').placeholder = "Custom"
+                console.log(this.result[0])
+                this.html.querySelector('#InputCustomAmount').value = this.result[0][1]? this.result[0][1] : "";
+                this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
             } else {
                 this.html.querySelector('#InputCustomAmount').placeholder = "Custom"
+                this.html.querySelector('#InputCustomAmount').value = ""
             }
             this.modifyRecipients(e.inputType);
         })
@@ -158,52 +162,66 @@ export class MultiSendToAnyone {
         this.refreshVisibleAssets();
     }
 
+    // ToDo: fix issue of "temporary this.sameAmount"
     async modifyAmountInput() {
-        const content = this.html.querySelector('textarea[name="recipients"]').value;
-        let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
-        for (let i = 0; i< result.length; i++) {
-            result[i][0] = result[i][0].replace(/\s+/g, '');
-        }
-        console.log("Still checking amount function1")
-        if (result.length === 0) return;
-        console.log("Still checking amount function2")
-        console.log(currentAmount)
-        result = result.map(data => [data[0], currentAmount]);
-        let textToDisplay = result.join('\n');
+
+        this.currentSame = this.html.querySelector('#InputCustomAmount').value;
+        console.log(this.currentSame)
+
+        this.result = this.result.map(data => [data[0], this.currentSame]);
+        this.sameAmount = true
+        let textToDisplay = this.recipientsNoAmount.join('\n')
         this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay;
     }
 
 
-    async modifyRecipients(inputType="") {
-        let content = this.html.querySelector('textarea[name="recipients"]').value;
+    async checkValidity() {
 
-        // if individual amounts entered
-        let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
-        console.log(result)
-        if (!result[result.length - 1][1] || !this.isMatch(result[result.length - 1][0])) {
-            this.html.querySelector(".multiSend").disabled = true;
-            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "Some of you input is invalid";
+        let isValid = false;
+        this.html.querySelector(".multiSend").disabled = true;
+
+        let wrongRegex = ""
+        let wrongAmount = ""
+
+        if (!this.result) {
+            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "No input made";
             this.html.querySelector('.unique-recipients-wrapper').firstElementChild.style.color =  "red";
             this.html.querySelector('.unique-recipients-wrapper').style.visibility = "visible";
-            return
+            return isValid
         }
-        this.html.querySelector(".multiSend").disabled = false;
+
+        for (let res of this.result) {
+            if (!this.isMatch(res[0])) wrongRegex = res[0].concat(" is not a valid input.");
+            if (res[1] == "0") wrongAmount = "Amount cannot be 0 for ".concat(res[0]);
+            if(!res[1]) wrongAmount = "Cannot find amount for ".concat(res[0]);
+
+            if(wrongRegex || wrongAmount) {
+                this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  wrongRegex? wrongRegex : wrongAmount;
+                this.html.querySelector('.unique-recipients-wrapper').firstElementChild.style.color =  "red";
+                this.html.querySelector('.unique-recipients-wrapper').style.visibility = "visible";
+                return isValid
+            }
+        }
+
+        isValid = true;
+
+        return isValid;
+    }
+
+    async modifyRecipients(inputType="") {
 
         // if same amounts entered
-        // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
+        if (this.sameAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
 
-        let recipients = []
-        for (let i = 0; i< result.length; i++) {
-            result[i][0] = result[i][0].replace(/\s+/g, '');
-            recipients.push(result[i][0])
-        }
-        console.log(result)
+        console.log(this.result)
 
-        let textToDisplay = result.join('\n');
+        this.html.querySelector(".multiSend").disabled = false;
+
+        let textToDisplay = this.sameAmount? this.recipientsNoAmount.join('\n') : this.result.join('\n');
 
         this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay.concat((inputType == "insertLineBreak")? "\n" : "");
 
-        let uniqueRes = new Set(recipients).size;
+        let uniqueRes = new Set(this.recipientsNoAmount).size;
         this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "Unique recipients: " + uniqueRes.toString();
         this.html.querySelector('.unique-recipients-wrapper').firstElementChild.style.color =  "#6B7280";
         this.html.querySelector('.unique-recipients-wrapper').style.visibility = (uniqueRes==0)? "hidden" : "visible";
@@ -233,32 +251,42 @@ export class MultiSendToAnyone {
 
         return new Promise(resolve => {
             const fileReader = new FileReader();
+            this.hasAmount = false
 
             fileReader.addEventListener("load", async () => {
                 const handlesRaw = fileReader.result;
                 console.log(handlesRaw)
-                let result = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(','));
-                console.log(result)
-                //ToDo: filter non-RegEx strings
-                for (let element of result) {
+                this.result = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(','));
+                this.recipientsNoAmount = handlesRaw.split(/(?:\r\n|\n)+/).filter(function(el) {return el.length != 0}).map(data => data.split(',')[0])
+
+                console.log(this.result)
+                console.log(this.recipientsNoAmount)
+
+                for (let element of this.result) {
                     await this.checkAmount(element);
                 }
+
                 if (this.hasAmount) {
-                    for (let element of result) {
-                        await this.fixAmount(element)
+                    for (let element of this.result) {
+                        element[1] = await this.fixAmount(element)
                     }
                 } else {
-                    result = result.map(data => [data[0], '1']);
+                    // dummy input "1" when no amount added
+                    this.result = this.result.map(data => [data[0], '1']);
                 }
-                console.log(result)
+
+                console.log(this.result)
                 console.log(this.hasAmount)
-                textToDisplay = result.join('\n');
-                if (this.hasAmount) currentSame = result[0][1]
-                for (let element of result){
+
+                this.sameAmount = true;
+                this.currentSame = this.result[0][1]
+                for (let element of this.result){
                     await this.isSameAmount(element)
                 }
-                console.log("Is same amount? ", sameAmount)
-                // ToDo: check if same amount holds true
+
+                let textToDisplay = this.sameAmount? this.recipientsNoAmount.join('\n') : this.result.join('\n');
+
+                console.log("Is same amount? ", this.sameAmount)
                 console.log(textToDisplay)
                 resolve(textToDisplay)
             });
@@ -272,23 +300,17 @@ export class MultiSendToAnyone {
         this.html.querySelector('#buttonNext').style.display = 'none';
 
         multiSendArr = []
-        let content = this.html.querySelector('textarea[name="recipients"]').value;
-        console.log(content)
-        // if individual is turned on
-        let result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
-        // if individual is turned off
-        // const result = content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
-        console.log(result)
-        // potentially also add for pasting (or real-time updating?)
-        for (let i = 0; i< result.length; i++) {
-            result[i][0] = result[i][0].replace(/\s+/g, '');
-        }
+        console.log(this.content)
 
-        console.log(result)
-        if (result.length === 0) {
+        console.log(this.result)
+
+        // filter non matches, should never actually happen as it block execution beforehand
+        this.result = this.result.filter(recipient => this.isMatch(recipient[0]))
+
+        if (this.result.length === 0) {
             this.html.querySelector('#buttonNextSpinner').style.display = 'none';
             this.html.querySelector('#buttonNext').style.display = 'block';
-            return;
+            return
         }
         let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "native";
         let token = this.html.querySelector('.assetSelect').dataset.symbol;
@@ -316,11 +338,10 @@ export class MultiSendToAnyone {
         asset = Object.fromEntries(Object.entries(asset).filter(([k,v]) => v!=='undefined'));
 
 
-        for (let element of result) {
+        for (let element of this.result) {
             let elemToPush = await this.prepareRecipients(element)
             multiSendArr.push(elemToPush)
         }
-
 
         // ToDo: what about messages?
         console.log("invoking event ", multiSendArr)
@@ -367,12 +388,11 @@ export class MultiSendToAnyone {
     }
 
     fixAmount(res) {
-        if (res[1] == '') res[1] = 1;
+        if (res[1] == '') return '1';
     }
 
-    // logic broken
     isSameAmount(res) {
-        if(res[1] != currentSame) this.sameAmount = false
+        if(res[1] != this.currentSame) this.sameAmount = false;
     }
 
     handleSlider() {
@@ -523,3 +543,4 @@ export class MultiSendToAnyone {
         }
     }
 }
+

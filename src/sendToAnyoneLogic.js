@@ -254,7 +254,7 @@ export const SendToAnyoneLogic = {
             try {
                 const transactionOptions = {
                     from: selectedAccount,
-                    gas: 400000,
+                    gas: 1200000,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 result = await this.idriss.multitransferToIDriss(recipients_, transactionOptions);
