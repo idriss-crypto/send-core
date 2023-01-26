@@ -10,7 +10,6 @@ import {IdrissCrypto} from "idriss-crypto/browser";
 
 let hasAmount;
 let sameAmount;
-let currentAmount;
 let currentSame;
 let gotBalance = false;
 let customAmount = false;
@@ -117,11 +116,10 @@ export class MultiSendToAnyone {
 
 
         this.html.querySelector('#InputCustomAmount')?.addEventListener('input', (e) => {
+            this.content = this.html.querySelector('textarea[name="recipients"]').value;
             this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
             // if empty, check this.hasAmounts? custom : 0.00
             if (!this.html.querySelector('#InputCustomAmount').value) return;
-
-            console.log("Still checking amount function")
 
             this.modifyAmountInput();
             this.modifyRecipients();
@@ -152,8 +150,12 @@ export class MultiSendToAnyone {
                 this.html.querySelector('#InputCustomAmount').value = this.result[0][1]? this.result[0][1] : "";
                 this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
             } else {
+                this.hasAmount = true;
                 this.html.querySelector('#InputCustomAmount').placeholder = "Custom"
                 this.html.querySelector('#InputCustomAmount').value = ""
+            }
+            if (e.inputType == "insertFromPaste"){
+                if (!this.sameAmount || this.currentSame) this.hasAmount = true;
             }
             this.modifyRecipients(e.inputType);
         })
@@ -162,7 +164,7 @@ export class MultiSendToAnyone {
         this.refreshVisibleAssets();
     }
 
-    // ToDo: fix issue of "temporary this.sameAmount"
+
     async modifyAmountInput() {
 
         this.currentSame = this.html.querySelector('#InputCustomAmount').value;
@@ -170,7 +172,7 @@ export class MultiSendToAnyone {
 
         this.result = this.result.map(data => [data[0], this.currentSame]);
         this.sameAmount = true
-        let textToDisplay = this.recipientsNoAmount.join('\n')
+        let textToDisplay = this.hasAmount? this.result.join("\n") : this.recipientsNoAmount.join('\n')
         this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay;
     }
 
@@ -191,9 +193,10 @@ export class MultiSendToAnyone {
         }
 
         for (let res of this.result) {
-            if (!this.isMatch(res[0])) wrongRegex = res[0].concat(" is not a valid input.");
+            if (!this.isMatch(res[0])) wrongRegex = res[0].concat(" is not a valid input");
             if (res[1] == "0") wrongAmount = "Amount cannot be 0 for ".concat(res[0]);
-            if(!res[1]) wrongAmount = "Cannot find amount for ".concat(res[0]);
+            if (!res[1]) wrongAmount = "Cannot find amount for ".concat(res[0]);
+            if (wrongAmount && !this.currentSame) wrongAmount = "Please enter an amount";
 
             if(wrongRegex || wrongAmount) {
                 this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  wrongRegex? wrongRegex : wrongAmount;
@@ -210,14 +213,15 @@ export class MultiSendToAnyone {
 
     async modifyRecipients(inputType="") {
 
+
         // if same amounts entered
-        if (this.sameAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
+        if (!this.hasAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
 
         console.log(this.result)
 
         this.html.querySelector(".multiSend").disabled = false;
 
-        let textToDisplay = this.sameAmount? this.recipientsNoAmount.join('\n') : this.result.join('\n');
+        let textToDisplay = this.hasAmount? this.result.join('\n') : this.recipientsNoAmount.join('\n') ;
 
         this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay.concat((inputType == "insertLineBreak")? "\n" : "");
 
@@ -268,11 +272,11 @@ export class MultiSendToAnyone {
 
                 if (this.hasAmount) {
                     for (let element of this.result) {
-                        element[1] = await this.fixAmount(element)
+                        element[1] = element[1]? element[1] : '';
                     }
                 } else {
                     // dummy input "1" when no amount added
-                    this.result = this.result.map(data => [data[0], '1']);
+                    this.result = this.result.map(data => [data[0], '']);
                 }
 
                 console.log(this.result)
@@ -284,7 +288,10 @@ export class MultiSendToAnyone {
                     await this.isSameAmount(element)
                 }
 
-                let textToDisplay = this.sameAmount? this.recipientsNoAmount.join('\n') : this.result.join('\n');
+                // let textToDisplay = this.sameAmount? this.recipientsNoAmount.join('\n') : this.result.join('\n');
+                let textToDisplay = this.hasAmount? this.result.join('\n') : this.recipientsNoAmount.join('\n');
+                this.html.querySelector('#InputCustomAmount').placeholder = this.hasAmount? "Custom" : "0.00";
+                this.html.querySelector('#InputCustomAmount').value = this.sameAmount? this.currentSame : "";
 
                 console.log("Is same amount? ", this.sameAmount)
                 console.log(textToDisplay)
@@ -385,10 +392,6 @@ export class MultiSendToAnyone {
 
     checkAmount(res) {
         if (res.length>1) this.hasAmount = true;
-    }
-
-    fixAmount(res) {
-        if (res[1] == '') return '1';
     }
 
     isSameAmount(res) {

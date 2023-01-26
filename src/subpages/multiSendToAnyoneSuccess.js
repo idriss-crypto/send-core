@@ -32,19 +32,19 @@ export class MultiSendToAnyoneSuccess {
             .then((res) => {
                 if (res.status == 200) {
                     // all notifications sent
-                    this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download distribution report below.` : "Assets sent to everyone's wallet."
                 } else {
-                    this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
+                    this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download distribution report below.` : "Assets sent to everyone's wallet."
                 }
                 console.log(res)
             })
-            .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."})
+            .catch((res) => {this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download distribution report below.` : "Assets sent to everyone's wallet."})
         }
 
 
         this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         console.log("data is ", claimData)
-        this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download claim links below.` : "Assets sent to everyone's wallet."
+        this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download distribution report below.` : "Assets sent to everyone's wallet."
         this.html.querySelector('#downloadButton').style.display = claimData? "block" : "none";
         this.html.querySelector('#downloadButton')?.addEventListener('click', (e) => {
             this.downloadCSV(claimData);
@@ -62,7 +62,7 @@ export class MultiSendToAnyoneSuccess {
         let csv = preppedData.join('\n');
         if (csv == null) return;
 
-        let filename = "claimableAssets.csv";
+        let filename = "Distribution Report - IDriss.xyz.csv";
 
         if (!csv.match(/^data:text\/csv/i)) {
             csv = "data:text/csv;charset=utf-8," + csv;
