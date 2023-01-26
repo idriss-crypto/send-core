@@ -131,6 +131,7 @@ export class MultiSendToAnyone {
             this.recipientsNoAmount = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(',')[0])
             await this.result.forEach((element) => {element[0] = element[0].replace(/\s+/g, '')})
             await this.recipientsNoAmount.forEach((element) => {element = element.replace(/\s+/g, '')})
+
             if (this.result.length === 0) {
                 this.html.querySelector('.unique-recipients-wrapper').style.visibility = "hidden";
                 this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
@@ -144,6 +145,8 @@ export class MultiSendToAnyone {
                 await this.isSameAmount(element)
             }
             console.log("same amount? ", this.sameAmount)
+            if (e.data == "," && this.result.length == 1) this.sameAmount = false;
+            if (this.result.length == 1 && this.result[0].length == 1) this.hasAmount = false;
             if (this.sameAmount) {
                 console.log("same amount, should be placed in input field")
                 console.log(this.result[0])
@@ -157,7 +160,9 @@ export class MultiSendToAnyone {
             if (e.inputType == "insertFromPaste"){
                 if (!this.sameAmount || this.currentSame) this.hasAmount = true;
             }
-            this.modifyRecipients(e.inputType);
+            //let modifier = e.data == ","? e.data : e.inputType
+            let modifier = e.inputType
+            this.modifyRecipients(modifier);
         })
 
         this.html.querySelector('textarea[name="recipients"]').placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n---------- paste or drag a file here ----------";
@@ -213,7 +218,7 @@ export class MultiSendToAnyone {
 
     async modifyRecipients(inputType="") {
 
-
+        console.log(inputType)
         // if same amounts entered
         if (!this.hasAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
 
