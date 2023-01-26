@@ -253,6 +253,8 @@ export class MultiSendToAnyone {
             });
         }
 
+        if (!file.name.endsWith(".csv")) return ""
+
         return new Promise(resolve => {
             const fileReader = new FileReader();
             this.hasAmount = false
