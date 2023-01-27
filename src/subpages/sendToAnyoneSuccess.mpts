@@ -2,8 +2,6 @@
     <img class="closeButton" src=close alt="close"/>
 </header>
 <main>
-<script src="https://cdn.tailwindcss.com"></script>
-
     <img src=success alt="" class="success"/>
     <h2 class="h2Success">Transaction Submitted🥳</h2>
     <p class="subtitle">

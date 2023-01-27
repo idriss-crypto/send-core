@@ -220,6 +220,7 @@ export class MultiSendToAnyone {
 
         console.log(inputType)
         // if same amounts entered
+        // ToDo: check for NFT case == 1?
         if (!this.hasAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
 
         console.log(this.result)
@@ -411,6 +412,7 @@ export class MultiSendToAnyone {
         this.html.querySelector('#assetHeader').textContent = slider.checked? "NFT" : "Token";
         this.html.querySelector('.nft-mint-wrapper').firstElementChild.style.display = slider.checked ? 'block': 'none';
         this.html.querySelector('.amountSelection').style.display = slider.checked ? 'none' : 'block';
+        this.modifyRecipients();
         this.refreshVisibleAssets();
     }
 
