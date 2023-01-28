@@ -117,6 +117,7 @@ export class MultiSendToAnyone {
 
         this.html.querySelector('#InputCustomAmount')?.addEventListener('input', (e) => {
             this.content = this.html.querySelector('textarea[name="recipients"]').value;
+            this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
             this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
             // if empty, check this.hasAmounts? custom : 0.00
             if (!this.html.querySelector('#InputCustomAmount').value) return;
@@ -412,6 +413,17 @@ export class MultiSendToAnyone {
         this.html.querySelector('#assetHeader').textContent = slider.checked? "NFT" : "Token";
         this.html.querySelector('.nft-mint-wrapper').firstElementChild.style.display = slider.checked ? 'block': 'none';
         this.html.querySelector('.amountSelection').style.display = slider.checked ? 'none' : 'block';
+        // always false after selecting slider and going back, except when modifying manually
+        slider.checked ? this.hasAmount = false : this.hasAmount;
+        // always '1' after selecting slider and going back, except when modifying manually
+        console.log(slider.checked)
+        this.html.querySelector('#InputCustomAmount').value = slider.checked? '1': this.html.querySelector('#InputCustomAmount').value;
+
+        this.content = this.html.querySelector('textarea[name="recipients"]').value;
+        this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
+        this.recipientsNoAmount = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(',')[0])
+
+        this.modifyAmountInput();
         this.modifyRecipients();
         this.refreshVisibleAssets();
     }
