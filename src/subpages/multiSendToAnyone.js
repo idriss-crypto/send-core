@@ -4,7 +4,7 @@ import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 import { walletTypeDefault, getCoin, loadToken } from "../sendToAnyoneUtils";
-import { defaultWeb3 } from "../sendToAnyoneLogic";
+import { defaultWeb3, defaultWeb3ETH } from "../sendToAnyoneLogic";
 import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
 
@@ -353,7 +353,7 @@ export class MultiSendToAnyone {
 
         asset = Object.fromEntries(Object.entries(asset).filter(([k,v]) => v!=='undefined'));
 
-
+        console.log("Calling prepare now")
         for (let element of this.result) {
             let elemToPush = await this.prepareRecipients(element)
             multiSendArr.push(elemToPush)
@@ -370,8 +370,8 @@ export class MultiSendToAnyone {
 
     // for the future, also need library change to accept other strings
     isMatch(identifier) {
-        if (defaultWeb3.utils.isAddress(identifier)) return true;
-        //if (defaultWeb3ETH.eth.ens.recordExists(identifier)) return true;
+        if (await defaultWeb3.utils.isAddress(identifier)) return true;
+        if (await defaultWeb3ETH.eth.ens.recordExists(identifier)) return true;
         if (identifier.match(regPh) || identifier.match(regM) || identifier.match(regT)) return true
         return false
     }
@@ -383,7 +383,9 @@ export class MultiSendToAnyone {
         try {
             resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
         } catch {
-            console.log()
+            console.log("Is ENS? ", await defaultWeb3ETH.eth.ens.recordExists(res[0]))
+            if (await defaultWeb3ETH.eth.ens.recordExists(res[0])) res[0] = await defaultWeb3ETH.eth.ens.getAddress(res[0]);
+            console.log(res)
         }
         const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
         const walletType = walletTag

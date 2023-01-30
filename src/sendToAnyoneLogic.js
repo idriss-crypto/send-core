@@ -3,6 +3,8 @@ import { tokens, walletTypeDefault, getCoin } from "./sendToAnyoneUtils";
 import { IdrissCrypto } from "idriss-crypto/browser";
 
 export const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
+export const defaultWeb3ETH = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"));
+
 
 let oracleAddress = {
     ETH: "0xf9680d99d6c9589e2a93a78a04a279e509205945",
