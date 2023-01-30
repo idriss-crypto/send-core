@@ -47,11 +47,11 @@ export class MultiSendToAnyoneSuccess {
         this.html.querySelector('#text-wrapper-inner').innerHTML = claimData? `Download a distribution report below` : "Assets sent to everyone's wallet."
         this.html.querySelector('#downloadButton').style.display = claimData? "block" : "none";
         this.html.querySelector('#downloadButton')?.addEventListener('click', (e) => {
-            this.downloadCSV(claimData);
+            this.downloadCSV(claimData, explorerLink);
         })
     }
 
-    async downloadCSV(claimable) {
+    async downloadCSV(claimable, explorerLink="") {
         let preppedData = [];
 
         for (let recipient_ of claimable) {
@@ -65,7 +65,7 @@ export class MultiSendToAnyoneSuccess {
         let filename = "Distribution Report - IDriss.xyz.csv";
 
         if (!csv.match(/^data:text\/csv/i)) {
-            csv = "data:text/csv;charset=utf-8," + csv;
+            csv = "data:text/csv;charset=utf-8," + "IDriss,Claim Link\n" + csv + "\n\n\nMake sure to distribute the claim links above.\n" + explorerLink;
         }
         let data = encodeURI(csv);
 

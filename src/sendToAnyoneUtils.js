@@ -347,8 +347,14 @@ const tokenABI = [
     { inputs: [], name: "symbol", outputs: [{ internalType: "string", name: "", type: "string" }], stateMutability: "view", type: "function" },
 ];
 
+const erc1155Abi = [{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
+
 async function loadToken(web3, tokenAddress) {
     return await new web3.eth.Contract(tokenABI, tokenAddress);
 }
 
-export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken };
+async function loadNFT(web3, tokenAddress) {
+    return await new web3.eth.Contract(erc1155Abi, tokenAddress);
+}
+
+export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken, loadNFT };

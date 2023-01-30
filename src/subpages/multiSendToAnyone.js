@@ -3,7 +3,7 @@ import arrow from "!!url-loader!../img/arrow.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
-import { walletTypeDefault, getCoin, loadToken } from "../sendToAnyoneUtils";
+import { walletTypeDefault, getCoin, loadToken, loadNFT } from "../sendToAnyoneUtils";
 import { defaultWeb3, defaultWeb3ETH } from "../sendToAnyoneLogic";
 import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
@@ -370,9 +370,9 @@ export class MultiSendToAnyone {
 
     // for the future, also need library change to accept other strings
     async isMatch(identifier) {
+        if (identifier.match(regPh) || identifier.match(regM) || identifier.match(regT)) return true
         if (await defaultWeb3.utils.isAddress(identifier)) return true;
         if (await defaultWeb3ETH.eth.ens.recordExists(identifier)) return true;
-        if (identifier.match(regPh) || identifier.match(regM) || identifier.match(regT)) return true
         return false
     }
 
@@ -430,13 +430,19 @@ export class MultiSendToAnyone {
         this.refreshVisibleAssets();
     }
 
-    async getTokenBalance(address) {
-        let tokenContract = await loadToken(defaultWeb3, address);
+    async getTokenBalance(address, type, id="0") {
+        console.log(type, id)
+        let assetContract = type=='ERC20'? await loadToken(defaultWeb3, address): await loadNFT(defaultWeb3, address);
         let tempNewAssetBalance;
         try {
-            tempNewAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
-            let newBalanceDecimals = await tokenContract.methods.decimals().call();
-            if (tempNewAssetBalance != '0') newAssetBalance = parseInt(tempNewAssetBalance)/10**parseInt(newBalanceDecimals)
+            if (id === "0") {
+                tempNewAssetBalance = await assetContract.methods.balanceOf(this.selectedAccount).call();
+                let newBalanceDecimals = await assetContract.methods.decimals().call();
+                if (tempNewAssetBalance != '0') newAssetBalance = parseInt(tempNewAssetBalance)/10**parseInt(newBalanceDecimals)
+            } else {
+                tempNewAssetBalance = await assetContract.methods.balanceOf(this.selectedAccount, parseInt(id)).call();
+                if (tempNewAssetBalance != '0') newAssetBalance = tempNewAssetBalance;
+            }
         } catch {
             tempNewAssetBalance = '0';
         }
@@ -475,12 +481,10 @@ export class MultiSendToAnyone {
             const button = asset.parentNode.parentNode.querySelector('button');
             let assetBalance = asset.querySelector(".amountOwned").textContent;
             let newAssetBalance = assetBalance;
-            if (!gotBalance) {
+            if (!this.gotBalance) {
                 if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
-
-                    newAssetBalance = this.getTokenBalance(asset.dataset.address)
+                    newAssetBalance = this.getTokenBalance(asset.dataset.address, asset.dataset.assettype)
                 }
-
                 if (assetBalance === '0' && asset.dataset.assettype == "native") {
                     await defaultWeb3.eth.getBalance(this.selectedAccount, function(error, result){
                         if(error){
@@ -493,17 +497,21 @@ export class MultiSendToAnyone {
                         }
                     })
                 }
-                gotBalance = true;
+                // ToDo: add case for ERC1155, call the same function as in ERC20 -> combine with above?
+                if (assetBalance === '0' && asset.dataset.assettype == "ERC1155") {
+                    newAssetBalance = this.getTokenBalance(asset.dataset.address, asset.dataset.assettype, asset.dataset.assetid)
+                }
+                this.gotBalance = true;
             }
             asset.querySelector(".amountOwned").textContent = newAssetBalance;
             if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
 
             asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
-            asset.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
+            //asset.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
 
             count = asset.style.display == '' ? count + 1 : count;
 
-            button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
+            // button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
         }
         if (count === 0) {
             this.html.querySelector('.assetSelectWrapper').style.display = 'none';
