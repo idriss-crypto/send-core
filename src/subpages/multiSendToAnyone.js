@@ -369,7 +369,7 @@ export class MultiSendToAnyone {
     }
 
     // for the future, also need library change to accept other strings
-    isMatch(identifier) {
+    async isMatch(identifier) {
         if (await defaultWeb3.utils.isAddress(identifier)) return true;
         if (await defaultWeb3ETH.eth.ens.recordExists(identifier)) return true;
         if (identifier.match(regPh) || identifier.match(regM) || identifier.match(regT)) return true
