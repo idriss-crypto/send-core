@@ -180,6 +180,87 @@ const tokens = [
         decimals: 18,
         logoURI: bank,
     },
+    {
+    chainId: 137,
+    name: "Telcoin",
+    symbol: "TEL",
+    network: "Polygon",
+    decimals: 2,
+    address: "0xdf7837de1f2fa4631d716cf2502f8b230f1dcc32",
+    logoURI: tel
+  },
+  {
+    chainId: 137,
+    name: "Aave - PoS",
+    symbol: "AAVE",
+    network: "Polygon",
+    decimals: 18,
+    address: "0xd6df932a45c0f255f85145f286ea0b292b21c90b",
+    logoURI: aave
+  },
+  {
+    chainId: 137,
+    name: "ChainLink Token",
+    symbol: "LINK",
+    network: "Polygon",
+    decimals: 18,
+    address: "0x53e0bca35ec356bd5dddfebbd1fc0fd03fabad39",
+    logoURI: link_logo
+  },
+  {
+    chainId: 137,
+    name: "Uniswap - PoS",
+    symbol: "UNI",
+    network: "Polygon",
+    decimals: 18,
+    address: "0xb33eaad8d922b1083446dc23f610c2567fb5180f",
+    logoURI: uni
+  },
+  {
+    chainId: 137,
+    name: "Quickswap",
+    symbol: "QUICK",
+    network: "Polygon",
+    decimals: 18,
+    address: "0x831753dd7087cac61ab5644b308642cc1c33dc13",
+    logoURI: quick
+  },
+  {
+    chainId: 137,
+    name: "Celsius",
+    symbol: "CEL",
+    network: "Polygon",
+    decimals: 4,
+    address: "0xD85d1e945766Fea5Eda9103F918Bd915FbCa63E6",
+    logoURI: cel
+  },
+  {
+    chainId: 137,
+    name: "HEX",
+    symbol: "HEX",
+    network: "Polygon",
+    decimals: 8,
+    address: "0x23D29D30e35C5e8D321e1dc9A8a61BFD846D4C5C",
+    logoURI: hex
+  },
+  {
+    chainId: 137,
+    name: "Decentraland MANA",
+    symbol: "MANA",
+    network: "Polygon",
+    decimals: 18,
+    address: "0xA1c57f48F0Deb89f569dFbE6E2B7f46D33606fD4",
+    logoURI: mana
+  },
+  {
+    chainId: 137,
+    name: "Ocean Token",
+    symbol: "OCEAN",
+    network: "Polygon",
+    decimals: 18,
+    address: "0x282d8efce846a88b159800bd4130ad77443fa1a1",
+    logoURI: ocean
+  },
 ];
 
 const getNFTMetadata = (address, tokenId, apiKey, network) => {
