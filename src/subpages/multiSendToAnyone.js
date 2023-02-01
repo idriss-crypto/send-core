@@ -434,6 +434,7 @@ export class MultiSendToAnyone {
         console.log(type, id)
         let assetContract = type=='ERC20'? await loadToken(defaultWeb3, address): await loadNFT(defaultWeb3, address);
         let tempNewAssetBalance;
+        let newAssetBalance;
         try {
             if (id === "0") {
                 tempNewAssetBalance = await assetContract.methods.balanceOf(this.selectedAccount).call();
@@ -443,10 +444,11 @@ export class MultiSendToAnyone {
                 tempNewAssetBalance = await assetContract.methods.balanceOf(this.selectedAccount, parseInt(id)).call();
                 if (tempNewAssetBalance != '0') newAssetBalance = tempNewAssetBalance;
             }
-        } catch {
-            tempNewAssetBalance = '0';
+        } catch (e) {
+            console.log(e)
+            newAssetBalance = '0';
         }
-        return tempNewAssetBalance + ""
+        return newAssetBalance? newAssetBalance + "" : "0"
     }
 
     async getTokenData(address) {
@@ -482,8 +484,9 @@ export class MultiSendToAnyone {
             let assetBalance = asset.querySelector(".amountOwned").textContent;
             let newAssetBalance = assetBalance;
             if (!this.gotBalance) {
+                console.log(assetBalance, asset.dataset.symbol)
                 if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
-                    newAssetBalance = this.getTokenBalance(asset.dataset.address, asset.dataset.assettype)
+                    newAssetBalance = await this.getTokenBalance(asset.dataset.address, asset.dataset.assettype)
                 }
                 if (assetBalance === '0' && asset.dataset.assettype == "native") {
                     await defaultWeb3.eth.getBalance(this.selectedAccount, function(error, result){
@@ -499,9 +502,8 @@ export class MultiSendToAnyone {
                 }
                 // ToDo: add case for ERC1155, call the same function as in ERC20 -> combine with above?
                 if (assetBalance === '0' && asset.dataset.assettype == "ERC1155") {
-                    newAssetBalance = this.getTokenBalance(asset.dataset.address, asset.dataset.assettype, asset.dataset.assetid)
+                    newAssetBalance = await this.getTokenBalance(asset.dataset.address, asset.dataset.assettype, asset.dataset.assetid)
                 }
-                this.gotBalance = true;
             }
             asset.querySelector(".amountOwned").textContent = newAssetBalance;
             if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
@@ -512,7 +514,11 @@ export class MultiSendToAnyone {
             count = asset.style.display == '' ? count + 1 : count;
 
             // button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
+            console.log(newAssetBalance, asset.dataset.symbol)
+
+            if (asset.dataset.assettype !== "native" && newAssetBalance === "0") asset.style.display = 'none'
         }
+        this.gotBalance = true;
         if (count === 0) {
             this.html.querySelector('.assetSelectWrapper').style.display = 'none';
             this.html.querySelector('.errorAsset').style.display = 'block';
