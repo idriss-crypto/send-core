@@ -3,7 +3,7 @@ import arrow from "!!url-loader!../img/arrow.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
-import { walletTypeDefault, getCoin, loadToken, loadNFT } from "../sendToAnyoneUtils";
+import { walletTypeDefault, getCoin, loadToken, loadNFT, customNFT } from "../sendToAnyoneUtils";
 import { defaultWeb3, defaultWeb3ETH } from "../sendToAnyoneLogic";
 import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
@@ -40,29 +40,10 @@ export class MultiSendToAnyone {
         console.log("IDriss: ", this.idriss)
 
         this.selectedAccount = selectedAccount;
-//        ownedAssets = [
-//            {
-//                "name": "IDriss Logo",
-//                "address": "0x2953399124f0cbb46d2cbacd8a89cf0599974963",
-//                "id": "104646746365016723314061203747530081823371947018124724650840385937829649186817",
-//                "type": "ERC1155",
-//                "image": "https://i.seadn.io/gae/mLZLriTgIaWR5om8vLydrhESR7M8TzL6atXtZ8TN_wWEQEIW-5MK-9N4ukfelTVsgBUaTtzkkbnKhzLfW9Q0fvaMUlmPv9H4HBIV?w=500&auto=format",
-//                "network": "Polygon"
-//            },
-//            {
-//                "name": "Spirits Of Eastern Europe #2",
-//                "address": "0x2953399124f0cbb46d2cbacd8a89cf0599974963",
-//                "id": "92684618316586457942843142044618663200253618197452727397604755407033069469697",
-//                "type": "ERC1155",
-//                "image": "https://i.seadn.io/gae/biwkRon23U60JLJcHRp36_U23arYNwLTr4x-ApN11zsryxBy_ZQ1rZpkittDvYxkoBQm5yLNtr9Nq5OAo6kg9liUvkEEc-9fJwnqDg?w=500&auto=format",
-//                "network": "Polygon"
-//            }
-//        ];
 
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'}
         ]
-
 
         if (networkFilter) {
             ownedAssets = this.filterNetwork(networkFilter, ownedAssets)
@@ -89,20 +70,26 @@ export class MultiSendToAnyone {
         })
 
         this.html.querySelectorAll('.select').forEach(select => {
-            select.onclick = e => select.classList.toggle('isOpen')
-            select.onblur = e => select.classList.remove('isOpen')
-            select.onclick = e => select.firstElementChild.focus();
+            select.querySelector('.arrow').onclick = e => select.querySelector('ul').classList.toggle('isOpen')
+            select.querySelector('.arrow').onblur = e => select.querySelector('ul').classList.remove('isOpen')
+            //select.querySelector('.arrow').onclick = e => select.querySelector('.arrow').focus();
         })
 
         this.html.querySelectorAll('.select ul li').forEach(li => {
             li.onclick = e => {
+            console.log(e)
                 e.stopPropagation();
+                // ToDo: address=custom case
                 const button = li.parentNode.parentNode.querySelector('button')
                 button.querySelector('.name').textContent = li.querySelector('.name').textContent;
                 button.querySelector('img').src = li.querySelector('img').src;
                 button.querySelector('.amountOwned').textContent = li.querySelector('.amountOwned').textContent;
                 Object.assign(button.parentNode.dataset, li.dataset);
-                li.parentNode.parentNode.classList.remove('isOpen')
+                button.querySelector('.amountOwned').style.display = li.dataset.address=='custom'? "none":"block";
+                button.querySelector('.name').style.display = li.dataset.address=='custom'? "none":"block";
+                button.querySelector('.customAddress').style.display = li.dataset.address=='custom'? "block":"none";
+                li.parentNode.classList.remove('isOpen')
+                console.log(this.html.querySelector(':focus'))
                 this.html.querySelector(':focus')?.blur()
                 this.refreshVisibleAssets()
             }
@@ -432,6 +419,7 @@ export class MultiSendToAnyone {
 
     async getTokenBalance(address, type, id="0") {
         console.log(type, id)
+        if (address==="custom") return "Input Address"
         let assetContract = type=='ERC20'? await loadToken(defaultWeb3, address): await loadNFT(defaultWeb3, address);
         let tempNewAssetBalance;
         let newAssetBalance;
@@ -509,6 +497,7 @@ export class MultiSendToAnyone {
             if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
 
             asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
+
             //asset.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
 
             count = asset.style.display == '' ? count + 1 : count;
@@ -574,9 +563,12 @@ export class MultiSendToAnyone {
 
     filterNetwork(networkFilter, ownedAssets) {
         if (!networkFilter) {
-            return tokens.concat(ownedAssets);
+            let combinedAssets = tokens.concat(ownedAssets)
+            combinedAssets.push(customNFT)
+            return combinedAssets;
         } else {
             let combinedAssets = tokens.concat(ownedAssets)
+            combinedAssets.push(customNFT)
             return combinedAssets.filter(t => {
                 return networkFilter.networks?.includes(t.network.toLowerCase());
             })

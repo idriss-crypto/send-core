@@ -261,7 +261,26 @@ const tokens = [
     address: "0x282d8efce846a88b159800bd4130ad77443fa1a1",
     logoURI: ocean
   },
+  {
+    chainId: 137,
+    name: "Custom Token",
+    symbol: "custom",
+    network: "Polygon",
+    decimals: 18,
+    address: "custom",
+    logoURI: eth
+  },
 ];
+
+const customNFT = {
+                    "name": "Custom NFT",
+                    "address": "custom",
+                    "id": "custom",
+                    "type": "ERC1155",
+                    "image": eth,
+                    "network": "Polygon",
+                    "balance": "Input Address"
+                }
 
 const getNFTMetadata = (address, tokenId, apiKey, network) => {
     if (WEBPACK_MODE === "production") {
@@ -458,4 +477,4 @@ async function loadNFT(web3, tokenAddress) {
     return await new web3.eth.Contract(erc1155Abi, tokenAddress);
 }
 
-export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken, loadNFT };
+export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken, loadNFT, customNFT };

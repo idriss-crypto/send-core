@@ -918,6 +918,13 @@
                 line-height: 1.25rem;
             }
 
+            .customAddress {
+                display: none;
+                margin: 0 0 0 0.5rem;
+                padding: 0px;
+                border: 0px;
+            }
+
             .arrow {
                 top: 0px;
                 bottom: 0px;
@@ -953,10 +960,8 @@
                     user-select: none;
                     cursor: default;
                 }
-            }
 
-            &.isOpen, &:focus-within {
-                > ul {
+                &.isOpen, &:focus-within {
                     display: block;
                 }
             }
