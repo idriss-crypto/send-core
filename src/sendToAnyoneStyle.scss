@@ -890,10 +890,13 @@
                     outline: 2px solid transparent;
                     outline-offset: 2px;
                     box-shadow: 0px 0px 0px 1px rgb(99, 102, 241), 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+
                 }
 
+                &:focus + ul {
+                    display: block;
+                }
             }
-
 
             img {
                 border-radius: 9999px;
@@ -961,6 +964,10 @@
                     padding: 0.5rem 2.25rem 0.5rem 0.75rem;
                     user-select: none;
                     cursor: default;
+                }
+
+                &.isOpen {
+                    display: block;
                 }
             }
         }
