@@ -79,7 +79,6 @@ export class MultiSendToAnyone {
             li.onclick = e => {
                 console.log("LI clicked", e)
                 e.stopPropagation();
-                // ToDo: address=custom case
                 const button = li.parentNode.parentNode.querySelector('button')
                 button.querySelector('.name').textContent = li.querySelector('.name').textContent;
                 button.querySelector('img').src = li.querySelector('img').src;
@@ -440,8 +439,8 @@ export class MultiSendToAnyone {
         return newAssetBalance? newAssetBalance + "" : "0"
     }
 
-    async getTokenData(address) {
-        let tokenContract = await loadToken(defaultWeb3, address);
+    async getTokenData(address, type, customId="") {
+        let tokenContract = type==='erc20'? await loadToken(defaultWeb3, address) : await loadNFT(defaultWeb3, address)
         let tempAssetBalance;
         let tempTokenDecimals;
         let tempTokenSymbol;
@@ -449,8 +448,8 @@ export class MultiSendToAnyone {
         let tempAdjustedBalance = '0';
 
         try {
-            tempAssetBalance = await tokenContract.methods.balanceOf(this.selectedAccount).call();
-            tempTokenDecimals = await tokenContract.methods.decimals().call();
+            tempAssetBalance = customId? await tokenContract.methods.balanceOf(this.selectedAccount, customId).call() : await tokenContract.methods.balanceOf(this.selectedAccount).call();
+            tempTokenDecimals = customId? 0 : await tokenContract.methods.decimals().call();
             tempTokenSymbol = await tokenContract.methods.symbol().call();
             tempTokenName = await tokenContract.methods.name().call();
             if (tempAssetBalance != '0') tempAdjustedBalance = (parseInt(tempAssetBalance)/10**parseInt(tempTokenDecimals)) + ""
@@ -528,11 +527,14 @@ export class MultiSendToAnyone {
     }
 
     async setCustomAsset() {
-        let customAddress = this.html.querySelector('.customAssetAddress').value;
-        let slider = this.html.querySelector('#Toggle');
-        let selectedAssetType = slider.checked? "NFT:" : "Token:";
+        let customAddress = this.html.querySelector('.customAddress').value;
+        let customId = this.html.querySelector('.customAddress').value;
 
-        let customToken = slider.checked? "NFT:" : await this.getTokenData(customAddress);
+        let slider = this.html.querySelector('#Toggle');
+        let selectedAssetType = slider.checked? "nft" : "erc20";
+
+        let customToken = await this.getTokenData(customAddress, selectedAssetType, customId);
+
         console.log(customToken)
     }
 
