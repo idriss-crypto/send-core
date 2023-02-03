@@ -70,14 +70,27 @@ export class MultiSendToAnyone {
         })
 
         this.html.querySelectorAll('.select').forEach(select => {
-            select.querySelector('.arrow').onclick = e => select.querySelector('ul').classList.toggle('isOpen')
-            select.querySelector('.arrow').onblur = e => select.querySelector('ul').classList.remove('isOpen')
-            //select.querySelector('.arrow').onclick = e => select.querySelector('.arrow').focus();
+            select.onclick = e => {
+                if (select.dataset.address !== 'custom') {
+                    console.log("Clicked select")
+                    select.firstElementChild.focus();
+                    select.querySelector('ul').style.display = "block";
+                }
+            }
+            select.firstElementChild.onfocus = e => {console.log("focus button, nothing should happen other than style")}
+            select.querySelector('.customAddress').onclick = e => {
+                select.querySelector('ul').style.display = "none";
+                console.log('Im here!')
+            }
+            select.firstElementChild.onblur = e => {
+                select.querySelector('ul').style.display = "none";
+                console.log("blurring", e);
+            }
         })
 
         this.html.querySelectorAll('.select ul li').forEach(li => {
             li.onclick = e => {
-            console.log(e)
+                console.log("Li clicked", e)
                 e.stopPropagation();
                 // ToDo: address=custom case
                 const button = li.parentNode.parentNode.querySelector('button')
@@ -88,13 +101,12 @@ export class MultiSendToAnyone {
                 button.querySelector('.amountOwned').style.display = li.dataset.address=='custom'? "none":"block";
                 button.querySelector('.name').style.display = li.dataset.address=='custom'? "none":"block";
                 button.querySelector('.customAddress').style.display = li.dataset.address=='custom'? "block":"none";
-                li.parentNode.classList.remove('isOpen')
-                console.log(this.html.querySelector(':focus'))
+                li.parentNode.style.display = "block";
                 this.html.querySelector(':focus')?.blur()
                 this.refreshVisibleAssets()
             }
+            li.onmousedown = e => { console.log("Down called"); e.preventDefault()}
         })
-
 
         this.html.querySelector('.multiSend')?.addEventListener('click', async (e) => {
             console.log("next clicked")

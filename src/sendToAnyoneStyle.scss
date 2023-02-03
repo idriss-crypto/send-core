@@ -890,9 +890,10 @@
                     outline: 2px solid transparent;
                     outline-offset: 2px;
                     box-shadow: 0px 0px 0px 1px rgb(99, 102, 241), 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
-
                 }
+
             }
+
 
             img {
                 border-radius: 9999px;
@@ -923,6 +924,7 @@
                 margin: 0 0 0 0.5rem;
                 padding: 0px;
                 border: 0px;
+                height: 19.9937px
             }
 
             .arrow {
@@ -959,10 +961,6 @@
                     padding: 0.5rem 2.25rem 0.5rem 0.75rem;
                     user-select: none;
                     cursor: default;
-                }
-
-                &.isOpen, &:focus-within {
-                    display: block;
                 }
             }
         }
