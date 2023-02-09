@@ -8,3 +8,4 @@ export {SendToAnyoneWaitingConfirmation} from "./sendToAnyoneWaitingConfirmation
 export {MultiSendToAnyone} from "./multiSendToAnyone";
 export {MultiSendToAnyoneApproval} from "./multiSendToAnyoneApproval";
 export {MultiSendToAnyoneSuccess} from "./multiSendToAnyoneSuccess";
+export {RevertPayment} from "./revertPayment";

@@ -8,6 +8,8 @@ const setup = (mode) => {
         //Mainnet
         return {
             POLYGON_RPC_ENDPOINT: `'https://polygon-rpc.com/'`,
+            ETHEREUM_RPC_ENDPOINT: `'https://mainnet.infura.io/v3/'`,
+            BSC_RPC_ENDPOINT: `'https://bsc-dataseed.binance.org/'`,
             POLYGON_CHAIN_ID: `'137'`,
             POLYGON_BLOCK_EXPLORER_ADDRESS: `'https://polygonscan.com'`,
             ETH_BLOCK_EXPLORER_ADDRESS: `'https://etherscan.io'`,
@@ -26,7 +28,8 @@ const setup = (mode) => {
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `''`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `''`,
             DEFAULT_ERC1155_CONTRACT_ADDRESS: `''`,
-            MAGIC_API: `'pk_live_75AE254AAEBDCF4B'`
+            MAGIC_API: `'pk_live_75AE254AAEBDCF4B'`,
+            WALLET_CONNECT_ID: `'07dcbed28f4e5ee10b3d0bfc992f78d6'`
         }
     } else if (mode === 'none') {
         // local node
@@ -43,6 +46,7 @@ const setup = (mode) => {
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `'0xdb54fa574a3e8c6aC784e1a5cdB575A737622CFf'`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `'0x7A28cf37763279F774916b85b5ef8b64AB421f79'`,
             DEFAULT_ERC1155_CONTRACT_ADDRESS: `'0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'`,
+            WALLET_CONNECT_ID: `'07dcbed28f4e5ee10b3d0bfc992f78d6'`
         }
     } else {
             // Mumbai - Polygon testnet
@@ -59,6 +63,8 @@ const setup = (mode) => {
 //            DEFAULT_TOKEN_CONTRACT_ADDRESS: `'0xdb54fa574a3e8c6aC784e1a5cdB575A737622CFf'`,
 //            DEFAULT_NFT_CONTRACT_ADDRESS: `'0x7A28cf37763279F774916b85b5ef8b64AB421f79'`,
             POLYGON_RPC_ENDPOINT: `'https://polygon-rpc.com/'`,
+            ETHEREUM_RPC_ENDPOINT: `'https://mainnet.infura.io/v3/'`,
+            BSC_RPC_ENDPOINT: `'https://bsc-dataseed.binance.org/'`,
             POLYGON_CHAIN_ID: `'137'`,
             POLYGON_BLOCK_EXPLORER_ADDRESS: `'https://polygonscan.com'`,
             ETH_BLOCK_EXPLORER_ADDRESS: `'https://etherscan.io'`,
@@ -77,7 +83,8 @@ const setup = (mode) => {
             DEFAULT_TOKEN_CONTRACT_ADDRESS: `''`,
             DEFAULT_NFT_CONTRACT_ADDRESS: `''`,
             DEFAULT_ERC1155_CONTRACT_ADDRESS: `''`,
-            MAGIC_API: `'pk_live_75AE254AAEBDCF4B'`
+            MAGIC_API: `'pk_live_75AE254AAEBDCF4B'`,
+            WALLET_CONNECT_ID: `'07dcbed28f4e5ee10b3d0bfc992f78d6'`
         }
     }
 }
