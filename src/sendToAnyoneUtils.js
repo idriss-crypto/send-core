@@ -273,6 +273,26 @@ const customNFT = {
                     "balance": "Input Address"
                 }
 
+const regPh = /^(\+\(?\d{1,4}\s?)\)?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/;
+const regM = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+const regT = /^@[a-zA-Z0-9_]{1,15}$/;
+
+const feeQuotes = {
+    singleToken: "1% supplies IDriss’ treasury",
+    singleNFT: "$1 supplies IDriss’ treasury",
+    multiNonNative: "$1 per recipient supplies IDriss’ treasury",
+    singleNRMatic: "1% (min. $1) supplies IDriss’ treasury",
+    multiNRMatic: "1% (min. $1) per recipient supplies IDriss’ treasury",
+    multiMixed: "A small fee supplies IDriss’ treasury"
+}
+
+const approvalMessages = {
+    mixedNative: "Confirm two transactions in your wallet",
+    mixedNonNative: "Confirm two approvals and two transactions in your wallet",
+    multiNative: "Confirm this transaction in your wallet",
+    multiNonNative: "Confirm one approval and one transaction in your wallet"
+}
+
 const getNFTMetadata = (address, tokenId, apiKey, network) => {
     if (WEBPACK_MODE === "production") {
         const api = getAlchemyAPI(apiKey, network);
@@ -468,4 +488,4 @@ async function loadNFT(web3, tokenAddress) {
     return await new web3.eth.Contract(erc1155Abi, tokenAddress);
 }
 
-export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken, loadNFT, customNFT };
+export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken, loadNFT, customNFT, feeQuotes, approvalMessages, regPh, regM, regT };
