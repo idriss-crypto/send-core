@@ -567,11 +567,11 @@ export class MultiSendToAnyone {
     filterNetwork(networkFilter, ownedAssets) {
         if (!networkFilter) {
             let combinedAssets = tokens.concat(ownedAssets)
-            combinedAssets.push(customNFT)
+            //combinedAssets.push(customNFT)
             return combinedAssets;
         } else {
             let combinedAssets = tokens.concat(ownedAssets)
-            combinedAssets.push(customNFT)
+            //combinedAssets.push(customNFT)
             return combinedAssets.filter(t => {
                 return networkFilter.networks?.includes(t.network.toLowerCase());
             })
