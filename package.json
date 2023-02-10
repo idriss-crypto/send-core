@@ -9,10 +9,12 @@
   },
   "dependencies": {
     "@depay/coinbase-wallet-sdk": "^1.0.5",
+    "@magic-ext/connect": "^3.1.0",
     "@walletconnect/web3-provider": "^1.7.8",
     "alchemy-sdk": "^2.0.2",
     "fast-creator": "^1.6.0",
-    "idriss-crypto": "1.8.3",
+    "idriss-crypto": "^1.8.6",
+    "magic-sdk": "^10.1.0",
     "web3": "^1.7.0",
     "web3modal": "^1.9.7"
   },
@@ -33,8 +35,7 @@
     "./sendToAnyoneLogic": "./dist/sendToAnyoneLogic.mjs",
     "./sendToAnyoneUtils": "./dist/sendToAnyoneUtils.mjs",
     "./sendToAnyoneStyle": "./dist/sendToAnyoneStyle.mjs",
-    "./getWeb3Provider": "./dist/getWeb3Provider.mjs",
-    "./sendToAnyoneMain": "./dist/sendToAnyoneMain.mjs",
-    "./sendToAnyoneConnect": "./dist/sendToAnyoneConnect.mjs"
+    "./getWeb3Provider": "./dist/getWeb3Provider.mjs"
+
   }
 }

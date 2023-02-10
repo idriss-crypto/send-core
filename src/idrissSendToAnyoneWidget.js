@@ -131,7 +131,7 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
                 normal: amountNormal
             } = await SendToAnyoneLogic.calculateAmount(this.token, this.sendToAnyoneValue)
 
-            this.container.querySelector('.amountCoin').textContent = amountNormal;
+            this.container.querySelector('.amountCoin').textContent = Math.round(amountNormal*10**5)/10**5;
             let sendResult = await SendToAnyoneLogic.sendToAnyone(this.identifier, amountInteger,
                 this.network, this.token, this.message ?? "",
                 this.assetType, this.assetAmount, this.assetAddress, this.assetId)

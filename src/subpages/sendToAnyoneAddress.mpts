@@ -1,16 +1,19 @@
 <header>
-    <h1>Send to:</h1>
-    <img class="closeButton" src=close alt="close"/>
+    <h1>Send <span id="assetHeader">Token</span> To</h1>
 </header>
 <main>
-    <input autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>
+    <input id="selectedInput" autofocus placeholder="hello@idriss.xyz  |  +1 650...  |  @IDriss_xyz" type="text"/>
     <div class="results" ></div>
+    <p class="errorInput">Enter a valid email, phone number, or Twitter username</p>
 </main>
 <footer>
     <button type="button" class="next">
-        <span>Next</span>
-    </button>
-    <button type="button" class="nextSTA" style="display: none">
-        <span>Nothing found. Send anyway!</span>
+        <span id="buttonNext" >Next</span>
+        <div id="buttonNextSpinner" style="display: none;" class="spinnerWrapper">
+            <div class="spinner" role="status">
+                <span class="spinnerDot">•</span>
+            </div>
+            <span class="spinnerEnd"></span>
+        </div>
     </button>
 </footer>

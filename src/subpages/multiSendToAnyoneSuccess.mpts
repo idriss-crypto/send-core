@@ -1,0 +1,15 @@
+<header class="noH1">
+    <img class="closeButton" src=close alt="close"/>
+</header>
+<main>
+    <img src=success alt="" class="success"/>
+    <h2 class="h2Success">Transaction Submitted🥳</h2>
+    <p class="subtitle">
+        <p id="text-wrapper-inner" >Download distribution report</p>
+    </p>
+</main>
+<footer>
+    <button id="downloadButton" type="button" class="close">
+        <span>Download</span>
+    </button>
+</footer>

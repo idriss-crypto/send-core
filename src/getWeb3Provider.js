@@ -1,10 +1,20 @@
 import WalletConnectProvider from "@walletconnect/web3-provider/dist/umd/index.min.js";
 import {CoinbaseWalletProvider} from "@depay/coinbase-wallet-sdk"
+import { Magic } from 'magic-sdk';
+import { ConnectExtension } from '@magic-ext/connect';
+import Web3 from "web3/dist/web3.min.js";
 
 import metamaskLogo from "!!url-loader!./img/metamask.svg"
 import tallyLogo from "!!url-loader!./img/tally.svg"
 import coinbaseLogo from "!!url-loader!./img/coinbase.svg"
+import magicLogo from "!!url-loader!./img/magic.svg"
 import Web3Modal from "web3modal";
+
+const customNodePolygon = {
+    rpcUrl: POLYGON_RPC_ENDPOINT,
+    chainId: POLYGON_CHAIN_ID,
+};
+
 const tallyOpts= {
     "custom-tally": {
         display: {
@@ -44,7 +54,7 @@ const walletConnectOpts= {
         package: WalletConnectProvider,
         options: {
             rpc: {
-                137: "https://polygon-rpc.com/",
+                137: POLYGON_RPC_ENDPOINT,
             },
             chainId: 137,
         },
@@ -110,11 +120,39 @@ const walletLinkOpts= {
     },
 };
 
+const magicLinkOpts= {
+    'custom-magicConnect': {
+        display: {
+            logo: magicLogo,
+            name: "Magic Connect",
+            description: "Login with Magic Connect",
+        },
+        options: {
+            rpc: {
+                137: POLYGON_RPC_ENDPOINT,
+            },
+            chainId: 137,
+        },
+        package: true,
+        connector: async (_, options) => {
+            const { appName, networkUrl, chainId } = options;
+            const magic = new Magic(MAGIC_API, {
+                extensions: [new ConnectExtension()],
+                network: customNodePolygon,
+            });
+            const provider = new Web3(magic.rpcProvider);
+            await provider.currentProvider.enable();
+            return provider;
+        },
+    },
+};
+
 const providerOptions={
         ...walletConnectOpts,
         ...walletLinkOpts,
         ...metaMaskOpts,
-        ...tallyOpts
+        ...tallyOpts,
+        ...magicLinkOpts
     }
 
 function isMetaMaskInstalled(){

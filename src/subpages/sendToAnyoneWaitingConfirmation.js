@@ -23,7 +23,5 @@ export class SendToAnyoneWaitingConfirmation {
             }
             subtitleCoin.style.display = ''
         }
-
-        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
     }
 }
