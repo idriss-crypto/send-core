@@ -21,7 +21,6 @@ export class SendToAnyoneConnect {
         }
 
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), eth_logo, usdc_logo, arrow, pen, close}));
-        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.connectWallet').style.display = 'none';
 
         if (!isIDrissRegistered) {

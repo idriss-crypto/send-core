@@ -2,24 +2,28 @@
     <img class="closeButton" src=close alt="close"/>
 </header>
 <main>
-<script src="https://cdn.tailwindcss.com"></script>
-
     <img src=success alt="" class="success"/>
-    <h2>Transaction Submitted🥳</h2>
-    <p class="subtitle"><a href=explorerLink target="_blank">View on Explorer<img src=link alt="" class="linkIcon"/></a></p>
-    <br/>
+    <h2 class="h2Success">Transaction Submitted🥳</h2>
+    <p class="subtitle">
+        <span class="viewExplorer" style="display:none;">
+            <a href=explorerLink target="_blank">View on Explorer</a>
+            <img src=link alt="" class="linkIcon"/>
+        </span>
+    </p>
     <div id="text-wrapper">
-            <p id="text-wrapper-inner">
-                In order for others to claim, please send them the following link:
-            </p>
-            <div class="textWrap">
-                <span class="urlWrap" id="textContent">{{claimUrl}}</span>
-            </div>
-            <div class="tooltip">Copied!</div>
+        <p id="text-wrapper-inner">
+        </p>
+        <div class="textWrap">
+            <span class="urlWrap" id="textContent">{{claimUrl}}</span>
         </div>
+        <div class="tooltip">Copied!</div>
+    </div>
 </main>
 <footer>
-    <button type="button" class="close">
+    <button id="copyButton" type="button" class="close">
+        <span>Copy</span>
+    </button>
+    <button id="closeSuccessButton" type="button" class="close">
         <span>Close</span>
     </button>
 </footer>

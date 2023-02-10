@@ -1,0 +1,16 @@
+<main>
+    <h1>Revert Send</h1>
+    <label>Transaction hash to revert:</label>
+    <input id="urlInput" type="text" class="customHash" placeholder="0x..." />
+    <button type="button" class="revertButton">
+        <span id="revertNext" >Revert</span>
+        <div id="buttonRevertSpinner" style="display: none;" class="spinnerWrapper">
+            <div class="spinner" role="status">
+                <span class="spinnerDot">•</span>
+            </div>
+            <span class="spinnerEnd"></span>
+        </div>
+    </button>
+</main>
+<footer>
+</footer>
