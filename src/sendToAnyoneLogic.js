@@ -208,7 +208,6 @@ export const SendToAnyoneLogic = {
             try {
                 const transactionOptions = {
                     from: selectedAccount,
-                    gas: 400000,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log(recipient, walletType, asset, message, transactionOptions);
@@ -256,7 +255,6 @@ export const SendToAnyoneLogic = {
             try {
                 const transactionOptions = {
                     from: selectedAccount,
-                    gas: 1200000,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 result = await this.idriss.multitransferToIDriss(recipients_, transactionOptions);
