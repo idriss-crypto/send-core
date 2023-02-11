@@ -196,7 +196,7 @@ export const SendToAnyoneLogic = {
         await this.switchNetwork(network);
 
         try{
-            // ToDo: create new idriss instance handling the new network
+            // create new idriss instance handling the new network
             await this.prepareSendToAnyone(this.provider, network, this.apiKey)
         } catch (e) {
             console.log(e)
@@ -247,6 +247,13 @@ export const SendToAnyoneLogic = {
         // exchange if statement for suitable check depending on selected network in dropdown
 
         await this.switchNetwork(network);
+
+        try{
+            // create new idriss instance handling the correct network
+            await this.prepareSendToAnyone(this.provider, "Polygon", this.apiKey)
+        } catch (e) {
+            console.log(e)
+        }
 
         // exchanged for redundant multiple get accounts calls
         const accounts = await this.web3.eth.getAccounts();
