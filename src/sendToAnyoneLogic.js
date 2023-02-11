@@ -163,8 +163,6 @@ export const SendToAnyoneLogic = {
     },
 
     async sendToAnyone(recipient, amount, network, token, message, assetType, assetAmount, assetAddress, assetId, walletTag) {
-        console.log(this.provider);
-        console.log(this.idriss);
 
         let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
 
@@ -193,10 +191,16 @@ export const SendToAnyoneLogic = {
         } catch {
             console.log("could not load polygon gas");
         }
-        // switch to selected payment option's network
-        // exchange if statement for suitable check depending on selected network in dropdown
 
+        // switch to selected payment option's network
         await this.switchNetwork(network);
+
+        try{
+            // ToDo: create new idriss instance handling the new network
+            await this.prepareSendToAnyone(this.provider, network, this.apiKey)
+        } catch (e) {
+            console.log(e)
+        }
 
         // exchanged for redundant multiple get accounts calls
         const accounts = await this.web3.eth.getAccounts();
@@ -208,7 +212,6 @@ export const SendToAnyoneLogic = {
             try {
                 const transactionOptions = {
                     from: selectedAccount,
-                    ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);

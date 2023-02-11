@@ -16,7 +16,7 @@ export class SendToAnyoneMain {
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
-        //TODO: check, but probably only polygon will be used
+
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
@@ -62,7 +62,7 @@ export class SendToAnyoneMain {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
+            if (assetType === 'native' && !["MATIC", "ETH", "BSC"].includes(token)) assetType = 'erc20';
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
