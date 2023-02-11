@@ -3,7 +3,7 @@ import arrow from "!!url-loader!../img/arrow.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
-import { walletTypeDefault, getCoin, loadToken, loadNFT, customNFT } from "../sendToAnyoneUtils";
+import { walletTypeDefault, getCoin, loadToken, loadNFT, customNFT,  regPh, regM, regT } from "../sendToAnyoneUtils";
 import { defaultWeb3, defaultWeb3ETH } from "../sendToAnyoneLogic";
 import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
@@ -18,10 +18,6 @@ let asset;
 let recipientsNoAmount = []
 let content=""
 let result = []
-
-const regPh = /^(\+\(?\d{1,4}\s?)\)?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/;
-const regM = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-const regT = /^@[a-zA-Z0-9_]{1,15}$/;
 
 const assetTypes = {};
 assetTypes["native"] = 0;
@@ -312,7 +308,7 @@ export class MultiSendToAnyone {
 
         if (this.result.length === 0) {
             this.html.querySelector('#buttonNextSpinner').style.display = 'none';
-            this.html.querySelector('#buttonNext').style.display = 'block';
+            this.html.querySelector('#buttonNext').style.display = '';
             return
         }
         let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "native";
