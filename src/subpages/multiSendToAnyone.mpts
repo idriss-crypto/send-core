@@ -58,7 +58,7 @@
             <div class="spinner" role="status">
                 <span class="spinnerDot">•</span>
             </div>
-        <span class="spinnerEnd"></span>
-    </div>
+            <span class="spinnerEnd"></span>
+        </div>
     </button>
 </footer>

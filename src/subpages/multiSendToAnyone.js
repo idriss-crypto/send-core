@@ -175,7 +175,7 @@ export class MultiSendToAnyone {
         let wrongAmount = ""
 
         if (!this.result) {
-            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "No input made";
+            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "Please add recipients";
             this.html.querySelector('.unique-recipients-wrapper').firstElementChild.style.color =  "red";
             this.html.querySelector('.unique-recipients-wrapper').style.visibility = "visible";
             return isValid
