@@ -19,6 +19,7 @@ import link_logo from "!!url-loader!./img/link_logo.svg"
 import mana from "!!url-loader!./img/mana.svg"
 import quick from "!!url-loader!./img/quick.svg"
 import tel from "!!url-loader!./img/tel.svg"
+import custom from "!!url-loader!./img/custom.png"
 
 const tokens = [
     {
@@ -268,7 +269,7 @@ const tokens = [
     network: "Polygon",
     decimals: 18,
     address: "custom",
-    logoURI: eth
+    logoURI: custom
   },
 ];
 
@@ -277,7 +278,7 @@ const customNFT = {
                     "address": "custom",
                     "id": "custom",
                     "type": "ERC1155",
-                    "image": eth,
+                    "image": custom,
                     "network": "Polygon",
                     "balance": "Input Address"
                 }

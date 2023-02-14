@@ -7,6 +7,8 @@ import { walletTypeDefault, getCoin, loadToken, loadNFT, customNFT,  regPh, regM
 import { defaultWeb3, defaultWeb3ETH } from "../sendToAnyoneLogic";
 import { SendToAnyoneLogic } from "../sendToAnyoneLogic";
 import {IdrissCrypto} from "idriss-crypto/browser";
+import custom from "!!url-loader!../img/custom.png"
+
 
 let hasAmount;
 let sameAmount;
@@ -65,6 +67,12 @@ export class MultiSendToAnyone {
             this.html.querySelector('textarea[name="recipients"]').value = csvContent;
         })
 
+        this.html.querySelector('.customAddress').addEventListener('input', async (e) => {
+            console.log("input in custom asset field")
+            let tokenData = await this.setCustomAsset();
+            console.log(tokenData)
+        })
+
         this.html.querySelectorAll('.select').forEach(select => {
             select.onblur = e => { select.classList.remove('isOpen'); console.log("blurring");}
             select.onclick = e => { if (select.dataset.address !== 'custom') select.firstElementChild.focus(); }
@@ -73,7 +81,7 @@ export class MultiSendToAnyone {
 
         this.html.querySelectorAll('.select ul li').forEach(li => {
             li.onclick = e => {
-                console.log("LI clicked", e)
+                console.log("Li clicked", e)
                 e.stopPropagation();
                 const button = li.parentNode.parentNode.querySelector('button')
                 button.querySelector('.name').textContent = li.querySelector('.name').textContent;
@@ -83,6 +91,7 @@ export class MultiSendToAnyone {
                 button.querySelector('.amountOwned').style.display = li.dataset.address=='custom'? "none":"block";
                 button.querySelector('.name').style.display = li.dataset.address=='custom'? "none":"block";
                 button.querySelector('.customAddress').style.display = li.dataset.address=='custom'? "block":"none";
+                button.querySelector('.customId').style.display = li.dataset.address=='custom'? (["ERC721", "ERC1155"].includes(li.dataset.assettype)? "block":"none") : "none";
                 li.parentNode.parentNode.classList.remove('isOpen')
                 console.log(this.html.querySelector(':focus'))
                 this.html.querySelector(':focus')?.blur()
@@ -404,6 +413,10 @@ export class MultiSendToAnyone {
         console.log(slider.checked)
         this.html.querySelector('#InputCustomAmount').value = slider.checked? '1': this.html.querySelector('#InputCustomAmount').value;
 
+        // reset custom asset data
+        this.html.querySelector('.customAddress').value = "";
+        this.html.querySelector('.customId').value = "";
+
         this.content = this.html.querySelector('textarea[name="recipients"]').value;
         this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
         this.recipientsNoAmount = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(',')[0])
@@ -446,8 +459,22 @@ export class MultiSendToAnyone {
         try {
             tempAssetBalance = customId? await tokenContract.methods.balanceOf(this.selectedAccount, customId).call() : await tokenContract.methods.balanceOf(this.selectedAccount).call();
             tempTokenDecimals = customId? 0 : await tokenContract.methods.decimals().call();
-            tempTokenSymbol = await tokenContract.methods.symbol().call();
-            tempTokenName = await tokenContract.methods.name().call();
+            if (customId) {
+                let tokenURI = tokenContract.methods.tokenURI(customId).call();
+                if (tokenURI.startsWith("ipfs://")) tokenURI = tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/");
+                try {
+                    let uriData;
+                    await fetch(tokenURI).then((res) => uriData = res.json());
+                    tempTokenName = uriData.name
+                    tempTokenSymbol = uriData.name
+                } catch (e) {
+                    console.log("nft data not found: ", e)
+                    return false
+                }
+            } else {
+                tempTokenName = await tokenContract.methods.name().call();
+                tempTokenSymbol = await tokenContract.methods.symbol().call();
+            }
             if (tempAssetBalance != '0') tempAdjustedBalance = (parseInt(tempAssetBalance)/10**parseInt(tempTokenDecimals)) + ""
         } catch (error) {
             console.log(error)
@@ -494,11 +521,8 @@ export class MultiSendToAnyone {
 
             asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
 
-            //asset.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
-
             count = asset.style.display == '' ? count + 1 : count;
 
-            // button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
             console.log(newAssetBalance, asset.dataset.symbol)
 
             if (asset.dataset.assettype !== "native" && newAssetBalance === "0") asset.style.display = 'none'
@@ -524,7 +548,7 @@ export class MultiSendToAnyone {
 
     async setCustomAsset() {
         let customAddress = this.html.querySelector('.customAddress').value;
-        let customId = this.html.querySelector('.customAddress').value;
+        let customId = this.html.querySelector('.customId').value;
 
         let slider = this.html.querySelector('#Toggle');
         let selectedAssetType = slider.checked? "nft" : "erc20";
@@ -532,6 +556,29 @@ export class MultiSendToAnyone {
         let customToken = await this.getTokenData(customAddress, selectedAssetType, customId);
 
         console.log(customToken)
+
+//        // if all defined, create li element and add to dropdown, then click it
+//        <li role="option" data-address=asset.address data-assetType=asset.type data-assetId=asset.id data-symbol=asset.symbol>
+//            <img src=asset.image alt=""/>
+//            <span class="name">{{asset.name}}</span>
+//            <span id="AmountPlaceholder" class="amountOwned">{{asset.balance}}</span>
+//        </li>
+
+        if (customToken) {
+            let assets = this.html.querySelectorAll('.assetSelect li')
+            const customElems = this.html.querySelectorAll('li[data-address="custom"]');
+            const customElem = selectedAssetType=="erc20"? customElems[0] : customElems[1]
+            let newCustomElem = customElem.cloneNode(true, true);
+            newCustomElem.dataset.address = customAddress;
+            newCustomElem.dataset.assetid = customId? customId : "undefined"; // CHECK if "" or "1" or "0"
+            newCustomElem.dataset.symbol = customToken.tempTokenSymbol;
+            newCustomElem.querySelector('.name').innerHTML = customToken.tempTokenName;
+            newCustomElem.querySelector('.amountOwned').innerHTML = customToken.tempAdjustedBalance;
+
+            customElem.parentNode.insertBefore(newCustomElem, customElem);
+
+            newCustomElem.click();
+        }
     }
 
     async calculateAmount() {
