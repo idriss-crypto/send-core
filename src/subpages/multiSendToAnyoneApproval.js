@@ -2,7 +2,6 @@ import template from "./multiSendToAnyoneApproval.mpts";
 import close from "!!url-loader!../img/close.svg"
 import {create} from "fast-creator";
 
-let
 
 export class MultiSendToAnyoneApproval {
     constructor(assetName) {
