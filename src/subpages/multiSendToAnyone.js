@@ -335,12 +335,12 @@ export class MultiSendToAnyone {
             assetAddress = this.html.querySelector('.assetSelect').dataset.address;
             assetType = this.html.querySelector('.assetSelect').dataset.assettype.toLowerCase();
         }
-        if (assetType === 'erc1155' && assetAddress === "0x0000000000000000000000000000000000000000") return;
+        if (assetType === 'erc1155' && assetAddress === ZERO_ADDRESS) return;
 
         asset = {
             type: assetTypes[assetType],
             assetContractAddress: assetAddress,
-            assetId: assetId === "" ? 0 : assetId,
+            assetId: assetId === "" ? 'undefined' : assetId,
         };
 
         asset = Object.fromEntries(Object.entries(asset).filter(([k,v]) => v!=='undefined'));
@@ -570,7 +570,7 @@ export class MultiSendToAnyone {
             const customElem = selectedAssetType=="erc20"? customElems[0] : customElems[1]
             let newCustomElem = customElem.cloneNode(true, true);
             newCustomElem.dataset.address = customAddress;
-            newCustomElem.dataset.assetid = customId? customId : "undefined"; // CHECK if "" or "1" or "0"
+            newCustomElem.dataset.assetid = customId? customId : "undefined";
             newCustomElem.dataset.symbol = customToken.tempTokenSymbol;
             newCustomElem.querySelector('.name').innerHTML = customToken.tempTokenName;
             newCustomElem.querySelector('.amountOwned').innerHTML = customToken.tempAdjustedBalance;
