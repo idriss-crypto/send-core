@@ -1,7 +1,9 @@
+<header>
+    <h1>Revert a Transaction</h1>
+</header>
 <main>
-    <h1>Revert Send</h1>
-    <label>Transaction hash to revert</label>
-    <input id="urlInput" type="text" class="customHash" placeholder="0x..." />
+    <input id="urlInput" type="text" class="customHash" placeholder="Transaction hash" />
+    <p class="errorInput">Not a valid transaction hash</p>
     <button type="button" class="revertButton">
         <span id="revertNext" >Revert</span>
         <div id="buttonRevertSpinner" style="display: none;" class="spinnerWrapper">
@@ -12,5 +14,3 @@
         </div>
     </button>
 </main>
-<footer>
-</footer>
