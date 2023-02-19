@@ -134,7 +134,7 @@ export class MultiSendToAnyone {
             if (this.sameAmount) {
                 console.log("same amount, should be placed in input field")
                 console.log(this.result[0])
-                this.html.querySelector('#InputCustomAmount').value = this.result[0][1]? this.result[0][1] : "";
+                this.html.querySelector('#InputCustomAmount').value = this.result[0][1]? this.result[0][1] : this.html.querySelector('#InputCustomAmount').value;
                 this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
             } else {
                 this.hasAmount = true;
@@ -178,6 +178,7 @@ export class MultiSendToAnyone {
             button.querySelector('.customAddress').style.display = li.dataset.address=='custom'? "block":"none";
             button.querySelector('.customId').style.display = li.dataset.address=='custom'? (["ERC721", "ERC1155"].includes(li.dataset.assettype)? "block":"none") : "none";
             li.parentNode.parentNode.classList.remove('isOpen')
+            this.html.querySelector('.customAssetError').style.display = "none";
             this.html.querySelector('.customAddress').value = "";
             this.html.querySelector('.customId').value = "";
             this.html.querySelector(':focus')?.blur()
@@ -189,6 +190,15 @@ export class MultiSendToAnyone {
 
         let isValid = false;
         this.html.querySelector(".multiSend").disabled = true;
+
+        let token = this.html.querySelector('.assetSelect').dataset.symbol;
+        console.log("token is ", token)
+        if (token==='custom') {
+            console.log("token is custom inner")
+            this.html.querySelector('.customAssetError').style.display = "block";
+            return isValid
+        }
+        this.html.querySelector('.customAssetError').style.display = "none";
 
         let wrongRegex = ""
         let wrongAmount = ""
@@ -413,6 +423,7 @@ export class MultiSendToAnyone {
 
     handleSlider() {
         let slider = this.html.querySelector('#Toggle');
+        this.html.querySelector('.customAssetError').style.display = "none";
         this.html.querySelector('.assetType').textContent = slider.checked? "NFT:" : "Token:";
         this.html.querySelector('#assetHeader').textContent = slider.checked? "NFT" : "Token";
         this.html.querySelector('.nft-mint-wrapper').firstElementChild.style.display = slider.checked ? 'block': 'none';
@@ -570,8 +581,10 @@ export class MultiSendToAnyone {
     }
 
     async setCustomAsset() {
+
         let customAddress = this.html.querySelector('.customAddress').value;
         let customId = this.html.querySelector('.customId').value;
+        this.html.querySelector('.customAssetError').style.display = "none";
 
         let slider = this.html.querySelector('#Toggle');
         let selectedAssetType = slider.checked? "nft" : "erc20";
