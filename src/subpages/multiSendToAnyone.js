@@ -205,7 +205,7 @@ export class MultiSendToAnyone {
         console.log(inputType)
         // if same amounts entered
         // ToDo: check for NFT case == 1?
-        if (!this.hasAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, this.html.querySelector('#InputCustomAmount').value]);
+        if (!this.hasAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, inputType=="slider"? '1' : this.html.querySelector('#InputCustomAmount').value]);
 
         console.log(this.result)
 
@@ -336,7 +336,6 @@ export class MultiSendToAnyone {
 
         asset = Object.fromEntries(Object.entries(asset).filter(([k,v]) => v!=='undefined'));
 
-        console.log("Calling prepare now")
         for (let element of this.result) {
             let elemToPush = await this.prepareRecipients(element)
             multiSendArr.push(elemToPush)
@@ -398,19 +397,26 @@ export class MultiSendToAnyone {
         this.html.querySelector('#assetHeader').textContent = slider.checked? "NFT" : "Token";
         this.html.querySelector('.nft-mint-wrapper').firstElementChild.style.display = slider.checked ? 'block': 'none';
         this.html.querySelector('.amountSelection').style.display = slider.checked ? 'none' : 'block';
-        // always false after selecting slider and going back, except when modifying manually
-        slider.checked ? this.hasAmount = false : this.hasAmount;
-        // always '1' after selecting slider and going back, except when modifying manually
-        console.log(slider.checked)
-        this.html.querySelector('#InputCustomAmount').value = slider.checked? '1': this.html.querySelector('#InputCustomAmount').value;
+
 
         this.content = this.html.querySelector('textarea[name="recipients"]').value;
+
         this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
         this.recipientsNoAmount = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(',')[0])
 
-        this.modifyAmountInput();
-        this.modifyRecipients();
+        if (!this.hasAmount) {
+
+            this.currentSame = slider.checked? '1': this.html.querySelector('#InputCustomAmount').value;
+
+            if (this.result) this.result = this.result.map(data => [data[0], this.currentSame]);
+        }
+        console.log(this.result)
+
+        // ToDo: delete, as checking slider already selects the first valid list element?
+        // this.modifyAmountInput();
+        // this.modifyRecipients('slider');
         this.refreshVisibleAssets();
+        console.log(this.result)
     }
 
     async getTokenBalance(address, type, id="0") {
@@ -461,8 +467,17 @@ export class MultiSendToAnyone {
 
         let assets = this.html.querySelectorAll('.assetSelect li')
 
-
         let count = 0
+        for (let asset of assets) {
+            asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
+            count = asset.style.display == '' ? count + 1 : count;
+        }
+
+        if (count === 0) {
+            this.html.querySelector('.assetSelectWrapper').style.display = 'none';
+            this.html.querySelector('.errorAsset').style.display = 'block';
+        }
+
         for (let asset of assets) {
             const button = asset.parentNode.parentNode.querySelector('button');
             let assetBalance = asset.querySelector(".amountOwned").textContent;
@@ -492,22 +507,13 @@ export class MultiSendToAnyone {
             asset.querySelector(".amountOwned").textContent = newAssetBalance;
             if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
 
-            asset.style.display = slider.checked ? (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? '' : 'none') : (["ERC721", "ERC1155"].includes(asset.dataset.assettype) ? 'none' : '');
-
-            //asset.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
-
-            count = asset.style.display == '' ? count + 1 : count;
-
             // button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
             console.log(newAssetBalance, asset.dataset.symbol)
 
             if (asset.dataset.assettype !== "native" && newAssetBalance === "0") asset.style.display = 'none'
         }
         this.gotBalance = true;
-        if (count === 0) {
-            this.html.querySelector('.assetSelectWrapper').style.display = 'none';
-            this.html.querySelector('.errorAsset').style.display = 'block';
-        }
+
         let requiredType = slider.checked? ["ERC721", "ERC1155"] : ["native", "ERC20"]
         if (!requiredType.includes(this.html.querySelector('.assetSelect').dataset.assettype)) {
             if (count>0) {
