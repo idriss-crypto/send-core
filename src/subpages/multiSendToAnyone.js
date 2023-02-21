@@ -478,39 +478,15 @@ export class MultiSendToAnyone {
             this.html.querySelector('.errorAsset').style.display = 'block';
         }
 
+        let calculatedBalancesPromises=[]
         for (let asset of assets) {
-            const button = asset.parentNode.parentNode.querySelector('button');
-            let assetBalance = asset.querySelector(".amountOwned").textContent;
-            let newAssetBalance = assetBalance;
-            if (!this.gotBalance) {
-                console.log(assetBalance, asset.dataset.symbol)
-                if (assetBalance === '0' && asset.dataset.assettype == "ERC20") {
-                    newAssetBalance = await this.getTokenBalance(asset.dataset.address, asset.dataset.assettype)
-                }
-                if (assetBalance === '0' && asset.dataset.assettype == "native") {
-                    await defaultWeb3.eth.getBalance(this.selectedAccount, function(error, result){
-                        if(error){
-                           console.log(error)
-                           newAssetBalance = '0';
-                        }
-                        else{
-                           newAssetBalance = result;
-                           if (newAssetBalance != '0') newAssetBalance = parseInt(newAssetBalance)/10**18
-                        }
-                    })
-                }
-                // ToDo: add case for ERC1155, call the same function as in ERC20 -> combine with above?
-                if (assetBalance === '0' && asset.dataset.assettype == "ERC1155") {
-                    newAssetBalance = await this.getTokenBalance(asset.dataset.address, asset.dataset.assettype, asset.dataset.assetid)
-                }
-            }
-            asset.querySelector(".amountOwned").textContent = newAssetBalance;
-            if (button.querySelector('.name').textContent === asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
+            calculatedBalancesPromises.push(this.visibleAssetsBalances(asset));
+        }
 
-            // button.querySelector(".amountOwned").style.display = slider.checked ? 'none' : '';
-            console.log(newAssetBalance, asset.dataset.symbol)
+        await Promise.all(calculatedBalancesPromises)
 
-            if (asset.dataset.assettype !== "native" && newAssetBalance === "0") asset.style.display = 'none'
+        for (let asset of assets) {
+            if (asset.dataset.assettype !== "native" && asset.querySelector(".amountOwned").textContent === "0") asset.style.display = 'none'
         }
         this.gotBalance = true;
 
@@ -526,6 +502,36 @@ export class MultiSendToAnyone {
             }
         }
 
+    }
+
+    async visibleAssetsBalances(_asset) {
+        const button = _asset.parentNode.parentNode.querySelector('button');
+        let assetBalance = _asset.querySelector(".amountOwned").textContent;
+        let newAssetBalance = assetBalance;
+        if (!this.gotBalance) {
+            console.log(assetBalance, _asset.dataset.symbol)
+            if (assetBalance === '0' && _asset.dataset.assettype == "ERC20") {
+                newAssetBalance = await this.getTokenBalance(_asset.dataset.address, _asset.dataset.assettype)
+            }
+            if (assetBalance === '0' && _asset.dataset.assettype == "native") {
+                await defaultWeb3.eth.getBalance(this.selectedAccount, function(error, result){
+                    if(error){
+                       console.log(error)
+                       newAssetBalance = '0';
+                    }
+                    else{
+                       newAssetBalance = result;
+                       if (newAssetBalance != '0') newAssetBalance = parseInt(newAssetBalance)/10**18
+                    }
+                })
+            }
+            // ToDo: add case for ERC1155, call the same function as in ERC20 -> combine with above?
+            if (assetBalance === '0' && _asset.dataset.assettype == "ERC1155") {
+                newAssetBalance = await this.getTokenBalance(_asset.dataset.address, _asset.dataset.assettype, _asset.dataset.assetid)
+            }
+        }
+        _asset.querySelector(".amountOwned").textContent = newAssetBalance;
+        if (button.querySelector('.name').textContent === _asset.dataset.symbol ) button.querySelector(".amountOwned").textContent = newAssetBalance;
     }
 
     async setCustomAsset() {
