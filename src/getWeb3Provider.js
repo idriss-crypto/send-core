@@ -150,13 +150,24 @@ const magicLinkOpts= {
     },
 };
 
-const providerOptions={
-        ...walletConnectOpts,
-        ...walletLinkOpts,
-        ...metaMaskOpts,
-        ...tallyOpts,
-        ...magicLinkOpts
-    }
+const providerOptions = {
+    ...walletConnectOpts,
+    ...walletLinkOpts,
+};
+
+if (deviceType() === "desktop") {
+    Object.assign(providerOptions, metaMaskOpts);
+    Object.assign(providerOptions, tallyOpts);
+    Object.assign(providerOptions, magicLinkOpts);
+}
+
+//const providerOptions={
+//        ...walletConnectOpts,
+//        ...walletLinkOpts,
+//        ...metaMaskOpts,
+//        ...tallyOpts,
+//        ...magicLinkOpts
+//    }
 
 function isMetaMaskInstalled(){
     let providers = window.ethereum.providers;
@@ -186,6 +197,17 @@ function isTallyInstalled(){
     else {
         return false
     }
+}
+
+function deviceType() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+        return "tablet";
+    }
+    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+        return "mobile";
+    }
+    return "desktop";
 }
 
 export async function getProvider() {

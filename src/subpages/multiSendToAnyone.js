@@ -206,8 +206,7 @@ export class MultiSendToAnyone {
         for (let element of this.result) {
             await this.checkAmount(element);
         }
-        // if same amounts entered
-        // ToDo: check for NFT case == 1?
+
         if (!this.hasAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, slider.checked? '1' : this.html.querySelector('#InputCustomAmount').value]);
 
         console.log(this.result)
