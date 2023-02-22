@@ -10,6 +10,8 @@ import coinbaseLogo from "!!url-loader!./img/coinbase.svg"
 import magicLogo from "!!url-loader!./img/magic.svg"
 import Web3Modal from "web3modal";
 
+const WCProvider = WalletConnectProvider.default;
+
 const customNodePolygon = {
     rpcUrl: POLYGON_RPC_ENDPOINT,
     chainId: POLYGON_CHAIN_ID,
@@ -51,7 +53,7 @@ const tallyOpts= {
 };
 const walletConnectOpts= {
     walletconnect: {
-        package: WalletConnectProvider,
+        package: WCProvider,
         options: {
             rpc: {
                 137: POLYGON_RPC_ENDPOINT,
@@ -60,6 +62,7 @@ const walletConnectOpts= {
         },
     },
 };
+
 const metaMaskOpts= {
     "custom-metamask": {
         display: {
@@ -196,7 +199,6 @@ export async function getProvider() {
     let provider
     try {
         provider = await web3Modal.connect();
-        console.log({provider})
     } catch (ex) {
         console.error(ex)
     }
