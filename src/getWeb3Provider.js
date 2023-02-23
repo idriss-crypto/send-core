@@ -62,7 +62,6 @@ const walletConnectOpts= {
         },
     },
 };
-
 const metaMaskOpts= {
     "custom-metamask": {
         display: {
@@ -122,7 +121,6 @@ const walletLinkOpts= {
         },
     },
 };
-
 const magicLinkOpts= {
     'custom-magicConnect': {
         display: {
@@ -161,40 +159,40 @@ if (deviceType() === "desktop") {
     Object.assign(providerOptions, magicLinkOpts);
 }
 
-//const providerOptions={
-//        ...walletConnectOpts,
-//        ...walletLinkOpts,
-//        ...metaMaskOpts,
-//        ...tallyOpts,
-//        ...magicLinkOpts
-//    }
-
 function isMetaMaskInstalled(){
-    let providers = window.ethereum.providers;
-    let pMM;
-    if (providers){
-        pMM = providers.find(p => p.isMetaMask);
-    } else if (window.ethereum.isMetaMask) {
-        return true
-    }
-    if (pMM) {
-        return true
-    }
-    else {
+    try {
+        let providers = window.ethereum.providers;
+        let pMM;
+        if (providers){
+            pMM = providers.find(p => p.isMetaMask);
+        } else if (window.ethereum.isMetaMask) {
+            return true
+        }
+        if (pMM) {
+            return true
+        }
+        else {
+            return false
+        }
+    } catch {
         return false
     }
 }
 
 function isTallyInstalled(){
-    let providers = window.ethereum.providers;
-    let pTally;
-    if (providers){
-        pTally = providers.find(p => p.isTally);
-    }
-    if (pTally) {
-        return true
-    }
-    else {
+    try {
+        let providers = window.ethereum.providers;
+        let pTally;
+        if (providers){
+            pTally = providers.find(p => p.isTally);
+        }
+        if (pTally) {
+            return true
+        }
+        else {
+            return false
+        }
+    } catch {
         return false
     }
 }
@@ -215,7 +213,7 @@ export async function getProvider() {
         network: 'mainnet',
         cacheProvider: false, // optional
         providerOptions: providerOptions, // required
-        disableInjectedProvider: true,
+        disableInjectedProvider: deviceType()=='desktop'? true: false,
     });
     await web3Modal.clearCachedProvider();
     let provider
