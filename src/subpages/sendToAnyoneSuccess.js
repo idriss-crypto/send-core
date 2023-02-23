@@ -6,7 +6,7 @@ import {create} from "fast-creator";
 
 export class SendToAnyoneSuccess {
     constructor(identifier, explorerLink, claimPassword, isIDrissRegistered,
-                assetAmount, assetId, assetType, assetAddress, token, blockNumber, txnHash) {
+                assetId, assetType, assetAddress, token, blockNumber, txnHash) {
         const idrissHost = IDRISS_HOMEPAGE
         const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}&blockNumber=${blockNumber}`
         const notificationUrl = `${idrissHost}/sendNotification`

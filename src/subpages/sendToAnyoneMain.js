@@ -67,7 +67,6 @@ export class SendToAnyoneMain {
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
             let assetId = this.html.querySelector('.nftSelect').dataset.assetid;
-            let assetAmount = 1
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
             }
@@ -83,7 +82,6 @@ export class SendToAnyoneMain {
                 assetType,
                 assetAddress,
                 assetId,
-                assetAmount,
                 amount,
                 token,
                 message
