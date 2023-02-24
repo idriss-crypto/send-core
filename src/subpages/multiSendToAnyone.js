@@ -102,11 +102,13 @@ export class MultiSendToAnyone {
             this.content = this.html.querySelector('textarea[name="recipients"]').value;
             this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => data.split(','));
             this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
+            this.hasAmount = false;
             // if empty, check this.hasAmounts? custom : 0.00
             if (!this.html.querySelector('#InputCustomAmount').value) return;
 
-            this.modifyAmountInput();
             this.modifyRecipients();
+            this.modifyAmountInput();
+
         })
 
         this.html.querySelector('textarea[name="recipients"]')?.addEventListener('input', async (e) => {
