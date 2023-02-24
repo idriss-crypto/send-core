@@ -73,24 +73,10 @@ export class MultiSendToAnyone {
 
         this.html.querySelectorAll('.select ul li').forEach(li => {
             li.onclick = e => {
-                console.log("LI clicked", e)
-                e.stopPropagation();
-                const button = li.parentNode.parentNode.querySelector('button')
-                button.querySelector('.name').textContent = li.querySelector('.name').textContent;
-                button.querySelector('img').src = li.querySelector('img').src;
-                button.querySelector('.amountOwned').textContent = li.querySelector('.amountOwned').textContent;
-                Object.assign(button.parentNode.dataset, li.dataset);
-                button.querySelector('.amountOwned').style.display = li.dataset.address=='custom'? "none":"block";
-                button.querySelector('.name').style.display = li.dataset.address=='custom'? "none":"block";
-                button.querySelector('.customAddress').style.display = li.dataset.address=='custom'? "block":"none";
-                li.parentNode.parentNode.classList.remove('isOpen')
-                console.log(this.html.querySelector(':focus'))
-                this.html.querySelector(':focus')?.blur()
-                this.refreshVisibleAssets()
+                this.liClicked(e, li);
             }
-            li.onmousedown = e => { console.log("Down called"); e.preventDefault()}
+            li.onmousedown = e => {e.preventDefault()}
         })
-
 
         this.html.querySelector('.multiSend')?.addEventListener('click', async (e) => {
             console.log("next clicked")
@@ -106,7 +92,7 @@ export class MultiSendToAnyone {
             // if empty, check this.hasAmounts? custom : 0.00
             if (!this.html.querySelector('#InputCustomAmount').value) return;
 
-            this.modifyRecipients();
+            //this.modifyRecipients();
             this.modifyAmountInput();
 
         })
@@ -136,7 +122,7 @@ export class MultiSendToAnyone {
             if (this.sameAmount) {
                 console.log("same amount, should be placed in input field")
                 console.log(this.result[0])
-                this.html.querySelector('#InputCustomAmount').value = this.result[0][1]? this.result[0][1] : "";
+                this.html.querySelector('#InputCustomAmount').value = this.result[0][1]? this.result[0][1] : this.html.querySelector('#InputCustomAmount').value;
                 this.html.querySelector('#InputCustomAmount').placeholder = "0.00";
             } else {
                 this.hasAmount = true;
@@ -158,14 +144,33 @@ export class MultiSendToAnyone {
 
     async modifyAmountInput() {
 
+        this.hasAmount = false
+
         this.currentSame = this.html.querySelector('#InputCustomAmount').value;
         console.log(this.currentSame)
 
         this.result = this.result.map(data => [data[0], this.currentSame]);
         this.sameAmount = true
+        this.hasAmount = false
         let textToDisplay = this.hasAmount? this.result.join("\n") : this.recipientsNoAmount.join('\n')
+        console.log(this.recipientsNoAmount, this.hasAmount, textToDisplay)
         this.html.querySelector('textarea[name="recipients"]').value =  textToDisplay;
     }
+
+    liClicked(e, li) {
+            console.log("Li clicked", e)
+            e.stopPropagation();
+            const button = li.parentNode.parentNode.querySelector('button')
+            button.querySelector('.name').textContent = li.querySelector('.name').textContent;
+            button.querySelector('img').src = li.querySelector('img').src;
+            button.querySelector('.amountOwned').textContent = li.querySelector('.amountOwned').textContent;
+            Object.assign(button.parentNode.dataset, li.dataset);
+            button.querySelector('.amountOwned').style.display = li.dataset.address=='custom'? "none":"block";
+            button.querySelector('.name').style.display = li.dataset.address=='custom'? "none":"block";
+            li.parentNode.parentNode.classList.remove('isOpen')
+            this.html.querySelector(':focus')?.blur()
+            this.refreshVisibleAssets()
+        }
 
 
     async checkValidity() {
@@ -177,7 +182,7 @@ export class MultiSendToAnyone {
         let wrongAmount = ""
 
         if (!this.result) {
-            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "Please add recipients";
+            this.html.querySelector('.unique-recipients-wrapper').firstElementChild.innerHTML =  "No input made";
             this.html.querySelector('.unique-recipients-wrapper').firstElementChild.style.color =  "red";
             this.html.querySelector('.unique-recipients-wrapper').style.visibility = "visible";
             return isValid
@@ -470,6 +475,7 @@ export class MultiSendToAnyone {
         let slider = this.html.querySelector('#Toggle');
 
         let assets = this.html.querySelectorAll('.assetSelect li')
+
 
         let count = 0
         for (let asset of assets) {
