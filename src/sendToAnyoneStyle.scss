@@ -142,6 +142,7 @@
         .more {
             width: 27px;
             align-items: center;
+            display: flex;
 
             span {
                 display: none;
@@ -152,7 +153,6 @@
             }
 
             &.isSelected {
-                display: flex;
 
                 img {
                     display: none;
