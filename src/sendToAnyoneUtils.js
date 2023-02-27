@@ -179,7 +179,10 @@ const tokens = [
         network: "ETH",
         decimals: 18,
         logoURI: bank,
-    },
+    }
+];
+
+const multiToken = [
     {
     chainId: 137,
     name: "Telcoin",
