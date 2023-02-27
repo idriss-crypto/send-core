@@ -1,6 +1,6 @@
 import Web3 from "web3/dist/web3.min.js";
 import {BigNumber} from "ethers";
-import { tokens, walletTypeDefault, getCoin } from "./sendToAnyoneUtils";
+import { tokens, multiToken, walletTypeDefault, getCoin } from "./sendToAnyoneUtils";
 import { IdrissCrypto } from "idriss-crypto/browser";
 
 export const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
@@ -31,6 +31,8 @@ let coingeckoId = {
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
 };
+
+let allTokens = tokens.concat(multiToken)
 
 export const SendToAnyoneLogic = {
     provider: null,
@@ -79,7 +81,7 @@ export const SendToAnyoneLogic = {
             priceSt = Object.values(Object.values(response)[0])[0];
         }
 
-        let decimals = tokens.filter((x) => x.symbol == ticker)[0]?.decimals;
+        let decimals = allTokens.filter((x) => x.symbol == ticker)[0]?.decimals;
         priceSt = Number.parseFloat(priceSt).toFixed(decimals)
 
         let BN = defaultWeb3.utils.BN;
@@ -170,7 +172,7 @@ export const SendToAnyoneLogic = {
 
     async sendToAnyone(recipient, amount, network, token, message, assetType, assetAddress, assetId, walletTag) {
 
-        let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
+        let tokenContractAddr = allTokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
 
         let properAmount;
         if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;

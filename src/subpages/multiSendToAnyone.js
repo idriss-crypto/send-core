@@ -1,7 +1,7 @@
 import template from "./multiSendToAnyone.mpts";
 import arrow from "!!url-loader!../img/arrow.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
-import {tokens} from "../sendToAnyoneUtils";
+import {tokens, multiToken} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 import { walletTypeDefault, getCoin, loadToken, loadNFT, customNFT,  regPh, regM, regT } from "../sendToAnyoneUtils";
 import { defaultWeb3, defaultWeb3ETH } from "../sendToAnyoneLogic";
