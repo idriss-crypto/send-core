@@ -218,8 +218,10 @@ export const SendToAnyoneLogic = {
             try {
                 const transactionOptions = {
                     from: selectedAccount,
+                    ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log(recipient, walletType, asset, message, transactionOptions);
+                console.log(network, this.idriss);
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
             } catch (err) {
                 console.log("error", err);
