@@ -3,12 +3,12 @@
 <main>
     <div class="loader"/>
     <h2>Waiting for Confirmation</h2>
-    <p class="subtitle subtitleCoin">Sending <strong>${{amountUSD}}</strong> (<span class="amountCoin">---</span> {{token}}) to <div class="twitterWrap">{{identifier}}<img class="twitterIcon" src=twitter alt=""/></div></p>
+    <p class="subtitle subtitleCoin">Sending <strong>${{amountUSD}}</strong> (<span class="amountCoin">{{amountNormal}}</span> {{token}}) to <div class="twitterWrap">{{identifier}}<img class="twitterIcon" src=twitter alt=""/></div></p>
     <p class="subtitle subtitleNFT">Sending <strong>{{nftName}}</strong> NFT to <div class="twitterWrap"><img class="twitterIcon" src=twitter alt=""/> {{identifier}}</div></p>
     <p id="numTxns">Confirm this transaction in your wallet</p>
 </main>
 <footer>
     <p class="link">
-        <a class="linkContent" href="https://mirror.xyz/0x88d7709ce401e4E7b5068156423ECB4f60A99F75/gwUi5LU-JIy4ldoKKFC9E4ODZuKfF_cETW2uSZEuPSs" target="_blank">1% (min. $1) supplies IDriss treasury</a>
+        <a class="linkContent" href="https://idriss.mirror.xyz/GU86nfqr5UjSGFiZTunalcEGllwKXUilGscCXGmATLU" target="_blank">1% (min. $1) supplies IDriss treasury</a>
     </p>
 </footer>

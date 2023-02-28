@@ -1,5 +1,6 @@
 import Web3 from "web3/dist/web3.min.js";
-import { tokens, walletTypeDefault, getCoin } from "./sendToAnyoneUtils";
+import {BigNumber} from "ethers";
+import { tokens, multiToken, walletTypeDefault, getCoin } from "./sendToAnyoneUtils";
 import { IdrissCrypto } from "idriss-crypto/browser";
 
 export const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
@@ -30,6 +31,9 @@ let coingeckoId = {
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
 };
+
+// When using all token
+//let allTokens = tokens.concat(multiToken)
 
 export const SendToAnyoneLogic = {
     provider: null,
@@ -74,13 +78,18 @@ export const SendToAnyoneLogic = {
             let oracle = await this.loadOracle(ticker); // token ticker selected
             priceSt = await this.getPrice(oracle);
         } else {
-            let response = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId[ticker]}&vs_currencies=USD`)).json();
+            let response = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId[ticker]}&vs_currencies=USD&precision=full`)).json();
             priceSt = Object.values(Object.values(response)[0])[0];
         }
 
         let decimals = tokens.filter((x) => x.symbol == ticker)[0]?.decimals;
-        let integer = this.getAmount(sendToAnyoneValue, priceSt, decimals); // sendToAnyoneValue selected in popup, decimals specified in json for token
-        let normal = integer / Math.pow(10, decimals); // sendToAnyoneValue selected in popup, decimals specified in json for token
+        priceSt = Number.parseFloat(priceSt).toFixed(decimals)
+
+        let BN = defaultWeb3.utils.BN;
+        let ten = new BN(10);
+        let base = ten.pow(new BN(decimals));
+        let integer = this.getAmount(sendToAnyoneValue.toString(), priceSt, decimals);
+        let normal = (integer/base).toString();
         return { integer, normal };
     },
 
@@ -162,13 +171,13 @@ export const SendToAnyoneLogic = {
         }
     },
 
-    async sendToAnyone(recipient, amount, network, token, message, assetType, assetAmount, assetAddress, assetId, walletTag) {
+    async sendToAnyone(recipient, amount, network, token, message, assetType, assetAddress, assetId, walletTag) {
 
         let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
 
         let properAmount;
         if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;
-        else properAmount = (assetAmount ?? "").length > 0 ? assetAmount : amount;
+        else properAmount =  amount;
 
         const asset = {
             amount: `${properAmount}`,
@@ -212,8 +221,10 @@ export const SendToAnyoneLogic = {
             try {
                 const transactionOptions = {
                     from: selectedAccount,
+                    ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log(recipient, walletType, asset, message, transactionOptions);
+                console.log(network, this.idriss);
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
             } catch (err) {
                 console.log("error", err);
@@ -770,6 +781,23 @@ export const SendToAnyoneLogic = {
     },
     // calculate price in wei (amount needed to send to anyone)
     getAmount(sendToAnyoneValue, tokenPrice, decimals) {
-        return Math.round((sendToAnyoneValue / tokenPrice) * Math.pow(10, decimals));
+        const BN = defaultWeb3.utils.BN;
+        const ten = new BN(10);
+        let decimalsTemp = new BN(decimals)
+        let baseTemp = ten.pow(new BN(decimalsTemp));
+
+        let decimalCountPrice = tokenPrice.includes('.') ? tokenPrice.split('.')[1].length : 0;
+        let multiplierPrice = Math.pow(10, decimalCountPrice) || 1;
+        let tokenPriceToInt = new BN(tokenPrice.replace('.', ''));
+
+        let decimalCountValue = sendToAnyoneValue.includes('.') ? sendToAnyoneValue.split('.')[1].length : 0;
+        let multiplierValue = Math.pow(10, decimalCountValue) || 1;
+        let tokenValueToInt = new BN(sendToAnyoneValue.replace('.', ''));
+
+
+        console.log(decimalCountValue)
+        console.log(new BN(multiplierValue.toString()))
+
+        return (new BN(multiplierPrice.toString())).mul(baseTemp).mul(tokenValueToInt).div(tokenPriceToInt).div(new BN(multiplierValue.toString()));
     },
 };

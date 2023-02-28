@@ -122,7 +122,6 @@ const walletLinkOpts= {
         },
     },
 };
-
 const magicLinkOpts= {
     'custom-magicConnect': {
         display: {
@@ -150,42 +149,64 @@ const magicLinkOpts= {
     },
 };
 
-const providerOptions={
-        ...walletConnectOpts,
-        ...walletLinkOpts,
-        ...metaMaskOpts,
-        ...tallyOpts,
-        ...magicLinkOpts
-    }
+const providerOptions = {
+    ...walletConnectOpts,
+    ...walletLinkOpts,
+};
+
+if (deviceType() === "desktop") {
+    Object.assign(providerOptions, metaMaskOpts);
+    Object.assign(providerOptions, tallyOpts);
+    Object.assign(providerOptions, magicLinkOpts);
+}
 
 function isMetaMaskInstalled(){
-    let providers = window.ethereum.providers;
-    let pMM;
-    if (providers){
-        pMM = providers.find(p => p.isMetaMask);
-    } else if (window.ethereum.isMetaMask) {
-        return true
-    }
-    if (pMM) {
-        return true
-    }
-    else {
+    try {
+        let providers = window.ethereum.providers;
+        let pMM;
+        if (providers){
+            pMM = providers.find(p => p.isMetaMask);
+        } else if (window.ethereum.isMetaMask) {
+            return true
+        }
+        if (pMM) {
+            return true
+        }
+        else {
+            return false
+        }
+    } catch {
         return false
     }
 }
 
 function isTallyInstalled(){
-    let providers = window.ethereum.providers;
-    let pTally;
-    if (providers){
-        pTally = providers.find(p => p.isTally);
-    }
-    if (pTally) {
-        return true
-    }
-    else {
+    try {
+        let providers = window.ethereum.providers;
+        let pTally;
+        if (providers){
+            pTally = providers.find(p => p.isTally);
+        }
+        if (pTally) {
+            return true
+        }
+        else {
+            return false
+        }
+    } catch {
         return false
     }
+}
+
+function deviceType() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+        return "tablet";
+    }
+    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+        return "mobile";
+    }
+    return "desktop";
 }
 
 export async function getProvider() {
@@ -193,7 +214,7 @@ export async function getProvider() {
         network: 'mainnet',
         cacheProvider: false, // optional
         providerOptions: providerOptions, // required
-        disableInjectedProvider: true,
+        disableInjectedProvider: deviceType()=='desktop'? true: false,
     });
     await web3Modal.clearCachedProvider();
     let provider

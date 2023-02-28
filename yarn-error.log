@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, lstat 'C:\Users\Lenna\PycharmProjects\send-to-anyone-core\node_modules\idriss-crypto\node_modules\ethereumjs-util\node_modules'
+  Error: ENOENT: no such file or directory, lstat 'C:\Users\Lenna\PycharmProjects\send-to-anyone-core\node_modules\idriss-crypto\node_modules\@szmarczak\http-timer\source'
 
 npm manifest: 
   {
@@ -32,7 +32,7 @@ npm manifest:
       "@walletconnect/web3-provider": "^1.7.8",
       "alchemy-sdk": "^2.0.2",
       "fast-creator": "^1.6.0",
-      "idriss-crypto": "^1.8.6",
+      "idriss-crypto": "^1.8.9",
       "magic-sdk": "^10.1.0",
       "web3": "^1.7.0",
       "web3modal": "^1.9.7"

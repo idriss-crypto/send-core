@@ -180,7 +180,10 @@ const tokens = [
         network: "ETH",
         decimals: 18,
         logoURI: bank,
-    },
+    }
+];
+
+const multiToken = [
     {
     chainId: 137,
     name: "Telcoin",
@@ -498,4 +501,4 @@ async function loadNFT(web3, tokenAddress) {
     return await new web3.eth.Contract(erc1155Abi, tokenAddress);
 }
 
-export { tokens, getNFTsForAddress, walletTypeDefault, getCoin, loadToken, loadNFT, customNFT, feeQuotes, approvalMessages, regPh, regM, regT };
+export { tokens, multiToken, getNFTsForAddress, walletTypeDefault, getCoin, loadToken, loadNFT, customNFT, feeQuotes, approvalMessages, regPh, regM, regT };
