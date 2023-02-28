@@ -32,7 +32,8 @@ let coingeckoId = {
     BANK: "bankless-dao",
 };
 
-let allTokens = tokens.concat(multiToken)
+// When using all token
+//let allTokens = tokens.concat(multiToken)
 
 export const SendToAnyoneLogic = {
     provider: null,
@@ -81,7 +82,7 @@ export const SendToAnyoneLogic = {
             priceSt = Object.values(Object.values(response)[0])[0];
         }
 
-        let decimals = allTokens.filter((x) => x.symbol == ticker)[0]?.decimals;
+        let decimals = tokens.filter((x) => x.symbol == ticker)[0]?.decimals;
         priceSt = Number.parseFloat(priceSt).toFixed(decimals)
 
         let BN = defaultWeb3.utils.BN;
@@ -172,7 +173,7 @@ export const SendToAnyoneLogic = {
 
     async sendToAnyone(recipient, amount, network, token, message, assetType, assetAddress, assetId, walletTag) {
 
-        let tokenContractAddr = allTokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
+        let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
 
         let properAmount;
         if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;
