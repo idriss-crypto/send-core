@@ -11,7 +11,7 @@
         </span>
     </p>
     <div id="text-wrapper">
-        <p id="text-wrapper-inner">
+        <p id="text-wrapper-inner"> Send the claim link to {{identifier}}
         </p>
         <div class="textWrap">
             <span class="urlWrap" id="textContent">{{claimUrl}}</span>
