@@ -186,9 +186,9 @@ export class SendToAnyoneMain {
 
     filterTokens(tokenFilter) {
         if (!tokenFilter) {
-            return tokens;
+            return tokens.filter(t => t.symbol !== "custom");
         } else {
-            return tokens.filter(t => {
+            return tokens.filter(t => t.symbol !== "custom").filter(t => {
                 return tokenFilter[t.network.toLowerCase()]?.includes(t.symbol);
             })
         }

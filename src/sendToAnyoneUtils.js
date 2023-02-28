@@ -180,7 +180,16 @@ const tokens = [
         network: "ETH",
         decimals: 18,
         logoURI: bank,
-    }
+    },
+    {
+    chainId: 137,
+    name: "Custom Token",
+    symbol: "custom",
+    network: "Polygon",
+    decimals: 18,
+    address: "custom",
+    logoURI: custom
+  },
 ];
 
 const multiToken = [
@@ -264,16 +273,7 @@ const multiToken = [
     decimals: 18,
     address: "0x282d8efce846a88b159800bd4130ad77443fa1a1",
     logoURI: ocean
-  },
-  {
-    chainId: 137,
-    name: "Custom Token",
-    symbol: "custom",
-    network: "Polygon",
-    decimals: 18,
-    address: "custom",
-    logoURI: custom
-  },
+  }
 ];
 
 const customNFT = {
