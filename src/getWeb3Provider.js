@@ -62,6 +62,7 @@ const walletConnectOpts= {
         },
     },
 };
+
 const metaMaskOpts= {
     "custom-metamask": {
         display: {
@@ -220,6 +221,7 @@ export async function getProvider() {
     try {
         provider = await web3Modal.connect();
     } catch (ex) {
+        console.log(ex)
         console.error(ex)
     }
     if (!provider) {

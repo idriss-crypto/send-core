@@ -19,7 +19,8 @@
             <img src=assets.0.image alt=""/>
             <span class="name">{{assets.0.name}}</span>
             <span id="AmountPlaceholder" class="amountOwned">{{assets.0.balance}}</span>
-            <input id="addressPlaceholder" type="text" class="customAddress" placeholder="Input custom asset address" />
+            <input id="addressPlaceholder" type="text" class="customAddress" placeholder="Asset address" />
+            <input id="idPlaceholder" type="text" class="customId" placeholder="Id" />
             <img class="arrow" src=arrow/>
         </button>
         <ul tabindex="-1" role="listbox">
@@ -33,6 +34,8 @@
         </ul>
     </div>
 </div>
+<p class="errorNFT customAssetError">Custom asset invalid</p>
+
 <div class="select-wrapper amountSelection" id="AmountSelection">
     <label>Amount per recipient:</label>
     <div class="input-wrapper">
