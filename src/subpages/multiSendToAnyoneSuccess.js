@@ -10,7 +10,7 @@ export class MultiSendToAnyoneSuccess {
         this.html = create('div', {}, template({close, success}));
 
         const idrissHost = IDRISS_HOMEPAGE
-        const notificationUrl = `${idrissHost}/multi-notification`
+        const notificationUrl = `/multi-notification`
         const claimData = data;
 
         //let txnHash = "0x"
