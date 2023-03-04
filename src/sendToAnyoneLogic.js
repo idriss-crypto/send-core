@@ -196,7 +196,9 @@ export const SendToAnyoneLogic = {
 
         let polygonGas;
         try {
-            polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
+            if (network==="Polygon") {
+                polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
+            }
         } catch {
             console.log("could not load polygon gas");
         }
@@ -250,7 +252,9 @@ export const SendToAnyoneLogic = {
         // let contract;
         let polygonGas;
         try {
-            polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
+            if (network==="Polygon") {
+                polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
+            }
         } catch {
             console.log("could not load polygon gas");
         }
