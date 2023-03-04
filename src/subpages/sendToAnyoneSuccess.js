@@ -9,7 +9,7 @@ export class SendToAnyoneSuccess {
                 assetId, assetType, assetAddress, token, blockNumber, txnHash) {
         const idrissHost = IDRISS_HOMEPAGE
         const claimUrl = `${idrissHost}/claim?identifier=${identifier}&claimPassword=${claimPassword}&assetId=${assetId}&assetType=${assetType}&assetAddress=${assetAddress}&token=${token}&blockNumber=${blockNumber}`
-        const notificationUrl = `${idrissHost}/sendNotification`
+        const notificationUrl = `/sendNotification`
 
         console.log(txnHash)
 

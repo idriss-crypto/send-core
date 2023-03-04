@@ -646,6 +646,10 @@
     border-color: #000000;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     background: #fff;
+    @media (max-width: 640px) {
+      width: 20rem;
+      margin-top: 0rem;
+    }
 
     .subtitle {
 
@@ -844,6 +848,9 @@
                 appearance: none;
                 resize: none;
                 box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                @media (max-width: 640px) {
+                  height: 6rem;
+                }
 
                  &:focus {
                     border-color: #6366F1;
