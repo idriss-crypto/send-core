@@ -137,7 +137,22 @@ export class MultiSendToAnyone {
             this.modifyRecipients(modifier);
         })
 
-        this.html.querySelector('textarea[name="recipients"]').placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n---------- paste or drag a file here ----------";
+        if (window.innerWidth < 640) {
+          this.html.querySelector('textarea[name="recipients"]').placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n--------- paste a list here ---------";
+        } else {
+          this.html.querySelector('textarea[name="recipients"]').placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n---------- paste or drag a file here ----------";
+        }
+
+        const recipientsTextarea = this.html.querySelector('textarea[name="recipients"]');
+
+        window.addEventListener('resize', function() {
+          if (window.innerWidth < 640) {
+            recipientsTextarea.placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n--------- paste a list here ---------";
+          } else {
+            recipientsTextarea.placeholder = "hello@idriss.xyz\n+16506655942\n@IDriss_xyz\n---------- paste or drag a file here ----------";
+          }
+        });
+
         this.refreshVisibleAssets();
     }
 
