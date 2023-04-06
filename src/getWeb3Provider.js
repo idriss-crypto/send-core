@@ -8,6 +8,7 @@ import metamaskLogo from "!!url-loader!./img/metamask.svg"
 import tallyLogo from "!!url-loader!./img/tally.svg"
 import coinbaseLogo from "!!url-loader!./img/coinbase.svg"
 import magicLogo from "!!url-loader!./img/magic.svg"
+import okxLogo from "!!url-loader!./img/okx.svg"
 import Web3Modal from "web3modal";
 
 const WCProvider = WalletConnectProvider.default;
@@ -98,6 +99,36 @@ const metaMaskOpts= {
         }
     }
 };
+let okxOpts = {
+    "custom-okx": {
+        display: {
+            logo: "../static/images/okx_wallet_icon.svg",
+            name: "OKX Wallet",
+            description: "Connect to your OKX Wallet",
+        },
+        package: true,
+        connector: async () => {
+            if (!isOkxInstalled()) {
+                window.open("https://www.okx.com/web3", "_blank"); // <-- LOOK HERE
+                return;
+            }
+
+            let provider = null;
+            if (typeof window.okxwallet !== "undefined") {
+                provider = window.okxwallet;
+                try {
+                    await provider.request({ method: "eth_requestAccounts" });
+                } catch (error) {
+                    throw new Error("User Rejected");
+                }
+            } else {
+                throw new Error("No OKX Wallet found");
+            }
+            console.log("OKX provider", provider);
+            return provider;
+        },
+    },
+};
 const walletLinkOpts= {
     'custom-walletlink': {
         display: {
@@ -158,6 +189,7 @@ if (deviceType() === "desktop") {
     Object.assign(providerOptions, metaMaskOpts);
     Object.assign(providerOptions, tallyOpts);
     Object.assign(providerOptions, magicLinkOpts);
+    Object.assign(providerOptions, okxOpts);
 }
 
 function isMetaMaskInstalled(){
@@ -178,6 +210,11 @@ function isMetaMaskInstalled(){
     } catch {
         return false
     }
+}
+
+function isOkxInstalled() {
+    if (window.okxwallet) return true
+    return false
 }
 
 function isTallyInstalled(){
