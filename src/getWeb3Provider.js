@@ -22,13 +22,13 @@ const tallyOpts= {
     "custom-tally": {
         display: {
             logo: tallyLogo,
-            name: "Tally",
-            description: "Connect to your Tally Ho! Wallet",
+            name: "Taho",
+            description: "Connect to your Taho Wallet",
         },
         package: true,
         connector: async () => {
             if (!isTallyInstalled()) {
-                    window.open("https://tally.cash/community-edition", '_blank'); // <-- LOOK HERE
+                    window.open("https://taho.xyz/", '_blank'); // <-- LOOK HERE
                     return;
                 }
             let provider = null;
@@ -45,7 +45,7 @@ const tallyOpts= {
                     throw new Error("User Rejected");
                 }
             } else {
-                throw new Error("No Tally Ho! Wallet found");
+                throw new Error("No Taho Wallet found");
             }
             console.log("Tally provider", provider);
             return provider;
