@@ -12,9 +12,10 @@ import {create} from "fast-creator";
 export class SendToAnyoneMain {
     constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null, selectNFT = false) {
         let networks = [
-            {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
+            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
+            {name: 'zkSync Era', img: biannceCoinLogo, chainId: 280, code: 'zkSync'}
         ]
 
         if (tokenFilter) {
