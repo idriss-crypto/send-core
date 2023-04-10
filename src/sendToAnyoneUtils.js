@@ -47,6 +47,14 @@ const tokens = [
         logoURI: bnb,
     },
     {
+        chainId: 280,
+        network: "zkSync",
+        name: "Ethereum",
+        symbol: "ETH",
+        decimals: 18,
+        logoURI: eth,
+    },
+    {
         address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
         chainId: 1,
         network: "ETH",
@@ -180,6 +188,15 @@ const tokens = [
         network: "ETH",
         decimals: 18,
         logoURI: bank,
+    },
+    {
+        name: "Dai",
+        symbol: "DAI",
+        address: "0x3e7676937A7E96CFB7616f255b9AD9FF47363D4b",
+        chainId: 280,
+        network: "zkSync",
+        decimals: 18,
+        logoURI: dai,
     },
     {
     chainId: 137,

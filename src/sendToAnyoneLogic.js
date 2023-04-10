@@ -239,9 +239,9 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
+                if (network === "zkSync") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
-                if (network === "zkSync") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
             } catch (err) {
                 console.log("error", err);
@@ -441,33 +441,29 @@ export const SendToAnyoneLogic = {
             }
         }
     },
-    async function switchtozk() {
+    async switchtozk() {
         //  rpc method?
         console.log("Checking chain...");
-        const chainId = await web3.eth.getChainId();
+        const chainId = await this.web3.eth.getChainId();
         console.log(chainId);
 
         // check if correct chain is connected
         console.log("Connected to chain ", chainId);
         if (chainId != 280) {
-            displaySwitch();
             console.log("Switch to zkSync Era Testnet requested");
-            displaySwitch();
             try {
-                await provider.request({
+                await this.provider.request({
                     method: "wallet_switchEthereumChain",
                     params: [{ chainId: "0x118" }],
                 });
-                document.getElementById("displaySwitch").style.display = "none";
             } catch (switchError) {
-                console.log(switchError);
                 if (switchError.message === "JSON RPC response format is invalid") {
                     throw "network1";
                 }
                 // This error code indicates that the chain has not been added to MetaMask.
                 if (switchError.code === 4902) {
                     try {
-                        await provider.request({
+                        await this.provider.request({
                         method: 'wallet_addEthereumChain',
                         params: [{ chainId: '0x118', chainName: 'zkSync Testnet', rpcUrls: ['https://testnet.era.zksync.dev'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
                         });
@@ -477,10 +473,10 @@ export const SendToAnyoneLogic = {
                 }
                 console.log("Please switch to zkSync Testnet.");
                 // disable continue buttons here
-                throw "network"
+                throw "network";
             }
         }
-    }
+    },
 
     // load oracle price data
     async loadOracle(ticker) {
