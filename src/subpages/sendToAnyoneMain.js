@@ -16,7 +16,7 @@ export class SendToAnyoneMain {
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
-            {name: 'zkSync Era', img: zk_logo, chainId: 280, code: 'zkSync'}
+            {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'}
         ]
 
         if (tokenFilter) {

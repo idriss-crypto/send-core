@@ -449,12 +449,12 @@ export const SendToAnyoneLogic = {
 
         // check if correct chain is connected
         console.log("Connected to chain ", chainId);
-        if (chainId != 280) {
-            console.log("Switch to zkSync Era Testnet requested");
+        if (chainId != 324) {
+            console.log("Switch to zkSync Era requested");
             try {
                 await this.provider.request({
                     method: "wallet_switchEthereumChain",
-                    params: [{ chainId: "0x118" }],
+                    params: [{ chainId: "0x114" }],
                 });
             } catch (switchError) {
                 if (switchError.message === "JSON RPC response format is invalid") {
@@ -465,13 +465,13 @@ export const SendToAnyoneLogic = {
                     try {
                         await this.provider.request({
                         method: 'wallet_addEthereumChain',
-                        params: [{ chainId: '0x118', chainName: 'zkSync Testnet', rpcUrls: ['https://testnet.era.zksync.dev'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        params: [{ chainId: '0x114', chainName: 'zkSync Era', rpcUrls: ['https://mainnet.era.zksync.io'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
                         });
                     } catch (addError) {
-                        alert("Please add zkSync Testnet to continue.");
+                        alert("Please add zkSync Era Mainnet to continue.");
                     }
                 }
-                console.log("Please switch to zkSync Testnet.");
+                console.log("Please switch to zkSync Era.");
                 // disable continue buttons here
                 throw "network";
             }
