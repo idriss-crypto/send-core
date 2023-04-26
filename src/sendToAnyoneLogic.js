@@ -454,7 +454,7 @@ export const SendToAnyoneLogic = {
             try {
                 await this.provider.request({
                     method: "wallet_switchEthereumChain",
-                    params: [{ chainId: "0x114" }],
+                    params: [{ chainId: "0x144" }],
                 });
             } catch (switchError) {
                 if (switchError.message === "JSON RPC response format is invalid") {
@@ -465,7 +465,7 @@ export const SendToAnyoneLogic = {
                     try {
                         await this.provider.request({
                         method: 'wallet_addEthereumChain',
-                        params: [{ chainId: '0x114', chainName: 'zkSync Era', rpcUrls: ['https://mainnet.era.zksync.io'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        params: [{ chainId: '0x144', chainName: 'zkSync Era', rpcUrls: ['https://mainnet.era.zksync.io'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
                         });
                     } catch (addError) {
                         alert("Please add zkSync Era Mainnet to continue.");
