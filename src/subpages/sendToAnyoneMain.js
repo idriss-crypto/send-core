@@ -69,7 +69,6 @@ export class SendToAnyoneMain {
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;
             console.log(assetAddress, network)
-            console.log(this.filterTokens({network: [network]}))
             let assetId = this.html.querySelector('.nftSelect').dataset.assetid;
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
@@ -178,7 +177,6 @@ export class SendToAnyoneMain {
         } else {
             network = "Polygon"
         }
-        console.log("refreshing coins: ", network)
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';
@@ -189,7 +187,6 @@ export class SendToAnyoneMain {
     }
 
     filterTokens(tokenFilter) {
-        console.log(tokenFilter)
         if (!tokenFilter) {
             return tokens.filter(t => t.symbol !== "custom");
         } else {
