@@ -126,9 +126,12 @@ export class SendToAnyoneMain {
         })
         const toggleMessageBox = this.html.querySelector('.toggleMessageBox');
         const messageBox = this.html.querySelector('.messageBox');
-        if (!showMessageBox)
+        if (!showMessageBox) {
             toggleMessageBox.style.display = 'none';
-        else
+        }
+        else {
+            this.html.querySelector('.tokenSelect').style.marginBottom = 0;
+            this.html.querySelector('.nftSelect').style.marginBottom = 0;
             toggleMessageBox.onclick = () => {
                 if (messageBox.classList.contains('isHidden')) {
                     messageBox.classList.remove('isHidden')
@@ -139,6 +142,7 @@ export class SendToAnyoneMain {
                     messageBox.querySelector('textarea').value = '';
                 }
             }
+        }
         this.refreshVisibleCoins(isIDrissRegistered);
         if (selectNFT) this.refreshVisibleNFTs(isIDrissRegistered)
     }
