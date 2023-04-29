@@ -14,7 +14,7 @@ export class SendToAnyoneMain {
         let networks = [
             {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
+            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
 
         if (tokenFilter) {
