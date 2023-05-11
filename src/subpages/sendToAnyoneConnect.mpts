@@ -1,6 +1,5 @@
 <header>
     <h1>Send to {{identifier}}</h1>
-    <img class="closeButton" src=close alt="close"/>
     <style>
     ::-webkit-scrollbar {
          width: 6px;
@@ -23,7 +22,7 @@
      </style>
 </header>
 <main>
-    <div class="assetTypeSelection">
+    <div class="assetTypeSelection" style="display:none">
         <button type="button" data-value="native" class="isSelected">
             <span>Cryptocurrency</span>
         </button>

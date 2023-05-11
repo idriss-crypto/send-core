@@ -1,6 +1,5 @@
 <header>
     <h1>Send to {{identifier}}</h1>
-    <img class="closeButton" src=close alt="close"/>
     <style>
     ::-webkit-scrollbar {
          width: 6px;
@@ -23,7 +22,7 @@
      </style>
 </header>
 <main>
-    <div class="assetTypeSelection">
+    <div class="assetTypeSelection" style="display:none">
         <button type="button" data-value="native" >
             <span>Cryptocurrency</span>
         </button>
@@ -89,6 +88,8 @@
         </div>
     </div>
 
+    <p class="errorNFT">No NFT found for this network </p>
+
     <div class="select-wrapper nftSelectWrapper">
         <label for="nftButton">NFT:</label>
         <div class="select nftSelect" data-address=ownedNFTs.0.address data-assetType=ownedNFTs.0.type data-assetId=ownedNFTs.0.id>
@@ -99,7 +100,7 @@
             </button>
             <ul tabindex="-1" role="listbox">
                 <:foreach collection=ownedNFTs item=nft>
-                    <li role="option" data-address=nft.address data-assetType=nft.type data-assetId=nft.id>
+                    <li role="option" data-network=nft.network data-address=nft.address data-assetType=nft.type data-assetId=nft.id>
                         <img src=nft.image alt=""/>
                         <span class="name">{{nft.name}}</span>
                     </li>

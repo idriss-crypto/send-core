@@ -1,5 +1,6 @@
 import template from "./sendToAnyoneConnect.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
+import zk_logo from "!!url-loader!../img/zksync.ico"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
@@ -12,16 +13,16 @@ import {create} from "fast-creator";
 export class SendToAnyoneConnect {
     constructor(identifier, isIDrissRegistered, showMessageBox = true, tokenFilter = null) {
         let networks = [
-            {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BSC', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
+            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
+            {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'}
         ]
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
         }
 
         this.html = create('div', {}, template({identifier, networks, tokens: this.filterTokens(tokenFilter), eth_logo, usdc_logo, arrow, pen, close}));
-        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
         this.html.querySelector('.connectWallet').style.display = 'none';
 
         if (!isIDrissRegistered) {

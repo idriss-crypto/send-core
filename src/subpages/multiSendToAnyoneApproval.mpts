@@ -1,0 +1,13 @@
+<header class="noH1">
+</header>
+<main>
+    <div class="loader"/>
+    <h2>Waiting for Confirmation</h2>
+    <p class="subtitle subtitleNFT">Sending <strong>{{assetName}}</strong> to multiple recipients</p>
+    <p id="numTxns">Confirm this transaction in your wallet</p>
+</main>
+<footer>
+    <p class="link">
+        <a class="linkContent" href="https://idriss.mirror.xyz/GU86nfqr5UjSGFiZTunalcEGllwKXUilGscCXGmATLU" target="_blank">1% (min. $1) supplies IDriss treasury</a>
+    </p>
+</footer>

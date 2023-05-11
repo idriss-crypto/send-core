@@ -1,21 +1,34 @@
 import WalletConnectProvider from "@walletconnect/web3-provider/dist/umd/index.min.js";
 import {CoinbaseWalletProvider} from "@depay/coinbase-wallet-sdk"
+import { Magic } from 'magic-sdk';
+import { ConnectExtension } from '@magic-ext/connect';
+import Web3 from "web3/dist/web3.min.js";
 
 import metamaskLogo from "!!url-loader!./img/metamask.svg"
 import tallyLogo from "!!url-loader!./img/tally.svg"
 import coinbaseLogo from "!!url-loader!./img/coinbase.svg"
+import magicLogo from "!!url-loader!./img/magic.svg"
+import okxLogo from "!!url-loader!./img/okx.svg"
 import Web3Modal from "web3modal";
+
+const WCProvider = WalletConnectProvider.default;
+
+const customNodePolygon = {
+    rpcUrl: POLYGON_RPC_ENDPOINT,
+    chainId: POLYGON_CHAIN_ID,
+};
+
 const tallyOpts= {
     "custom-tally": {
         display: {
             logo: tallyLogo,
-            name: "Tally",
-            description: "Connect to your Tally Ho! Wallet",
+            name: "Taho",
+            description: "Connect to your Taho Wallet",
         },
         package: true,
         connector: async () => {
             if (!isTallyInstalled()) {
-                    window.open("https://tally.cash/community-edition", '_blank'); // <-- LOOK HERE
+                    window.open("https://taho.xyz/", '_blank'); // <-- LOOK HERE
                     return;
                 }
             let provider = null;
@@ -32,7 +45,7 @@ const tallyOpts= {
                     throw new Error("User Rejected");
                 }
             } else {
-                throw new Error("No Tally Ho! Wallet found");
+                throw new Error("No Taho Wallet found");
             }
             console.log("Tally provider", provider);
             return provider;
@@ -41,15 +54,16 @@ const tallyOpts= {
 };
 const walletConnectOpts= {
     walletconnect: {
-        package: WalletConnectProvider,
+        package: WCProvider,
         options: {
             rpc: {
-                137: "https://polygon-rpc.com/",
+                137: POLYGON_RPC_ENDPOINT,
             },
             chainId: 137,
         },
     },
 };
+
 const metaMaskOpts= {
     "custom-metamask": {
         display: {
@@ -85,6 +99,36 @@ const metaMaskOpts= {
         }
     }
 };
+let okxOpts = {
+    "custom-okx": {
+        display: {
+            logo: "../static/images/okx_wallet_icon.svg",
+            name: "OKX Wallet",
+            description: "Connect to your OKX Wallet",
+        },
+        package: true,
+        connector: async () => {
+            if (!isOkxInstalled()) {
+                window.open("https://www.okx.com/web3", "_blank"); // <-- LOOK HERE
+                return;
+            }
+
+            let provider = null;
+            if (typeof window.okxwallet !== "undefined") {
+                provider = window.okxwallet;
+                try {
+                    await provider.request({ method: "eth_requestAccounts" });
+                } catch (error) {
+                    throw new Error("User Rejected");
+                }
+            } else {
+                throw new Error("No OKX Wallet found");
+            }
+            console.log("OKX provider", provider);
+            return provider;
+        },
+    },
+};
 const walletLinkOpts= {
     'custom-walletlink': {
         display: {
@@ -109,42 +153,97 @@ const walletLinkOpts= {
         },
     },
 };
+const magicLinkOpts= {
+    'custom-magicConnect': {
+        display: {
+            logo: magicLogo,
+            name: "Magic Connect",
+            description: "Login with Magic Connect",
+        },
+        options: {
+            rpc: {
+                137: POLYGON_RPC_ENDPOINT,
+            },
+            chainId: 137,
+        },
+        package: true,
+        connector: async (_, options) => {
+            const { appName, networkUrl, chainId } = options;
+            const magic = new Magic(MAGIC_API, {
+                extensions: [new ConnectExtension()],
+                network: customNodePolygon,
+            });
+            const provider = new Web3(magic.rpcProvider);
+            await provider.currentProvider.enable();
+            return provider;
+        },
+    },
+};
 
-const providerOptions={
-        ...walletConnectOpts,
-        ...walletLinkOpts,
-        ...metaMaskOpts,
-        ...tallyOpts
-    }
+const providerOptions = {
+    ...walletConnectOpts,
+    ...walletLinkOpts,
+};
+
+if (deviceType() === "desktop") {
+    Object.assign(providerOptions, metaMaskOpts);
+    Object.assign(providerOptions, tallyOpts);
+    Object.assign(providerOptions, magicLinkOpts);
+    Object.assign(providerOptions, okxOpts);
+}
 
 function isMetaMaskInstalled(){
-    let providers = window.ethereum.providers;
-    let pMM;
-    if (providers){
-        pMM = providers.find(p => p.isMetaMask);
-    } else if (window.ethereum.isMetaMask) {
-        return true
-    }
-    if (pMM) {
-        return true
-    }
-    else {
+    try {
+        let providers = window.ethereum.providers;
+        let pMM;
+        if (providers){
+            pMM = providers.find(p => p.isMetaMask);
+        } else if (window.ethereum.isMetaMask) {
+            return true
+        }
+        if (pMM) {
+            return true
+        }
+        else {
+            return false
+        }
+    } catch {
         return false
     }
 }
 
+function isOkxInstalled() {
+    if (window.okxwallet) return true
+    return false
+}
+
 function isTallyInstalled(){
-    let providers = window.ethereum.providers;
-    let pTally;
-    if (providers){
-        pTally = providers.find(p => p.isTally);
-    }
-    if (pTally) {
-        return true
-    }
-    else {
+    try {
+        let providers = window.ethereum.providers;
+        let pTally;
+        if (providers){
+            pTally = providers.find(p => p.isTally);
+        }
+        if (pTally) {
+            return true
+        }
+        else {
+            return false
+        }
+    } catch {
         return false
     }
+}
+
+function deviceType() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+        return "tablet";
+    }
+    if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+        return "mobile";
+    }
+    return "desktop";
 }
 
 export async function getProvider() {
@@ -152,14 +251,14 @@ export async function getProvider() {
         network: 'mainnet',
         cacheProvider: false, // optional
         providerOptions: providerOptions, // required
-        disableInjectedProvider: true,
+        disableInjectedProvider: deviceType()=='desktop'? true: false,
     });
     await web3Modal.clearCachedProvider();
     let provider
     try {
         provider = await web3Modal.connect();
-        console.log({provider})
     } catch (ex) {
+        console.log(ex)
         console.error(ex)
     }
     if (!provider) {
