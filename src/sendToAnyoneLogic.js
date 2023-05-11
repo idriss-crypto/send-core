@@ -48,12 +48,18 @@ export const SendToAnyoneLogic = {
         if (network === "BSC") {
             ORACLE_CONTRACT_ADDRESS = BSC_PRICE_ORACLE_CONTRACT_ADDRESS;
         }
+        if (network === "zkSync") {
+            ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+        }
         let TIPPING_CONTRACT_ADDRESS = POLYGON_TIPPING_CONTRACT_ADDRESS;
         if (network === "ETH") {
             TIPPING_CONTRACT_ADDRESS = ETH_TIPPING_CONTRACT_ADDRESS;
         }
         if (network === "BSC") {
             TIPPING_CONTRACT_ADDRESS = BSC_TIPPING_CONTRACT_ADDRESS;
+        }
+        if (network === "zkSync") {
+            TIPPING_CONTRACT_ADDRESS = ZK_TIPPING_CONTRACT_ADDRESS;
         }
         this.provider = provider;
         this.apiKey = apiKey;
@@ -166,6 +172,14 @@ export const SendToAnyoneLogic = {
                     throw e;
                 }
             }
+        } else if (network === "zkSync") {
+            try {
+                await this.switchtozk();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
         } else {
             return false;
         }
@@ -225,6 +239,7 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
+                if (network === "zkSync") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
@@ -421,6 +436,42 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to BSC.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+    async switchtozk() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 324) {
+            console.log("Switch to zkSync Era requested");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0x144" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0x144', chainName: 'zkSync Era', rpcUrls: ['https://mainnet.era.zksync.io'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add zkSync Era Mainnet to continue.");
+                    }
+                }
+                console.log("Please switch to zkSync Era.");
                 // disable continue buttons here
                 throw "network";
             }

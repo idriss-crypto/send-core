@@ -47,6 +47,14 @@ const tokens = [
         logoURI: bnb,
     },
     {
+        chainId: 324,
+        network: "zkSync",
+        name: "Ethereum",
+        symbol: "ETH",
+        decimals: 18,
+        logoURI: eth,
+    },
+    {
         address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
         chainId: 1,
         network: "ETH",
@@ -180,6 +188,15 @@ const tokens = [
         network: "ETH",
         decimals: 18,
         logoURI: bank,
+    },
+    {
+        name: "USD Coin",
+        symbol: "USDC",
+        address: "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4",
+        chainId: 324,
+        network: "zkSync",
+        decimals: 18,
+        logoURI: usdc,
     },
     {
     chainId: 137,

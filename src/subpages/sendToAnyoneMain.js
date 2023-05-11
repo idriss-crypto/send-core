@@ -1,5 +1,6 @@
 import template from "./sendToAnyoneMain.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
+import zk_logo from "!!url-loader!../img/zksync.ico"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
@@ -12,9 +13,10 @@ import {create} from "fast-creator";
 export class SendToAnyoneMain {
     constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null, selectNFT = false) {
         let networks = [
-            {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
+            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
+            {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'}
         ]
 
         if (tokenFilter) {
@@ -62,10 +64,11 @@ export class SendToAnyoneMain {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            if (assetType === 'native' && !["MATIC", "ETH", "BSC"].includes(token)) assetType = 'erc20';
+            if (assetType === 'native' && !["MATIC", "ETH", "BNB"].includes(token)) assetType = 'erc20';
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
-            let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
+            let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;
+            console.log(assetAddress, network)
             let assetId = this.html.querySelector('.nftSelect').dataset.assetid;
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
@@ -123,9 +126,12 @@ export class SendToAnyoneMain {
         })
         const toggleMessageBox = this.html.querySelector('.toggleMessageBox');
         const messageBox = this.html.querySelector('.messageBox');
-        if (!showMessageBox)
+        if (!showMessageBox) {
             toggleMessageBox.style.display = 'none';
-        else
+        }
+        else {
+            this.html.querySelector('.tokenSelect').style.marginBottom = 0;
+            this.html.querySelector('.nftSelect').style.marginBottom = 0;
             toggleMessageBox.onclick = () => {
                 if (messageBox.classList.contains('isHidden')) {
                     messageBox.classList.remove('isHidden')
@@ -136,6 +142,7 @@ export class SendToAnyoneMain {
                     messageBox.querySelector('textarea').value = '';
                 }
             }
+        }
         this.refreshVisibleCoins(isIDrissRegistered);
         if (selectNFT) this.refreshVisibleNFTs(isIDrissRegistered)
     }
@@ -174,7 +181,6 @@ export class SendToAnyoneMain {
         } else {
             network = "Polygon"
         }
-        console.log("refreshing coins: ", network)
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';
@@ -188,9 +194,14 @@ export class SendToAnyoneMain {
         if (!tokenFilter) {
             return tokens.filter(t => t.symbol !== "custom");
         } else {
-            return tokens.filter(t => t.symbol !== "custom").filter(t => {
-                return tokenFilter[t.network.toLowerCase()]?.includes(t.symbol);
-            })
+          return tokens.filter(t => t.symbol !== "custom").filter(t => {
+            return tokenFilter.network?.includes(t.network)
+          }).filter(t => {
+            return tokenFilter.token?.includes(t.symbol)
+          })
+//            return tokens.filter(t => t.symbol !== "custom").filter(t => {
+//                return tokenFilter[network.toLowerCase()]?.includes(t.symbol);
+//            })
         }
     }
 }
