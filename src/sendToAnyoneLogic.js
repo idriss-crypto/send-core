@@ -51,6 +51,9 @@ export const SendToAnyoneLogic = {
         if (network === "zkSync") {
             ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
         }
+        if (network === "linea") {
+            ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+        }
         let TIPPING_CONTRACT_ADDRESS = POLYGON_TIPPING_CONTRACT_ADDRESS;
         if (network === "ETH") {
             TIPPING_CONTRACT_ADDRESS = ETH_TIPPING_CONTRACT_ADDRESS;
@@ -60,6 +63,9 @@ export const SendToAnyoneLogic = {
         }
         if (network === "zkSync") {
             TIPPING_CONTRACT_ADDRESS = ZK_TIPPING_CONTRACT_ADDRESS;
+        }
+        if (network === "linea") {
+            TIPPING_CONTRACT_ADDRESS = LINEA_TIPPING_CONTRACT_ADDRESS;
         }
         this.provider = provider;
         this.apiKey = apiKey;
@@ -175,6 +181,14 @@ export const SendToAnyoneLogic = {
         } else if (network === "zkSync") {
             try {
                 await this.switchtozk();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else if (network === "linea") {
+            try {
+                await this.switchtolinea();
             } catch (e) {
                 if (e != "network1") {
                     throw e;
@@ -472,6 +486,43 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to zkSync Era.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtolinea() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 59140) {
+            console.log("Switch to Linea Testnet requested");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0xe704" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0xe704', chainName: 'Linea', rpcUrls: ['https://rpc.goerli.linea.build'], blockExplorerUrls: ['https://explorer.goerli.linea.build'], nativeCurrency: {name: 'Ethereum', symbol: 'LineaETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Linea Testnet to continue.");
+                    }
+                }
+                console.log("Please switch to Linea Testnet.");
                 // disable continue buttons here
                 throw "network";
             }

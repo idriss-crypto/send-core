@@ -1,6 +1,7 @@
 import template from "./sendToAnyoneConnect.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
 import zk_logo from "!!url-loader!../img/zksync.ico"
+import linea_logo from "!!url-loader!../img/linea.ico"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
@@ -16,7 +17,8 @@ export class SendToAnyoneConnect {
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
-            {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'}
+            {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
+            {name: 'Linea Testnet', img: linea_logo, chainId: 59140, code: 'linea'}
         ]
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
