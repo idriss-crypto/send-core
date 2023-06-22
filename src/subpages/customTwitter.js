@@ -4,7 +4,6 @@ import zk_logo from "!!url-loader!../img/zksync.ico"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
-import close from "!!url-loader!../img/close.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
 import biannceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
 import {tokens} from "../sendToAnyoneUtils";
@@ -26,6 +25,7 @@ export class CustomTwitter {
             networks = networks.filter(n => data.networkFilter[n.name.toLowerCase()])
         }
         this.html = create('div', {}, template({
+            identifier: data.recipient,
             customHeader: data.customHeader,
             customText: data.customText ?? "",
             buttonValue: data.buttonValue,
@@ -35,10 +35,7 @@ export class CustomTwitter {
             usdc_logo,
             arrow,
             pen,
-            close
         }));
-
-        this.html.querySelector('.closeButton').onclick = () => this.html.dispatchEvent(Object.assign(new Event('close', {bubbles: true})));
 
         this.html.querySelectorAll('.select').forEach(select => {
             select.onclick = e => select.classList.toggle('isOpen')
@@ -58,8 +55,10 @@ export class CustomTwitter {
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
+            let identifier = data.recipient;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
+            let assetType = ["MATIC", "ETH", "BNB"].includes(token)? "native" : "erc20"
             let message = this.html.querySelector('.messageBox textarea').value;
             let input = this.html.querySelector('input').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
@@ -67,11 +66,14 @@ export class CustomTwitter {
             console.log(assetAddress, network)
             // pass data? identifier/data.recipient?, assetType, assetAddress, assetId?
             this.html.dispatchEvent(Object.assign(new Event('customEvent', {bubbles: true}), {
-                input,
+                identifier,
                 network,
+                assetType,
+                assetAddress,
                 amount,
                 token,
-                message
+                message,
+                input
             }))
         });
         this.html.querySelectorAll('.valueSelection > *').forEach(b => {
@@ -83,9 +85,10 @@ export class CustomTwitter {
         })
         const toggleMessageBox = this.html.querySelector('.toggleMessageBox');
         const messageBox = this.html.querySelector('.messageBox');
-        if (!data.showMessageBox)
+        if (!data.showMessageBox) {
             toggleMessageBox.style.display = 'none';
-        else
+        }
+        else {
             toggleMessageBox.onclick = () => {
                 if (messageBox.classList.contains('isHidden')) {
                     messageBox.classList.remove('isHidden')
@@ -96,24 +99,30 @@ export class CustomTwitter {
                     messageBox.querySelector('textarea').value = '';
                 }
             }
+        }
         const toggleValueSelection = this.html.querySelector('.valueSelection');
-        if (!data.showValueSelection)
+        if (!data.showValueSelection) {
             toggleValueSelection.style.display = 'none';
             this.html.querySelector('.valueSelection .isSelected').dataset.value = ""
+        }
         const toggleNetworkSelection = this.html.querySelector('.networkSelection');
-        if (!data.showNetworkSelection)
+        if (!data.showNetworkSelection) {
             toggleNetworkSelection.style.display = 'none';
             this.html.querySelector('.networkSelect').dataset.network = "";
+        }
         const toggleTokenSelection = this.html.querySelector('.tokenSelection');
-        if (!data.showTokenSelection)
+        if (!data.showTokenSelection) {
             toggleTokenSelection.style.display = 'none';
             this.html.querySelector('.tokenSelect').dataset.symbol = "";
+        }
         const toggleInput = this.html.querySelector('.toggleInput');
-        if (!data.showInput)
+        if (!data.showInput) {
             toggleInput.style.display = 'none';
+        }
         const toggleText = this.html.querySelector('.toggleText');
-        if (!data.customText)
+        if (!data.customText) {
             toggleText.style.display = 'none';
+        }
         this.refreshVisibleCoins();
     }
 
@@ -123,7 +132,7 @@ export class CustomTwitter {
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';
         }
-        if (network && this.html.querySelector('.tokenSelect').dataset.network != network) {
+        if (this.html.querySelector('.tokenSelect').dataset.network !== network) {
             this.html.querySelector(`.tokenSelect li[data-network="${network}"]`).click();
         }
     }
