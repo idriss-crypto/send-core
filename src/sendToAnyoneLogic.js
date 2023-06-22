@@ -222,17 +222,17 @@ export const SendToAnyoneLogic = {
               }
             : walletTypeDefault;
 
+        // switch to selected payment option's network
+        await this.switchNetwork(network);
+
         let polygonGas;
         try {
             if (network==="Polygon") {
-                polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
+                polygonGas = Math.round(1.05*(await this.web3.eth.getGasPrice()))
             }
         } catch {
             console.log("could not load polygon gas");
         }
-
-        // switch to selected payment option's network
-        await this.switchNetwork(network);
 
         try{
             // create new idriss instance handling the new network
@@ -278,19 +278,19 @@ export const SendToAnyoneLogic = {
         let network = "Polygon"
         console.log("Final recipients: ", recipients_)
 
-        // let contract;
-        let polygonGas;
-        try {
-            if (network==="Polygon") {
-                polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
-            }
-        } catch {
-            console.log("could not load polygon gas");
-        }
         // switch to selected payment option's network
         // exchange if statement for suitable check depending on selected network in dropdown
 
         await this.switchNetwork(network);
+
+        let polygonGas;
+        try {
+            if (network==="Polygon") {
+                polygonGas = Math.round(1.05*(await this.web3.eth.getGasPrice()))
+            }
+        } catch {
+            console.log("could not load polygon gas");
+        }
 
         try{
             // create new idriss instance handling the correct network

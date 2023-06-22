@@ -65,6 +65,7 @@ export class CustomTwitter {
             let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;
             console.log(assetAddress, network)
             // pass data? identifier/data.recipient?, assetType, assetAddress, assetId?
+            // filter based on 'wanted' params
             this.html.dispatchEvent(Object.assign(new Event('customEvent', {bubbles: true}), {
                 identifier,
                 network,
