@@ -1,11 +1,7 @@
 import css from "./sendToAnyoneStyle.scss";
 import {create} from "fast-creator";
-import {SendToAnyoneMain} from "./subpages/sendToAnyoneMain";
-import {SendToAnyoneAddress} from "./subpages/sendToAnyoneAddress";
-import {SendToAnyoneError} from "./subpages/sendToAnyoneError";
-import {SendToAnyoneSuccess} from "./subpages/sendToAnyoneSuccess";
 import {getProvider} from "./getWeb3Provider";
-import {SendToAnyoneConnect, SendToAnyoneWaitingApproval, SendToAnyoneWaitingConfirmation} from "./subpages";
+import {SendToAnyoneMain, SendToAnyoneAddress, SendToAnyoneError, SendToAnyoneSuccess, SendToAnyoneConnect, SendToAnyoneWaitingApproval, SendToAnyoneWaitingConfirmation} from "./subpages";
 import {SendToAnyoneLogic} from "./sendToAnyoneLogic";
 
 export class IdrissSendToAnyoneWidget extends HTMLElement {
@@ -21,13 +17,23 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
         this.sendToAnyoneProcess();
     }
 
+    getAssetType() {
+        if (network==="ETH" && token==="ETH") return "native"
+        if (network==="Polygon" && token==="MATIC") return "native"
+        if (network==="BSC" && token==="BNB") return "native"
+        if (network==="zkSync" && token==="ETH") return "native"
+        if (network==="linea" && token==="ETH") return "native"
+        if (!assetId) return "erc20"
+    }
+
     close(){
         console.log('close');
         this.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
     }
+
     async sendToAnyoneProcess() {
         try {
-            if (!this.identifier) {
+            if (!this.identifier && !this.recipient) {
                 this.container.append(new SendToAnyoneAddress().html);
                 await new Promise(res => {
                     this.container.addEventListener('next', e => {
@@ -117,7 +123,7 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
                     sendToAnyoneValue: this.sendToAnyoneValue,
                     network: this.network
                 }
-                window.open(`https://www.idriss.xyz/send-to-anyone?` + Object.entries(urlParams).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
+                window.open(`https://www.idriss.xyz/send?` + Object.entries(urlParams).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
                 return;
             }
             this.clearContainer()

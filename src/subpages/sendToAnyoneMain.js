@@ -21,8 +21,8 @@ export class SendToAnyoneMain {
             {name: 'Linea Testnet', img: linea_logo, chainId: 59140, code: 'linea'}
         ]
 
-        if (tokenFilter) {
-            networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
+        if (tokenFilter && tokenFilter.network && Array.isArray(tokenFilter.network)) {
+            networks = networks.filter(n => tokenFilter.network.includes(n.code));
         }
 
         if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x0000000000000000000000000000000000000000", id: "1", image: "https://ipfs.io/ipfs/QmNWMJTqmqrxriJQE7dfndAto48RUpHDLr41HJMZvD3cFD?id=1", name: "No NFTs found"}]}
@@ -196,14 +196,17 @@ export class SendToAnyoneMain {
         if (!tokenFilter) {
             return tokens.filter(t => t.symbol !== "custom");
         } else {
-          return tokens.filter(t => t.symbol !== "custom").filter(t => {
-            return tokenFilter.network?.includes(t.network)
-          }).filter(t => {
-            return tokenFilter.token?.includes(t.symbol)
-          })
-//            return tokens.filter(t => t.symbol !== "custom").filter(t => {
-//                return tokenFilter[network.toLowerCase()]?.includes(t.symbol);
-//            })
+            if(tokenFilter.token) {
+                return tokens.filter(t => t.symbol !== "custom").filter(t => {
+                    return tokenFilter.network?.includes(t.network)
+                }).filter(t => {
+                    return tokenFilter.token?.includes(t.symbol)
+                })
+            } else {
+                return tokens.filter(t => {
+                    return tokenFilter.network?.includes(t.network)
+                })
+            }
         }
     }
 }
