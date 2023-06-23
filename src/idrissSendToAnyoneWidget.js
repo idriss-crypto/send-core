@@ -31,9 +31,13 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
         this.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
     }
 
+    let shouldSkipInputWidget = !!this.recipient && !!this.identifier;
+    let shouldSkipAnyWidget = !!this.recipient && !!this.identifier && !!this.sendToAnyoneValue && !!this.network && !!this.token;
+    if (Object.keys(this.tokenFilter).length > 0) shouldSkipAnyWidget = false;
+
     async sendToAnyoneProcess() {
         try {
-            if (!this.identifier && !this.recipient) {
+            if (!shouldSkipInputWidget) {
                 this.container.append(new SendToAnyoneAddress().html);
                 await new Promise(res => {
                     this.container.addEventListener('next', e => {
@@ -46,8 +50,10 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
                 });
             }
             if (!this.token || !this.sendToAnyoneValue || !this.network) {
+
+                //ToDo: check if SendToAnyoneConnect is needed
                 this.container.firstElementChild?.remove();
-                this.container.append(new SendToAnyoneConnect(this.identifier, this.isIDrissRegistered).html);
+                this.container.append(new SendToAnyoneConnect(this.identifier, this.isIDrissRegistered, false, this.tokenFilter).html);
                 let addressNFTs;
                 await new Promise(res => {
                     this.container.addEventListener('connectWallet', async e => {
@@ -151,6 +157,10 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
                     explorerLink = `https://bscscan.com/tx/${sendResult.transactionHash}`
                 else if (this.network == 'Polygon')
                     explorerLink = POLYGON_BLOCK_EXPLORER_ADDRESS + `/tx/${sendResult.transactionHash}`
+                else if (network == 'zkSync')
+                    explorerLink = `https://explorer.zksync.io/tx/${sendResult.transactionHash}`
+                else if (network == 'linea')
+                    explorerLink = `https://explorer.goerli.linea.build/tx/${sendResult.transactionHash}`
                 this.container.append((new SendToAnyoneSuccess(this.identifier, explorerLink, sendResult.claimPassword)).html)
             } else {
                 this.container.append((new SendToAnyoneError({name: 'Reverted', message: 'Transaction was not successful'})).html)
