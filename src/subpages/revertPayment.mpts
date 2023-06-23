@@ -3,7 +3,7 @@
 </header>
 <main>
     <input id="urlInput" type="text" class="customHash" placeholder="Transaction hash" />
-    <p class="errorInput">Not a valid transaction hash</p>
+    <p class="errorInput">Input a valid transaction hash</p>
     <button type="button" class="revertButton">
         <span id="revertNext" >Revert</span>
         <div id="buttonRevertSpinner" style="display: none;" class="spinnerWrapper">
