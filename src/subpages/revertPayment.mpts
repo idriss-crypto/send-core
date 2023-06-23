@@ -1,5 +1,5 @@
 <header>
-    <h1>Revert a Transaction</h1>
+    <h1>Reverse a Transaction</h1>
 </header>
 <main>
     <input id="urlInput" type="text" class="customHash" placeholder="Transaction hash" />
