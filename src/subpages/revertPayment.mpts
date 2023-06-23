@@ -5,7 +5,7 @@
     <input id="urlInput" type="text" class="customHash" placeholder="Transaction hash" />
     <p class="errorInput">Input a valid transaction hash</p>
     <button type="button" class="revertButton">
-        <span id="revertNext" >Revert</span>
+        <span id="revertNext" >Reverse</span>
         <div id="buttonRevertSpinner" style="display: none;" class="spinnerWrapper">
             <div class="spinner" role="status">
                 <span class="spinnerDot">•</span>
