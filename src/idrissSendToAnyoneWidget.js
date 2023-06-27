@@ -31,13 +31,9 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
         this.dispatchEvent(Object.assign(new Event('close', {bubbles :true})))
     }
 
-    let shouldSkipInputWidget = !!this.recipient && !!this.identifier;
-    let shouldSkipAnyWidget = !!this.recipient && !!this.identifier && !!this.sendToAnyoneValue && !!this.network && !!this.token;
-    if (Object.keys(this.tokenFilter).length > 0) shouldSkipAnyWidget = false;
-
     async sendToAnyoneProcess() {
         try {
-            if (!shouldSkipInputWidget) {
+            if (!this.recipient || !this.identifier) {
                 this.container.append(new SendToAnyoneAddress().html);
                 await new Promise(res => {
                     this.container.addEventListener('next', e => {
