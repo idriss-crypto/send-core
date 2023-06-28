@@ -5,7 +5,7 @@ import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
-import biannceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
+import binanceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
@@ -15,15 +15,14 @@ export class CustomTwitter {
         let networks = [
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
+            {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
         ]
-        if (data.tokenFilter) {
-            networks = networks.filter(n => data.tokenFilter[n.code.toLowerCase()])
+
+        if (data.tokenFilter && data.tokenFilter.network && Array.isArray(data.tokenFilter.network)) {
+            networks = networks.filter(n => data.tokenFilter.network.includes(n.code))
         }
-        if (data.networkFilter){
-            networks = networks.filter(n => data.networkFilter[n.name.toLowerCase()])
-        }
+
         this.html = create('div', {}, template({
             identifier: data.recipient,
             customHeader: data.customHeader,
@@ -51,7 +50,7 @@ export class CustomTwitter {
                 Object.assign(button.parentNode.dataset, li.dataset);
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
-                this.refreshVisibleCoins()
+                this.refreshVisibleCoins(data.recipient_address)
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
@@ -64,7 +63,6 @@ export class CustomTwitter {
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;
             console.log(assetAddress, network)
-            // pass data? identifier/data.recipient?, assetType, assetAddress, assetId?
             // filter based on 'wanted' params
             this.html.dispatchEvent(Object.assign(new Event('customEvent', {bubbles: true}), {
                 identifier,
@@ -90,6 +88,7 @@ export class CustomTwitter {
             toggleMessageBox.style.display = 'none';
         }
         else {
+            this.html.querySelector('.tokenSelect').style.marginBottom = 0;
             toggleMessageBox.onclick = () => {
                 if (messageBox.classList.contains('isHidden')) {
                     messageBox.classList.remove('isHidden')
@@ -124,11 +123,16 @@ export class CustomTwitter {
         if (!data.customText) {
             toggleText.style.display = 'none';
         }
-        this.refreshVisibleCoins();
+        this.refreshVisibleCoins(data.recipient_address);
     }
 
-    refreshVisibleCoins() {
-        let network = this.html.querySelector('.networkSelect').dataset.network;
+    refreshVisibleCoins(recipient_address) {
+        let network
+        if (recipient_address) {
+            network = this.html.querySelector('.networkSelect').dataset.network;
+        } else {
+            network = "Polygon"
+        }
         let tokens = this.html.querySelectorAll('.tokenSelect li')
         for (let token of tokens) {
             token.style.display = token.dataset.network == network ? '' : 'none';
@@ -142,12 +146,17 @@ export class CustomTwitter {
         if (!tokenFilter) {
             return tokens.filter(t => t.symbol !== "custom");
         } else {
-          return tokens.filter(t => t.symbol !== "custom").filter(t => {
-            return tokenFilter.network?.includes(t.network)
-          }).filter(t => {
-            return tokenFilter.token?.includes(t.symbol)
-          })
+            if(tokenFilter.token) {
+                return tokens.filter(t => t.symbol !== "custom").filter(t => {
+                    return tokenFilter.network?.includes(t.network)
+                }).filter(t => {
+                    return tokenFilter.token?.includes(t.symbol)
+                })
+            } else {
+                return tokens.filter(t => {
+                    return tokenFilter.network?.includes(t.network)
+                })
+            }
         }
     }
-
 }
