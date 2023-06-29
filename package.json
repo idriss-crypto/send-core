@@ -10,7 +10,6 @@
   "dependencies": {
     "@depay/coinbase-wallet-sdk": "^1.0.5",
     "@magic-ext/connect": "^3.1.0",
-    "@walletconnect/web3-provider": "^1.7.8",
     "alchemy-sdk": "^2.0.2",
     "fast-creator": "^1.6.0",
     "idriss-crypto": "^1.8.10",
