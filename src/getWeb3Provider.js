@@ -1,4 +1,3 @@
-import WalletConnectProvider from "@walletconnect/web3-provider/dist/umd/index.min.js";
 import {CoinbaseWalletProvider} from "@depay/coinbase-wallet-sdk"
 import { Magic } from 'magic-sdk';
 import { ConnectExtension } from '@magic-ext/connect';
@@ -10,8 +9,6 @@ import coinbaseLogo from "!!url-loader!./img/coinbase.svg"
 import magicLogo from "!!url-loader!./img/magic.svg"
 import okxLogo from "!!url-loader!./img/okx.svg"
 import Web3Modal from "web3modal";
-
-const WCProvider = WalletConnectProvider.default;
 
 const customNodePolygon = {
     rpcUrl: POLYGON_RPC_ENDPOINT,
@@ -52,17 +49,7 @@ const tallyOpts= {
         },
     },
 };
-const walletConnectOpts= {
-    walletconnect: {
-        package: WCProvider,
-        options: {
-            rpc: {
-                137: POLYGON_RPC_ENDPOINT,
-            },
-            chainId: 137,
-        },
-    },
-};
+
 
 const metaMaskOpts= {
     "custom-metamask": {
@@ -181,7 +168,6 @@ const magicLinkOpts= {
 };
 
 const providerOptions = {
-    ...walletConnectOpts,
     ...walletLinkOpts,
 };
 

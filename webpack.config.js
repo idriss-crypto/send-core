@@ -136,7 +136,6 @@ module.exports = (env, argv) => {
         experiments:{outputModule:true},
         externals: [
             'web3/dist/web3.min.js',
-            '@walletconnect/web3-provider/dist/umd/index.min.js',
             'fast-creator',
             'idriss-crypto/browser',
             '@depay/coinbase-wallet-sdk',
