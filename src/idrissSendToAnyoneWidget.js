@@ -19,14 +19,6 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
         this.sendToAnyoneProcess();
     }
 
-    getAssetType() {
-        if (network==="ETH" && token==="ETH") return "native"
-        if (network==="Polygon" && token==="MATIC") return "native"
-        if (network==="BSC" && token==="BNB") return "native"
-        if (network==="zkSync" && token==="ETH") return "native"
-        if (network==="linea" && token==="ETH") return "native"
-        if (!assetId) return "erc20"
-    }
 
     close(){
         console.log('close');
@@ -49,8 +41,6 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
                 });
             }
             if (!this.token || !this.sendToAnyoneValue || !this.network) {
-
-                //ToDo: check if SendToAnyoneConnect is needed
                 this.container.firstElementChild?.remove();
                 this.container.append(new SendToAnyoneConnect(this.identifier, this.isIDrissRegistered, false, this.tokenFilter).html);
                 let addressNFTs;
