@@ -193,17 +193,18 @@ export class SendToAnyoneMain {
     }
 
     filterTokens(tokenFilter) {
-        if (!tokenFilter) {
-            return tokens.filter(t => t.symbol !== "custom");
+        if (!tokenFilter || (tokenFilter && Object.keys(tokenFilter).length === 0)) {
+            let retToken = tokens.filter(t => t.symbol !== "custom");
+            return retToken
         } else {
-            if(tokenFilter.token) {
+            if (tokenFilter.token) {
                 return tokens.filter(t => t.symbol !== "custom").filter(t => {
                     return tokenFilter.network?.includes(t.network)
                 }).filter(t => {
                     return tokenFilter.token?.includes(t.symbol)
                 })
             } else {
-                return tokens.filter(t => {
+                return tokens.filter(t => t.symbol !== "custom").filter(t => {
                     return tokenFilter.network?.includes(t.network)
                 })
             }

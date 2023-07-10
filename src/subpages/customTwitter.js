@@ -50,7 +50,7 @@ export class CustomTwitter {
                 Object.assign(button.parentNode.dataset, li.dataset);
                 li.parentNode.parentNode.classList.remove('isOpen')
                 this.html.querySelector(':focus')?.blur()
-                this.refreshVisibleCoins(data.recipient_address)
+                this.refreshVisibleCoins(data.recipientAddress)
             }
         })
         this.html.querySelector('.send')?.addEventListener('click', (e) => {
@@ -62,7 +62,6 @@ export class CustomTwitter {
             let input = this.html.querySelector('input').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;
-            console.log(assetAddress, network)
             // filter based on 'wanted' params
             this.html.dispatchEvent(Object.assign(new Event('customEvent', {bubbles: true}), {
                 identifier,
@@ -123,12 +122,12 @@ export class CustomTwitter {
         if (!data.customText) {
             toggleText.style.display = 'none';
         }
-        this.refreshVisibleCoins(data.recipient_address);
+        this.refreshVisibleCoins(data.recipientAddress);
     }
 
-    refreshVisibleCoins(recipient_address) {
+    refreshVisibleCoins(recipientAddress) {
         let network
-        if (recipient_address) {
+        if (recipientAddress) {
             network = this.html.querySelector('.networkSelect').dataset.network;
         } else {
             network = "Polygon"
@@ -143,8 +142,9 @@ export class CustomTwitter {
     }
 
     filterTokens(tokenFilter) {
-        if (!tokenFilter) {
-            return tokens.filter(t => t.symbol !== "custom");
+        if (!tokenFilter || (tokenFilter && Object.keys(tokenFilter).length === 0)) {
+            let retToken = tokens.filter(t => t.symbol !== "custom");
+            return retToken
         } else {
             if(tokenFilter.token) {
                 return tokens.filter(t => t.symbol !== "custom").filter(t => {
@@ -153,7 +153,7 @@ export class CustomTwitter {
                     return tokenFilter.token?.includes(t.symbol)
                 })
             } else {
-                return tokens.filter(t => {
+                return tokens.filter(t => t.symbol !== "custom").filter(t => {
                     return tokenFilter.network?.includes(t.network)
                 })
             }
