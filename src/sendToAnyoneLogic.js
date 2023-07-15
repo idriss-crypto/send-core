@@ -500,12 +500,12 @@ export const SendToAnyoneLogic = {
 
         // check if correct chain is connected
         console.log("Connected to chain ", chainId);
-        if (chainId != 59140) {
-            console.log("Switch to Linea Testnet requested");
+        if (chainId != 59144) {
+            console.log("Switch to Linea requested");
             try {
                 await this.provider.request({
                     method: "wallet_switchEthereumChain",
-                    params: [{ chainId: "0xe704" }],
+                    params: [{ chainId: "0xe708" }],
                 });
             } catch (switchError) {
                 if (switchError.message === "JSON RPC response format is invalid") {
@@ -516,13 +516,13 @@ export const SendToAnyoneLogic = {
                     try {
                         await this.provider.request({
                         method: 'wallet_addEthereumChain',
-                        params: [{ chainId: '0xe704', chainName: 'Linea', rpcUrls: ['https://rpc.goerli.linea.build'], blockExplorerUrls: ['https://explorer.goerli.linea.build'], nativeCurrency: {name: 'Ethereum', symbol: 'LineaETH', decimals: 18}}],
+                        params: [{ chainId: '0xe708', chainName: 'Linea', rpcUrls: ['https://rpc.linea.build'], blockExplorerUrls: ['https://explorer.linea.build'], nativeCurrency: {name: 'Ethereum', symbol: 'LineaETH', decimals: 18}}],
                         });
                     } catch (addError) {
                         alert("Please add Linea Testnet to continue.");
                     }
                 }
-                console.log("Please switch to Linea Testnet.");
+                console.log("Please switch to Linea.");
                 // disable continue buttons here
                 throw "network";
             }

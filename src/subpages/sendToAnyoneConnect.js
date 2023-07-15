@@ -18,7 +18,7 @@ export class SendToAnyoneConnect {
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
-            {name: 'Linea Testnet', img: linea_logo, chainId: 59140, code: 'linea'}
+            {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'}
         ]
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])

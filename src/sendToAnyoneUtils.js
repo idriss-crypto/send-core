@@ -55,7 +55,7 @@ const tokens = [
         logoURI: eth,
     },
     {
-        chainId: 59140,
+        chainId: 59144,
         network: "linea",
         name: "LineaETH",
         symbol: "ETH",
