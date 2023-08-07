@@ -222,17 +222,17 @@ export const SendToAnyoneLogic = {
               }
             : walletTypeDefault;
 
+        // switch to selected payment option's network
+        await this.switchNetwork(network);
+
         let polygonGas;
         try {
             if (network==="Polygon") {
-                polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
+                polygonGas = Math.round(1.05*(await this.web3.eth.getGasPrice()))
             }
         } catch {
             console.log("could not load polygon gas");
         }
-
-        // switch to selected payment option's network
-        await this.switchNetwork(network);
 
         try{
             // create new idriss instance handling the new network
@@ -278,19 +278,19 @@ export const SendToAnyoneLogic = {
         let network = "Polygon"
         console.log("Final recipients: ", recipients_)
 
-        // let contract;
-        let polygonGas;
-        try {
-            if (network==="Polygon") {
-                polygonGas = String(Math.round((await (await fetch("https://gasstation-mainnet.matic.network/v2")).json())["standard"]["maxFee"] * 1000000000));
-            }
-        } catch {
-            console.log("could not load polygon gas");
-        }
         // switch to selected payment option's network
         // exchange if statement for suitable check depending on selected network in dropdown
 
         await this.switchNetwork(network);
+
+        let polygonGas;
+        try {
+            if (network==="Polygon") {
+                polygonGas = Math.round(1.05*(await this.web3.eth.getGasPrice()))
+            }
+        } catch {
+            console.log("could not load polygon gas");
+        }
 
         try{
             // create new idriss instance handling the correct network
@@ -500,12 +500,12 @@ export const SendToAnyoneLogic = {
 
         // check if correct chain is connected
         console.log("Connected to chain ", chainId);
-        if (chainId != 59140) {
-            console.log("Switch to Linea Testnet requested");
+        if (chainId != 59144) {
+            console.log("Switch to Linea requested");
             try {
                 await this.provider.request({
                     method: "wallet_switchEthereumChain",
-                    params: [{ chainId: "0xe704" }],
+                    params: [{ chainId: "0xe708" }],
                 });
             } catch (switchError) {
                 if (switchError.message === "JSON RPC response format is invalid") {
@@ -516,13 +516,13 @@ export const SendToAnyoneLogic = {
                     try {
                         await this.provider.request({
                         method: 'wallet_addEthereumChain',
-                        params: [{ chainId: '0xe704', chainName: 'Linea', rpcUrls: ['https://rpc.goerli.linea.build'], blockExplorerUrls: ['https://explorer.goerli.linea.build'], nativeCurrency: {name: 'Ethereum', symbol: 'LineaETH', decimals: 18}}],
+                        params: [{ chainId: '0xe708', chainName: 'Linea', rpcUrls: ['https://rpc.linea.build'], blockExplorerUrls: ['https://explorer.linea.build'], nativeCurrency: {name: 'Ethereum', symbol: 'LineaETH', decimals: 18}}],
                         });
                     } catch (addError) {
                         alert("Please add Linea Testnet to continue.");
                     }
                 }
-                console.log("Please switch to Linea Testnet.");
+                console.log("Please switch to Linea.");
                 // disable continue buttons here
                 throw "network";
             }

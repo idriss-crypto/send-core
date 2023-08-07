@@ -7,7 +7,7 @@ import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
 import close from "!!url-loader!../img/close.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
-import biannceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
+import binanceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 
@@ -16,13 +16,13 @@ export class SendToAnyoneMain {
         let networks = [
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
+            {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
-            {name: 'Linea Testnet', img: linea_logo, chainId: 59140, code: 'linea'}
+            {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'}
         ]
 
-        if (tokenFilter) {
-            networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
+        if (tokenFilter && tokenFilter.network && Array.isArray(tokenFilter.network)) {
+            networks = networks.filter(n => tokenFilter.network.includes(n.code));
         }
 
         if (ownedNFTs.length==0) {ownedNFTs=[{address: "0x0000000000000000000000000000000000000000", id: "1", image: "https://ipfs.io/ipfs/QmNWMJTqmqrxriJQE7dfndAto48RUpHDLr41HJMZvD3cFD?id=1", name: "No NFTs found"}]}
@@ -193,17 +193,21 @@ export class SendToAnyoneMain {
     }
 
     filterTokens(tokenFilter) {
-        if (!tokenFilter) {
-            return tokens.filter(t => t.symbol !== "custom");
+        if (!tokenFilter || (tokenFilter && Object.keys(tokenFilter).length === 0)) {
+            let retToken = tokens.filter(t => t.symbol !== "custom");
+            return retToken
         } else {
-          return tokens.filter(t => t.symbol !== "custom").filter(t => {
-            return tokenFilter.network?.includes(t.network)
-          }).filter(t => {
-            return tokenFilter.token?.includes(t.symbol)
-          })
-//            return tokens.filter(t => t.symbol !== "custom").filter(t => {
-//                return tokenFilter[network.toLowerCase()]?.includes(t.symbol);
-//            })
+            if (tokenFilter.token) {
+                return tokens.filter(t => t.symbol !== "custom").filter(t => {
+                    return tokenFilter.network?.includes(t.network)
+                }).filter(t => {
+                    return tokenFilter.token?.includes(t.symbol)
+                })
+            } else {
+                return tokens.filter(t => t.symbol !== "custom").filter(t => {
+                    return tokenFilter.network?.includes(t.network)
+                })
+            }
         }
     }
 }
