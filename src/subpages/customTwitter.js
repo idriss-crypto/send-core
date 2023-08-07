@@ -1,7 +1,8 @@
 import template from "./customTwitter.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
+import op_logo from "!!url-loader!../img/op.png"
 import zk_logo from "!!url-loader!../img/zksync.ico"
-import usdc_logo from "!!url-loader!../img/usdc_logo.png"
+import linea_logo from "!!url-loader!../img/linea.ico"import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
 import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
@@ -17,6 +18,8 @@ export class CustomTwitter {
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
+            {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'}
+            {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'}
         ]
 
         if (data.tokenFilter && data.tokenFilter.network && Array.isArray(data.tokenFilter.network)) {
