@@ -19,7 +19,7 @@ export class SendToAnyoneConnect {
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
-            {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'}
+            {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'}
         ]
         if (tokenFilter) {
