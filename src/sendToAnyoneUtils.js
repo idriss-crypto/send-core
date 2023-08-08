@@ -19,6 +19,7 @@ import link_logo from "!!url-loader!./img/link_logo.svg"
 import mana from "!!url-loader!./img/mana.svg"
 import quick from "!!url-loader!./img/quick.svg"
 import tel from "!!url-loader!./img/tel.svg"
+import op from "!!url-loader!./img/op.png"
 import custom from "!!url-loader!./img/custom.png"
 
 const tokens = [
@@ -61,6 +62,22 @@ const tokens = [
         symbol: "ETH",
         decimals: 18,
         logoURI: eth,
+    },
+    {
+        chainId: 10,
+        network: "optimism",
+        name: "Ethereum",
+        symbol: "ETH",
+        decimals: 18,
+        logoURI: eth,
+    },
+    {
+        chainId: 10,
+        network: "optimism",
+        name: "Optimsim",
+        symbol: "OP",
+        decimals: 18,
+        logoURI: op,
     },
     {
         address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
