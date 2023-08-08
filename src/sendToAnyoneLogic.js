@@ -5,6 +5,7 @@ import { IdrissCrypto } from "idriss-crypto/browser";
 
 export const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
 export const defaultWeb3ETH = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"));
+export const defaultWeb3OP = new Web3(new Web3.providers.HttpProvider("https://mainnet.optimism.io"));
 
 
 let oracleAddress = {
@@ -16,7 +17,20 @@ let oracleAddress = {
     USDT: "0x0a6513e40db6eb1b165753ad52e80663aea50545",
     DAI: "0x4746dec9e833a82ec7c2c1356372ccf2cfcd2f3d",
     DOGE: "0xbaf9327b6564454f4a3364c33efeef032b4b4444",
+    OP: "0x0d276fc14719f9292d5c1ea2198673d1f4269246",
 };
+
+let oracleW3s = {
+    ETH: defaultWeb3,
+    WETH: defaultWeb3,
+    BNB: defaultWeb3,
+    MATIC: defaultWeb3,
+    USDC: defaultWeb3,
+    USDT: defaultWeb3,
+    DAI: defaultWeb3,
+    DOGE: defaultWeb3,
+    OP: defaultWeb3OP,
+}
 
 const assetTypes = {
     native: 0,
@@ -54,6 +68,9 @@ export const SendToAnyoneLogic = {
         if (network === "linea") {
             ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
         }
+        if (network === "OP") {
+            ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+        }
         let TIPPING_CONTRACT_ADDRESS = POLYGON_TIPPING_CONTRACT_ADDRESS;
         if (network === "ETH") {
             TIPPING_CONTRACT_ADDRESS = ETH_TIPPING_CONTRACT_ADDRESS;
@@ -66,6 +83,9 @@ export const SendToAnyoneLogic = {
         }
         if (network === "linea") {
             TIPPING_CONTRACT_ADDRESS = LINEA_TIPPING_CONTRACT_ADDRESS;
+        }
+        if (network === "OP") {
+            TIPPING_CONTRACT_ADDRESS = OP_TIPPING_CONTRACT_ADDRESS;
         }
         this.provider = provider;
         this.apiKey = apiKey;
@@ -194,7 +214,15 @@ export const SendToAnyoneLogic = {
                     throw e;
                 }
             }
-        } else {
+        } else if (network === "optimism") {
+            try {
+                await this.switchtooptimism();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        }else {
             return false;
         }
     },
@@ -529,6 +557,43 @@ export const SendToAnyoneLogic = {
         }
     },
 
+    async switchtooptimism() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 10) {
+            console.log("Switch to Optimism");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0xa" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0xa', chainName: 'OP Mainnet', rpcUrls: ['https://mainnet.optimism.io'], blockExplorerUrls: ['https://optimistic.etherscan.io/'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add OP Mainnet to continue.");
+                    }
+                }
+                console.log("Please switch to OP.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
     // load oracle price data
     async loadOracle(ticker) {
         let abiOracle = [
@@ -650,7 +715,7 @@ export const SendToAnyoneLogic = {
             { inputs: [{ internalType: "address", name: "_to", type: "address" }], name: "transferOwnership", outputs: [], stateMutability: "nonpayable", type: "function" },
             { inputs: [], name: "version", outputs: [{ internalType: "uint256", name: "", type: "uint256" }], stateMutability: "view", type: "function" },
         ];
-        return await new defaultWeb3.eth.Contract(abiOracle, oracleAddress[ticker]);
+        return await new oracleW3s[ticker].eth.Contract(abiOracle, oracleAddress[ticker]);
     },
 
     async loadERC20(address) {
