@@ -68,7 +68,7 @@ export const SendToAnyoneLogic = {
         if (network === "linea") {
             ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
         }
-        if (network === "OP") {
+        if (network === "optimism") {
             ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
         }
         let TIPPING_CONTRACT_ADDRESS = POLYGON_TIPPING_CONTRACT_ADDRESS;
@@ -84,7 +84,7 @@ export const SendToAnyoneLogic = {
         if (network === "linea") {
             TIPPING_CONTRACT_ADDRESS = LINEA_TIPPING_CONTRACT_ADDRESS;
         }
-        if (network === "OP") {
+        if (network === "optimism") {
             TIPPING_CONTRACT_ADDRESS = OP_TIPPING_CONTRACT_ADDRESS;
         }
         this.provider = provider;
@@ -230,7 +230,7 @@ export const SendToAnyoneLogic = {
     async sendToAnyone(recipient, amount, network, token, message, assetType, assetAddress, assetId, walletTag) {
 
         let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
-
+        console.log("Getting this contr address: ", tokenContractAddr)
         let properAmount;
         if (assetType === "erc721" || assetType === "erc1155") properAmount = 1;
         else properAmount =  amount;
