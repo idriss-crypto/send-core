@@ -74,8 +74,8 @@ const tokens = [
     {
         chainId: 10,
         network: "optimism",
-        name: "Ethereum",
-        symbol: "ETH",
+        name: "Optimsim",
+        symbol: "OP",
         decimals: 18,
         logoURI: op,
     },
