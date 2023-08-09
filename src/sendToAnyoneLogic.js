@@ -228,26 +228,32 @@ export const SendToAnyoneLogic = {
 
     async vote(recipient, amount, network, token, assetType, assetAddress, projectId, applicationIndex) {
 
+        let projectIdHex = this.web3.utils.padLeft(this.web3.utils.toHex(projectId), 64)
+
         let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
-        console.log("Getting this contr address: ", tokenContractAddr)
+        if (typeof(tokenContractAddr) === "undefined") tokenContractAddr = ZERO_ADDRESS;
 
         const asset = {
             amount: `${amount}`,
             type: assetTypes[assetType],
             assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
-            assetId: assetId === "" ? 0 : assetId,
+            assetId: 0,
         };
 
         // should be address(0) if native
-        console.log(asset.tokenContractAddress)
+        console.log(asset.assetContractAddress)
         console.log(asset.amount)
+
+        console.log(asset.assetContractAddress, asset.amount, recipient, projectIdHex, applicationIndex)
+        console.log(typeof(projectId))
 
         const encodedVotes = [
             this.web3.eth.abi.encodeParameters(
                 ['address', 'uint256', 'address', 'bytes32', 'uint256'],
-                [asset.tokenContractAddress, asset.amount, recipient, projectId, applicationIndex]
+                [asset.assetContractAddress, asset.amount, recipient, projectIdHex, applicationIndex]
             )
         ];
+        console.log(encodedVotes)
 
         // switch to selected payment option's network
         await this.switchNetwork(network);
@@ -281,7 +287,6 @@ export const SendToAnyoneLogic = {
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 if (network === "zkSync" || network === "optimism") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
-                console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
                 console.log(encodedVotes, asset, transactionOptions);
                 result = await this.idriss.vote(encodedVotes, asset, transactionOptions);

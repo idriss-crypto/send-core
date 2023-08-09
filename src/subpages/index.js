@@ -5,6 +5,7 @@ export {SendToAnyoneConnect} from "./sendToAnyoneConnect";
 export {SendToAnyoneSuccess} from "./sendToAnyoneSuccess";
 export {SendToAnyoneWaitingApproval} from "./sendToAnyoneWaitingApproval";
 export {SendToAnyoneWaitingConfirmation} from "./sendToAnyoneWaitingConfirmation";
+export {SendToAnyoneWaitingConfirmationCustom} from "./sendToAnyoneWaitingConfirmationCustom";
 export {MultiSendToAnyone} from "./multiSendToAnyone";
 export {MultiSendToAnyoneApproval} from "./multiSendToAnyoneApproval";
 export {MultiSendToAnyoneSuccess} from "./multiSendToAnyoneSuccess";
