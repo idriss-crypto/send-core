@@ -56,36 +56,34 @@ export const SendToAnyoneLogic = {
     async prepareSendToAnyone(provider, network, apiKey) {
         console.log("prepareSendToAnyone");
         let ORACLE_CONTRACT_ADDRESS = POLYGON_PRICE_ORACLE_CONTRACT_ADDRESS;
-        if (network === "ETH") {
-            ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
-        }
-        if (network === "BSC") {
-            ORACLE_CONTRACT_ADDRESS = BSC_PRICE_ORACLE_CONTRACT_ADDRESS;
-        }
-        if (network === "zkSync") {
-            ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
-        }
-        if (network === "linea") {
-            ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
-        }
-        if (network === "optimism") {
-            ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
-        }
         let TIPPING_CONTRACT_ADDRESS = POLYGON_TIPPING_CONTRACT_ADDRESS;
-        if (network === "ETH") {
-            TIPPING_CONTRACT_ADDRESS = ETH_TIPPING_CONTRACT_ADDRESS;
-        }
-        if (network === "BSC") {
-            TIPPING_CONTRACT_ADDRESS = BSC_TIPPING_CONTRACT_ADDRESS;
-        }
-        if (network === "zkSync") {
-            TIPPING_CONTRACT_ADDRESS = ZK_TIPPING_CONTRACT_ADDRESS;
-        }
-        if (network === "linea") {
-            TIPPING_CONTRACT_ADDRESS = LINEA_TIPPING_CONTRACT_ADDRESS;
-        }
-        if (network === "optimism") {
-            TIPPING_CONTRACT_ADDRESS = OP_TIPPING_CONTRACT_ADDRESS;
+        let VOTING_CONTRACT_ADDRESS;
+
+        switch (network) {
+            case "ETH":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = ETH_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "BSC":
+                ORACLE_CONTRACT_ADDRESS = BSC_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = BSC_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "zkSync":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = ZK_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "linea":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = LINEA_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "optimism":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = OP_TIPPING_CONTRACT_ADDRESS;
+                VOTING_CONTRACT_ADDRESS = OP_VOTING_CONTRACT_ADDRESS;
+                break;
+            default:
+                // Handle the default case if needed
+                break;
         }
         this.provider = provider;
         this.apiKey = apiKey;
@@ -98,6 +96,7 @@ export const SendToAnyoneLogic = {
             reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
             priceOracleContractAddress: ORACLE_CONTRACT_ADDRESS,
             tippingContractAddress: TIPPING_CONTRACT_ADDRESS,
+            votingContractAddress: VOTING_CONTRACT_ADDRESS,
         });
         this.web3 = web3;
         await this.switchNetwork(network);
@@ -224,6 +223,82 @@ export const SendToAnyoneLogic = {
             }
         }else {
             return false;
+        }
+    },
+
+    async vote(recipient, amount, network, token, assetType, assetAddress, projectId, applicationIndex) {
+
+        let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
+        console.log("Getting this contr address: ", tokenContractAddr)
+
+        const asset = {
+            amount: `${amount}`,
+            type: assetTypes[assetType],
+            assetContractAddress: (assetAddress ?? "").length > 0 ? assetAddress : tokenContractAddr,
+            assetId: assetId === "" ? 0 : assetId,
+        };
+
+        // should be address(0) if native
+        console.log(asset.tokenContractAddress)
+        console.log(asset.amount)
+
+        const encodedVotes = [
+            this.web3.eth.abi.encodeParameters(
+                ['address', 'uint256', 'address', 'bytes32', 'uint256'],
+                [asset.tokenContractAddress, asset.amount, recipient, projectId, applicationIndex]
+            )
+        ];
+
+        // switch to selected payment option's network
+        await this.switchNetwork(network);
+
+        let polygonGas;
+        try {
+            if (network==="Polygon") {
+                polygonGas = Math.round(1.05*(await this.web3.eth.getGasPrice()))
+            }
+        } catch {
+            console.log("could not load polygon gas");
+        }
+
+        try{
+            // create new idriss instance handling the new network
+            await this.prepareSendToAnyone(this.provider, network, this.apiKey)
+        } catch (e) {
+            console.log(e)
+        }
+
+        // exchanged for redundant multiple get accounts calls
+        const accounts = await this.web3.eth.getAccounts();
+        let selectedAccount = accounts[0];
+
+        if (accounts.length > 0) {
+            let result;
+
+            try {
+                const transactionOptions = {
+                    from: selectedAccount,
+                    ...(polygonGas && { gasPrice: polygonGas }),
+                };
+                if (network === "zkSync" || network === "optimism") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                console.log(recipient, walletType, asset, message, transactionOptions);
+                console.log(network, this.idriss);
+                console.log(encodedVotes, asset, transactionOptions);
+                result = await this.idriss.vote(encodedVotes, asset, transactionOptions);
+                console.log(result)
+            } catch (err) {
+                console.log("error", err);
+                // Transaction failed or user has denied
+                // catch different errors?
+                // code 4001 user denied
+                if (err.code == 4001) {
+                    console.log("Transaction denied.");
+                    return false;
+                } else {
+                    throw err;
+                }
+            }
+            return result;
         }
     },
 
