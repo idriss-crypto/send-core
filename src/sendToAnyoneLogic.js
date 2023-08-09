@@ -281,7 +281,7 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                if (network === "zkSync") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
