@@ -3,6 +3,7 @@ import eth_logo from "!!url-loader!../img/eth_logo.png"
 import op_logo from "!!url-loader!../img/op.png"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
+import pgn_logo from "!!url-loader!../img/pgn_logo.png"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
@@ -20,7 +21,8 @@ export class CustomTwitter {
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
-            {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'}
+            {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
+            {name: 'PGN', img: pgn_logo, chainId: 424, code: 'pgn'}
         ]
 
         if (data.tokenFilter && data.tokenFilter.network && Array.isArray(data.tokenFilter.network)) {

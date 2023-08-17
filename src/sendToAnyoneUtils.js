@@ -72,6 +72,14 @@ const tokens = [
         logoURI: eth,
     },
     {
+        chainId: 424,
+        network: "pgn",
+        name: "Ethereum",
+        symbol: "ETH",
+        decimals: 18,
+        logoURI: eth,
+    },
+    {
         chainId: 10,
         network: "optimism",
         name: "Optimsim",
@@ -95,7 +103,7 @@ const tokens = [
         name: "USD Coin",
         symbol: "USDC",
         decimals: 6,
-        address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+        address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
         logoURI: usdc,
     },
     {

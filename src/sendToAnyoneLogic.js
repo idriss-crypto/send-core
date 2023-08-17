@@ -57,7 +57,6 @@ export const SendToAnyoneLogic = {
         console.log("prepareSendToAnyone");
         let ORACLE_CONTRACT_ADDRESS = POLYGON_PRICE_ORACLE_CONTRACT_ADDRESS;
         let TIPPING_CONTRACT_ADDRESS = POLYGON_TIPPING_CONTRACT_ADDRESS;
-        let VOTING_CONTRACT_ADDRESS;
 
         switch (network) {
             case "ETH":
@@ -79,7 +78,10 @@ export const SendToAnyoneLogic = {
             case "optimism":
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = OP_TIPPING_CONTRACT_ADDRESS;
-                VOTING_CONTRACT_ADDRESS = OP_VOTING_CONTRACT_ADDRESS;
+                break;
+            case "pgn":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = PGN_TIPPING_CONTRACT_ADDRESS;
                 break;
             default:
                 // Handle the default case if needed
@@ -96,7 +98,6 @@ export const SendToAnyoneLogic = {
             reverseIDrissMappingContractAddress: REVERSE_IDRISS_MAPPING_CONTRACT_ADDRESS,
             priceOracleContractAddress: ORACLE_CONTRACT_ADDRESS,
             tippingContractAddress: TIPPING_CONTRACT_ADDRESS,
-            votingContractAddress: VOTING_CONTRACT_ADDRESS,
         });
         this.web3 = web3;
         await this.switchNetwork(network);
@@ -221,14 +222,20 @@ export const SendToAnyoneLogic = {
                     throw e;
                 }
             }
-        }else {
+        } else if (network === "pgn") {
+            try {
+                await this.switchtopgn();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else {
             return false;
         }
     },
 
-    async vote(recipient, amount, network, token, assetType, assetAddress, projectId, applicationIndex) {
-
-        let projectIdHex = this.web3.utils.padLeft(this.web3.utils.toHex(projectId), 64)
+    async vote(recipient, amount, network, token, assetType, assetAddress, projectId, applicationIndex, roundContract) {
 
         let tokenContractAddr = tokens.filter((x) => x.symbol == token && x.network == network)[0]?.address; // get from json
         if (typeof(tokenContractAddr) === "undefined") tokenContractAddr = ZERO_ADDRESS;
@@ -244,13 +251,12 @@ export const SendToAnyoneLogic = {
         console.log(asset.assetContractAddress)
         console.log(asset.amount)
 
-        console.log(asset.assetContractAddress, asset.amount, recipient, projectIdHex, applicationIndex)
-        console.log(typeof(projectId))
+        console.log(asset.assetContractAddress, asset.amount, recipient, projectId, applicationIndex, roundContract)
 
         const encodedVotes = [
             this.web3.eth.abi.encodeParameters(
                 ['address', 'uint256', 'address', 'bytes32', 'uint256'],
-                [asset.assetContractAddress, asset.amount, recipient, projectIdHex, applicationIndex]
+                [asset.assetContractAddress, asset.amount, recipient, projectId, applicationIndex]
             )
         ];
         console.log(encodedVotes)
@@ -286,10 +292,10 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                if (network === "zkSync" || network === "optimism") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log(network, this.idriss);
                 console.log(encodedVotes, asset, transactionOptions);
-                result = await this.idriss.vote(encodedVotes, asset, transactionOptions);
+                result = await this.idriss.vote(encodedVotes, asset, roundContract, transactionOptions);
                 console.log(result)
             } catch (err) {
                 console.log("error", err);
@@ -361,7 +367,9 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                if (network === "zkSync" || network === "optimism") transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                console.log("Pre gas ", transactionOptions)
+                if (network === "zkSync" || network === "optimism" || network === 'linea') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                console.log("post gas ", transactionOptions)
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
@@ -668,6 +676,43 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to OP.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtopgn() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 424) {
+            console.log("Switch to PGN");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0x1a8" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0x1a8', chainName: 'PGN (Public Goods Network)', rpcUrls: ['https://rpc.publicgoods.network'], blockExplorerUrls: ['https://explorer.publicgoods.network'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add PGN to continue.");
+                    }
+                }
+                console.log("Please switch to PGN.");
                 // disable continue buttons here
                 throw "network";
             }

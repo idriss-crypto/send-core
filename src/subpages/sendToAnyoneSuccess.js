@@ -30,7 +30,7 @@ export class SendToAnyoneSuccess {
             mode: 'cors',
             body: JSON.stringify(notificationBody)
         }
-        if (txnHash!="0x"){
+        if (typeof(claimPassword)!=='undefined'){
             fetch(notificationUrl, notificationOptions)
             .then((res) => {
                 if (res.status == 200) {
