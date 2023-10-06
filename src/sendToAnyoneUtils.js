@@ -229,7 +229,7 @@ const tokens = [
         address: "0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4",
         chainId: 324,
         network: "zkSync",
-        decimals: 18,
+        decimals: 6,
         logoURI: usdc,
     },
     {

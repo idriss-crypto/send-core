@@ -7,7 +7,7 @@ const setup = (mode) => {
     if (mode === 'production') {
         //Mainnet
         return {
-            POLYGON_RPC_ENDPOINT: `'https://polygon-rpc.com/'`,
+            POLYGON_RPC_ENDPOINT: `'https://polygon-mainnet.g.alchemy.com/v2/Ca6JC852xdC8fzdmF516JfDNN1RQQQlC/'`,
             ETHEREUM_RPC_ENDPOINT: `'https://mainnet.infura.io/v3/'`,
             BSC_RPC_ENDPOINT: `'https://bsc-dataseed.binance.org/'`,
             POLYGON_CHAIN_ID: `'137'`,
@@ -68,7 +68,7 @@ const setup = (mode) => {
 //            WEBPACK_MODE: `'development'`,
 //            DEFAULT_TOKEN_CONTRACT_ADDRESS: `'0xdb54fa574a3e8c6aC784e1a5cdB575A737622CFf'`,
 //            DEFAULT_NFT_CONTRACT_ADDRESS: `'0x7A28cf37763279F774916b85b5ef8b64AB421f79'`,
-            POLYGON_RPC_ENDPOINT: `'https://polygon-rpc.com/'`,
+            POLYGON_RPC_ENDPOINT: `'https://polygon-mainnet.g.alchemy.com/v2/Ca6JC852xdC8fzdmF516JfDNN1RQQQlC/'`,
             ETHEREUM_RPC_ENDPOINT: `'https://mainnet.infura.io/v3/'`,
             BSC_RPC_ENDPOINT: `'https://bsc-dataseed.binance.org/'`,
             POLYGON_CHAIN_ID: `'137'`,

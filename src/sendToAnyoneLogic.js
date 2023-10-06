@@ -3,7 +3,7 @@ import {BigNumber} from "ethers";
 import { tokens, multiToken, walletTypeDefault, getCoin } from "./sendToAnyoneUtils";
 import { IdrissCrypto } from "idriss-crypto/browser";
 
-export const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com/"));
+export const defaultWeb3 = new Web3(new Web3.providers.HttpProvider("https://polygon-mainnet.g.alchemy.com/v2/Ca6JC852xdC8fzdmF516JfDNN1RQQQlC"));
 export const defaultWeb3ETH = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"));
 export const defaultWeb3OP = new Web3(new Web3.providers.HttpProvider("https://mainnet.optimism.io"));
 
