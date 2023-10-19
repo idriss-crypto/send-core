@@ -65,7 +65,7 @@ export class CustomTwitter {
             let identifier = data.recipient;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            let assetType = ["MATIC", "ETH", "BNB"].includes(token)? "native" : "erc20"
+            let assetType = ["MATIC", "ETH", "BNB", "MNT"].includes(token)? "native" : "erc20"
             let message = this.html.querySelector('.messageBox textarea').value;
             let input = this.html.querySelector('input').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;

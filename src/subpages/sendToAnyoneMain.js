@@ -70,7 +70,8 @@ export class SendToAnyoneMain {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            if (assetType === 'native' && !["MATIC", "ETH", "BNB"].includes(token)) assetType = 'erc20';
+            // add new token for new networks with custom native token
+            if (assetType === 'native' && !["MATIC", "ETH", "BNB", "MNT"].includes(token)) assetType = 'erc20';
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;
