@@ -44,6 +44,7 @@ let coingeckoId = {
     CULT: "cult-dao",
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
+    MNT: "mantle",
 };
 
 // When using all token
@@ -82,6 +83,10 @@ export const SendToAnyoneLogic = {
             case "pgn":
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = PGN_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "mantle":
+                // not adding an oracle address (use default) as calculation is separate below
+                TIPPING_CONTRACT_ADDRESS = MANTLE_TIPPING_CONTRACT_ADDRESS;
                 break;
             default:
                 // Handle the default case if needed
@@ -225,6 +230,14 @@ export const SendToAnyoneLogic = {
         } else if (network === "pgn") {
             try {
                 await this.switchtopgn();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else if (network === "mantle") {
+            try {
+                await this.switchtomantle();
             } catch (e) {
                 if (e != "network1") {
                     throw e;
@@ -713,6 +726,43 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to PGN.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtomantle() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 5000) {
+            console.log("Switch to Mantle");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0x1388" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0x1388', chainName: 'Mantle', rpcUrls: ['https://rpc.mantle.xyz'], blockExplorerUrls: ['https://explorer.mantle.xyz'], nativeCurrency: {name: 'Mantle', symbol: 'MNT', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Mantle to continue.");
+                    }
+                }
+                console.log("Please switch to Mantle.");
                 // disable continue buttons here
                 throw "network";
             }

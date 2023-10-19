@@ -1,6 +1,7 @@
 import template from "./customTwitter.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
 import op_logo from "!!url-loader!../img/op.png"
+import mantle_logo from "!!url-loader!../img/mantle.ico"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
 import pgn_logo from "!!url-loader!../img/pgn_logo.png"
@@ -17,6 +18,7 @@ export class CustomTwitter {
     constructor(data) {
         let networks = [
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
+            {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'PGN', img: pgn_logo, chainId: 424, code: 'pgn'},
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},

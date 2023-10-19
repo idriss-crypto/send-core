@@ -20,6 +20,7 @@ import mana from "!!url-loader!./img/mana.svg"
 import quick from "!!url-loader!./img/quick.svg"
 import tel from "!!url-loader!./img/tel.svg"
 import op from "!!url-loader!./img/op.png"
+import mnt from "!!url-loader!./img/mantle.ico"
 import custom from "!!url-loader!./img/custom.png"
 
 const tokens = [
@@ -78,6 +79,14 @@ const tokens = [
         symbol: "ETH",
         decimals: 18,
         logoURI: eth,
+    },
+    {
+        chainId: 5000,
+        network: "mantle",
+        name: "Mantle",
+        symbol: "MNT",
+        decimals: 18,
+        logoURI: mnt,
     },
     {
         chainId: 10,
