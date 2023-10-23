@@ -4,6 +4,7 @@ import op_logo from "!!url-loader!../img/op.png"
 import mantle_logo from "!!url-loader!../img/mantle.ico"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
+import scroll_logo from "!!url-loader!../img/scroll.svg"
 import pgn_logo from "!!url-loader!../img/pgn_logo.png"
 import base_logo from "!!url-loader!../img/base.svg"
 import arb_logo from "!!url-loader!../img/arb_logo.svg"
@@ -28,7 +29,8 @@ export class CustomTwitter {
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
-            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'}
+            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
+            {name: 'Scroll', img: scroll_logo, chainId: 534352, code: 'scroll'}
         ]
 
         if (data.tokenFilter && data.tokenFilter.network && Array.isArray(data.tokenFilter.network)) {

@@ -5,6 +5,7 @@ import mantle_logo from "!!url-loader!../img/mantle.ico"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
 import base_logo from "!!url-loader!../img/base.svg"
+import scroll_logo from "!!url-loader!../img/scroll.svg"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
@@ -23,6 +24,7 @@ export class SendToAnyoneMain {
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
             {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
+            {name: 'Scroll', img: scroll_logo, chainId: 534352, code: 'scroll'},
             {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'}
         ]
