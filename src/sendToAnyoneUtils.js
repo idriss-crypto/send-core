@@ -80,6 +80,14 @@ const tokens = [
         logoURI: eth,
     },
     {
+        chainId: 534352,
+        network: "scroll",
+        name: "Ethereum",
+        symbol: "ETH",
+        decimals: 18,
+        logoURI: eth,
+    },
+    {
         chainId: 10,
         network: "optimism",
         name: "Optimsim",
