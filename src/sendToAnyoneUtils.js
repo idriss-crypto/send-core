@@ -6,6 +6,7 @@ import cult from "!!url-loader!./img/cult.png"
 import doge from "!!url-loader!./img/doge.png"
 import bnb from "!!url-loader!./img/bnb.png"
 import weth from "!!url-loader!./img/weth.png"
+import prime from "!!url-loader!./img/prime.png"
 import matic from "!!url-loader!./img/matic.png"
 import eth from "!!url-loader!./img/eth_logo.png"
 import usdt from "!!url-loader!./img/usdt.svg"
@@ -78,6 +79,23 @@ const tokens = [
         symbol: "ETH",
         decimals: 18,
         logoURI: eth,
+    },
+    {
+        chainId: 8453,
+        network: "base",
+        name: "Ethereum",
+        symbol: "ETH",
+        decimals: 18,
+        logoURI: eth,
+    },
+    {
+        chainId: 8453,
+        network: "base",
+        name: "Echelon Prime",
+        symbol: "PRIME",
+        decimals: 18,
+        logoURI: prime,
+        address: "0xfA980cEd6895AC314E7dE34Ef1bFAE90a5AdD21b",
     },
     {
         chainId: 10,

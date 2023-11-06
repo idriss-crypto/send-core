@@ -44,6 +44,7 @@ let coingeckoId = {
     CULT: "cult-dao",
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
+    PRIME: "echelon-prime",
 };
 
 // When using all token
@@ -82,6 +83,10 @@ export const SendToAnyoneLogic = {
             case "pgn":
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = PGN_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "base":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = BASE_TIPPING_CONTRACT_ADDRESS;
                 break;
             default:
                 // Handle the default case if needed
@@ -225,6 +230,14 @@ export const SendToAnyoneLogic = {
         } else if (network === "pgn") {
             try {
                 await this.switchtopgn();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else if (network === "base") {
+            try {
+                await this.switchtobase();
             } catch (e) {
                 if (e != "network1") {
                     throw e;
@@ -713,6 +726,43 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to PGN.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtobase() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 8453) {
+            console.log("Switch to Base");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0x2105" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0x2105', chainName: 'Base', rpcUrls: ['https://mainnet.base.org'], blockExplorerUrls: ['https://basescan.org/'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Base to continue.");
+                    }
+                }
+                console.log("Please switch to Base.");
                 // disable continue buttons here
                 throw "network";
             }
