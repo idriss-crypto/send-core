@@ -109,3 +109,8 @@ Alternate way is to load widget from our CDN
     };
 </script>
 ```
+
+## License
+
+This project is licensed under [GPLv3](https://github.com/idriss-crypto/send-to-anyone-core/blob/master/LICENSE).
+

@@ -88,6 +88,9 @@ export const SendToAnyoneLogic = {
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = BASE_TIPPING_CONTRACT_ADDRESS;
                 break;
+            case "arbitrum":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                break;
             default:
                 // Handle the default case if needed
                 break;
@@ -243,6 +246,14 @@ export const SendToAnyoneLogic = {
                     throw e;
                 }
             }
+        } else if (network === "arbitrum") {
+            try {
+                await this.switchtoarbitrum();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
         } else {
             return false;
         }
@@ -305,7 +316,7 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                if (network === "zkSync" || network === "optimism" || network === 'linea') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'arbitrum') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log(network, this.idriss);
                 console.log(encodedVotes, asset, transactionOptions);
                 result = await this.idriss.vote(encodedVotes, asset, roundContract, transactionOptions);
@@ -763,6 +774,43 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to Base.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtoarbitrum() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 42161) {
+            console.log("Switch to Arbitrum One");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0xa4b1" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0xa4b1', chainName: 'Arbitrum One', rpcUrls: ['https://arbitrum.llamarpc.com'], blockExplorerUrls: ['https://arbiscan.io/'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Arbitrum One to continue.");
+                    }
+                }
+                console.log("Please switch to Arbitrum One.");
                 // disable continue buttons here
                 throw "network";
             }
