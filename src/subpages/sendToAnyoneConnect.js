@@ -18,11 +18,11 @@ export class SendToAnyoneConnect {
         let networks = [
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
-            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'}
+            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
+            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])
