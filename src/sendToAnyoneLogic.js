@@ -44,8 +44,11 @@ let coingeckoId = {
     CULT: "cult-dao",
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
-    PRIME: "echelon-prime",
 };
+
+let portal_fi = {
+    PRIME: "ethereum:0xb23d80f5FefcDDaa212212F028021B41DEd428CF",
+}
 
 // When using all token
 //let allTokens = tokens.concat(multiToken)
@@ -117,9 +120,12 @@ export const SendToAnyoneLogic = {
         if (oracleAddress[ticker]) {
             let oracle = await this.loadOracle(ticker); // token ticker selected
             priceSt = await this.getPrice(oracle);
-        } else {
+        } else if (coingeckoId[ticker]) {
             let response = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId[ticker]}&vs_currencies=USD&precision=full`)).json();
             priceSt = Object.values(Object.values(response)[0])[0];
+        } else {
+            let response = await (await fetch(`https://api.portals.fi/v2/tokens?ids=${portal_fi[ticker]}`)).json();
+            priceSt = response['tokens'][0]['price']
         }
 
         let decimals = tokens.filter((x) => x.symbol == ticker)[0]?.decimals;

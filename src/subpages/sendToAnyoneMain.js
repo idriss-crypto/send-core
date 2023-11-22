@@ -74,7 +74,6 @@ export class SendToAnyoneMain {
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;
-            console.log(assetAddress, network)
             let assetId = this.html.querySelector('.nftSelect').dataset.assetid;
             if (WEBPACK_MODE !== 'production') {
                 assetAddress = DEFAULT_TOKEN_CONTRACT_ADDRESS
