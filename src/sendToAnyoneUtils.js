@@ -62,6 +62,15 @@ const tokens = [
     {
         chainId: 1,
         network: "ETH",
+        name: "Echelon Prime",
+        symbol: "PRIME",
+        decimals: 18,
+        logoURI: prime,
+        address: "0xb23d80f5FefcDDaa212212F028021B41DEd428CF",
+    },
+    {
+        chainId: 1,
+        network: "ETH",
         name: "Cult DAO",
         symbol: "CULT",
         decimals: 18,
