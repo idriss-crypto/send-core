@@ -398,7 +398,7 @@ export const SendToAnyoneLogic = {
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log("Pre gas ", transactionOptions)
-                if (network === "zkSync" || network === "optimism" || network === 'linea') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'base') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log("post gas ", transactionOptions)
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);

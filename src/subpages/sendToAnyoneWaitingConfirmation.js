@@ -21,12 +21,12 @@ export class SendToAnyoneWaitingConfirmation {
             subtitleNFT.style.display = ''
             treasuryMessage.innerHTML = "$1 supplies IDriss' treasury"
             if (isIDrissRegistered) treasuryMessage.innerHTML = "1% supplies IDriss' treasury"
-            approvalMessage.innerHTML = "Confirm one approval and one transaction in your wallet"
+            approvalMessage.innerHTML = "Confirm one approval and one transaction"
         } else {
             if (assetType === 'erc20') {
                 treasuryMessage.innerHTML = "$1 supplies IDriss' treasury"
                 if (isIDrissRegistered) treasuryMessage.innerHTML = "1% supplies IDriss' treasury"
-                approvalMessage.innerHTML = "Confirm one approval and one transaction in your wallet"
+                approvalMessage.innerHTML = "Confirm one approval and one transaction"
             }
             if (isIDrissRegistered) treasuryMessage.innerHTML = "1% supplies IDriss' treasury"
             subtitleCoin.style.display = ''

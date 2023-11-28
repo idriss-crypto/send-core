@@ -440,10 +440,10 @@ const feeQuotes = {
 }
 
 const approvalMessages = {
-    mixedNative: "Confirm two transactions in your wallet",
-    mixedNonNative: "Confirm two approvals and two transactions in your wallet",
-    multiNative: "Confirm this transaction in your wallet",
-    multiNonNative: "Confirm one approval and one transaction in your wallet"
+    mixedNative: "Confirm two transactions",
+    mixedNonNative: "Confirm two approvals and two transactions",
+    multiNative: "Confirm this transaction",
+    multiNonNative: "Confirm one approval and one transaction"
 }
 
 const getNFTMetadata = (address, tokenId, apiKey, network) => {
