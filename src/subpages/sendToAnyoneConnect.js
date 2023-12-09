@@ -2,6 +2,7 @@ import template from "./sendToAnyoneConnect.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
+import base_logo from "!!url-loader!../img/base.svg"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import op_logo from "!!url-loader!../img/op.png"
 import mantle_logo from "!!url-loader!../img/mantle.ico"
@@ -18,11 +19,12 @@ export class SendToAnyoneConnect {
         let networks = [
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
-            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
-            {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'}
+            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
+            {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
+            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])

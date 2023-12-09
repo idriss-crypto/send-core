@@ -4,7 +4,7 @@
     <div class="loader"/>
     <h2>Waiting for Confirmation</h2>
     <p class="subtitle subtitleNFT">Sending <strong>{{assetName}}</strong> to multiple recipients</p>
-    <p id="numTxns">Confirm this transaction in your wallet</p>
+    <p id="numTxns">Confirm this transaction</p>
 </main>
 <footer>
     <p class="link">

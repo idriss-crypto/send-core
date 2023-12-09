@@ -5,6 +5,8 @@ import mantle_logo from "!!url-loader!../img/mantle.ico"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
 import pgn_logo from "!!url-loader!../img/pgn_logo.png"
+import base_logo from "!!url-loader!../img/base.svg"
+import arb_logo from "!!url-loader!../img/arb_logo.svg"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
@@ -20,11 +22,13 @@ export class CustomTwitter {
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
             {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'PGN', img: pgn_logo, chainId: 424, code: 'pgn'},
+            {name: 'Arbitrum One', img: arb_logo, chainId: 42161, code: 'arbitrum'},
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
-            {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'}
+            {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
+            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'}
         ]
 
         if (data.tokenFilter && data.tokenFilter.network && Array.isArray(data.tokenFilter.network)) {

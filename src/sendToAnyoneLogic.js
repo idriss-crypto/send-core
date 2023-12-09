@@ -51,6 +51,10 @@ let coingeckoId = {
     BANK: "bankless-dao",
 };
 
+let portal_fi = {
+    PRIME: "ethereum:0xb23d80f5FefcDDaa212212F028021B41DEd428CF",
+}
+
 // When using all token
 //let allTokens = tokens.concat(multiToken)
 
@@ -87,6 +91,13 @@ export const SendToAnyoneLogic = {
             case "pgn":
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = PGN_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "base":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = BASE_TIPPING_CONTRACT_ADDRESS;
+                break;
+            case "arbitrum":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 break;
             case "mantle":
                 // not adding an oracle address (use default) as calculation is separate below
@@ -125,7 +136,8 @@ export const SendToAnyoneLogic = {
             let response = await (await fetch(`https://api.redstone.finance/prices/?symbol=${redstoneId[ticker]}&provider=redstone&limit=1`)).json();
             priceSt = response[0]["value"]
         } else {
-            return
+            let response = await (await fetch(`https://api.portals.fi/v2/tokens?ids=${portal_fi[ticker]}`)).json();
+            priceSt = response['tokens'][0]['price']
         }
 
         let decimals = tokens.filter((x) => x.symbol == ticker)[0]?.decimals;
@@ -252,6 +264,22 @@ export const SendToAnyoneLogic = {
                     throw e;
                 }
             }
+        } else if (network === "base") {
+            try {
+                await this.switchtobase();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else if (network === "arbitrum") {
+            try {
+                await this.switchtoarbitrum();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
         } else {
             return false;
         }
@@ -314,7 +342,7 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                if (network === "zkSync" || network === "optimism" || network === 'linea') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'arbitrum') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log(network, this.idriss);
                 console.log(encodedVotes, asset, transactionOptions);
                 result = await this.idriss.vote(encodedVotes, asset, roundContract, transactionOptions);
@@ -390,7 +418,7 @@ export const SendToAnyoneLogic = {
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log("Pre gas ", transactionOptions)
-                if (network === "zkSync" || network === "optimism" || network === 'linea') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'base') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log("post gas ", transactionOptions)
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
@@ -735,6 +763,80 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to PGN.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtobase() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 8453) {
+            console.log("Switch to Base");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0x2105" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0x2105', chainName: 'Base', rpcUrls: ['https://mainnet.base.org'], blockExplorerUrls: ['https://basescan.org/'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Base to continue.");
+                    }
+                }
+                console.log("Please switch to Base.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtoarbitrum() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 42161) {
+            console.log("Switch to Arbitrum One");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0xa4b1" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0xa4b1', chainName: 'Arbitrum One', rpcUrls: ['https://arbitrum.llamarpc.com'], blockExplorerUrls: ['https://arbiscan.io/'], nativeCurrency: {name: 'Ethereum', symbol: 'ETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Arbitrum One to continue.");
+                    }
+                }
+                console.log("Please switch to Arbitrum One.");
                 // disable continue buttons here
                 throw "network";
             }
