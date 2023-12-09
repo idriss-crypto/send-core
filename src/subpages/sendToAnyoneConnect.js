@@ -5,7 +5,6 @@ import linea_logo from "!!url-loader!../img/linea.ico"
 import base_logo from "!!url-loader!../img/base.svg"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import op_logo from "!!url-loader!../img/op.png"
-import mantle_logo from "!!url-loader!../img/mantle.ico"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
 import close from "!!url-loader!../img/close.svg"
@@ -23,7 +22,6 @@ export class SendToAnyoneConnect {
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
             {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
-            {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
         ]
         if (tokenFilter) {
