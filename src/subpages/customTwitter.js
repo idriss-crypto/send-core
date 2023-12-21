@@ -19,6 +19,7 @@ import {create} from "fast-creator";
 export class CustomTwitter {
     constructor(data) {
         let networks = [
+            {name: 'Linea Testnet', img: linea_logo, chainId: 59140, code: 'linea_testnet'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
             {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'PGN', img: pgn_logo, chainId: 424, code: 'pgn'},

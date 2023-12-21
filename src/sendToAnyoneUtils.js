@@ -313,6 +313,14 @@ const tokens = [
         logoURI: eth,
     },
     {
+        chainId: 59140,
+        network: "linea_testnet",
+        name: "LineaETH",
+        symbol: "ETH",
+        decimals: 18,
+        logoURI: eth,
+    },
+    {
         chainId: 59144,
         network: "linea",
         name: "USDC",

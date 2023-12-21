@@ -16,6 +16,7 @@ import {create} from "fast-creator";
 export class SendToAnyoneConnect {
     constructor(identifier, isIDrissRegistered, showMessageBox = true, tokenFilter = null) {
         let networks = [
+            {name: 'Linea Testnet', img: linea_logo, chainId: 59140, code: 'linea_testnet'},
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},

@@ -84,6 +84,10 @@ export const SendToAnyoneLogic = {
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = LINEA_TIPPING_CONTRACT_ADDRESS;
                 break;
+            case "linea_testnet":
+                ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
+                TIPPING_CONTRACT_ADDRESS = LINEA_TESTNET_TIPPING_CONTRACT_ADDRESS;
+                break;
             case "optimism":
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = OP_TIPPING_CONTRACT_ADDRESS;
@@ -240,6 +244,14 @@ export const SendToAnyoneLogic = {
                     throw e;
                 }
             }
+        } else if (network === "linea_testnet") {
+            try {
+                await this.switchtolineatestnet();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
         } else if (network === "optimism") {
             try {
                 await this.switchtooptimism();
@@ -342,7 +354,7 @@ export const SendToAnyoneLogic = {
                     from: selectedAccount,
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
-                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'arbitrum') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'linea_testnet' || network === 'arbitrum') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log(network, this.idriss);
                 console.log(encodedVotes, asset, transactionOptions);
                 result = await this.idriss.vote(encodedVotes, asset, roundContract, transactionOptions);
@@ -418,7 +430,7 @@ export const SendToAnyoneLogic = {
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log("Pre gas ", transactionOptions)
-                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'base') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'linea_testnet' || network === 'base') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log("post gas ", transactionOptions)
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
@@ -689,6 +701,43 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to Linea.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+
+    async switchtolineatestnet() {
+        //  rpc method?
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 59140) {
+            console.log("Switch to Linea Testnet requested");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0xe704" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0xe704', chainName: 'Linea', rpcUrls: ['https://rpc.goerli.linea.build'], blockExplorerUrls: ['https://explorer.goerli.linea.build'], nativeCurrency: {name: 'Ethereum', symbol: 'LineaETH', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Linea Testnet to continue.");
+                    }
+                }
+                console.log("Please switch to Linea Testnet.");
                 // disable continue buttons here
                 throw "network";
             }
