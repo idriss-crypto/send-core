@@ -49,8 +49,6 @@ const tallyOpts= {
         },
     },
 };
-
-
 const metaMaskOpts= {
     "custom-metamask": {
         display: {

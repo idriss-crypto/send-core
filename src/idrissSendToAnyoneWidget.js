@@ -118,7 +118,7 @@ export class IdrissSendToAnyoneWidget extends HTMLElement {
                     sendToAnyoneValue: this.sendToAnyoneValue,
                     network: this.network
                 }
-                window.open(`https://www.idriss.xyz/send?` + Object.entries(urlParams).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
+                window.open(`127.0.0.1:5000/send?` + Object.entries(urlParams).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&'));
                 return;
             }
             this.clearContainer()
