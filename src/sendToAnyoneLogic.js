@@ -522,7 +522,7 @@ export const SendToAnyoneLogic = {
                                 {
                                     chainId: chainIdHex,
                                     chainName: "Polygon",
-                                    rpcUrls: [POLYGON_RPC_ENDPOINT],
+                                    rpcUrls: ["https://polygon-rpc.com/"],
                                     nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
                                 },
                             ],
