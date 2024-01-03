@@ -21,6 +21,7 @@ export class SendToAnyoneMain {
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
+            {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
             {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'}
