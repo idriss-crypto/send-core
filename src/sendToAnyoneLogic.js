@@ -136,7 +136,7 @@ export const SendToAnyoneLogic = {
             let response = await (await fetch(`https://api.redstone.finance/prices/?symbol=${redstoneId[ticker]}&provider=redstone&limit=1`)).json();
             priceSt = response[0]["value"]
         } else {
-            let response = await (await fetch(`https://api.portals.fi/v2/tokens?ids=${portal_fi[ticker]}`)).json();
+            let response = await (await fetch(`https://www.idriss.xyz/pricing?token=${portal_fi[ticker]}`)).json();
             priceSt = response['tokens'][0]['price']
         }
 
@@ -522,7 +522,7 @@ export const SendToAnyoneLogic = {
                                 {
                                     chainId: chainIdHex,
                                     chainName: "Polygon",
-                                    rpcUrls: [POLYGON_RPC_ENDPOINT],
+                                    rpcUrls: ["https://polygon-rpc.com/"],
                                     nativeCurrency: { name: "MATIC", symbol: "MATIC", decimals: 18 },
                                 },
                             ],
