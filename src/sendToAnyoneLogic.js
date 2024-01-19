@@ -113,6 +113,7 @@ export const SendToAnyoneLogic = {
         const web3 = new Web3(this.provider);
         // all values are injected by webpack based on the environment
         this.idriss = new IdrissCrypto(this.provider.host ?? POLYGON_RPC_ENDPOINT, {
+            providerType: 'ethersv5',
             web3Provider: this.provider,
             sendToAnyoneContractAddress: SEND_TO_ANYONE_CONTRACT_ADDRESS,
             idrissRegistryContractAddress: IDRISS_REGISTRY_CONTRACT_ADDRESS,
