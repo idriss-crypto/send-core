@@ -4782,9 +4782,22 @@ idna-uts46-hx@^2.3.1:
   dependencies:
     punycode "2.1.0"
 
-"idriss-crypto@link:../ts-library":
-  version "0.0.0"
-  uid ""
+idriss-crypto@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.9.0.tgz#75c4ad6da351943f76b0c9c788f272a1468f21af"
+  integrity sha512-U1zvd1cNzKtbgL+PAYCWfbRtOZlx80Y8kDy+NcBriDHIKecoFiJxygFaC5g5wHctwjNyG0zRqopHZ6QRfbclPA==
+  dependencies:
+    "@ethersproject/bignumber" "^5.7.0"
+    "@types/node-fetch" "^2.5.12"
+    eslint "^8.56.0"
+    eslint-config-prettier "^9.1.0"
+    eslint-import-resolver-typescript "^3.6.1"
+    eslint-plugin-import "^2.29.1"
+    eslint-plugin-prettier "^5.1.2"
+    ethers "^5.6.9"
+    node-fetch "^2.6.7"
+    prettier "^3.1.1"
+    web3 "^1.7.4"
 
 ieee754@^1.1.13, ieee754@^1.2.1:
   version "1.2.1"

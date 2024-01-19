@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/send-to-anyone-core",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "scripts": {
     "build": "webpack",
     "buildLocal": "webpack --watch --mode=none",
@@ -11,7 +11,7 @@
     "@web3modal/ethers5": "^3.5.3",
     "alchemy-sdk": "^2.0.2",
     "fast-creator": "^1.6.0",
-    "idriss-crypto": "link:../ts-library",
+    "idriss-crypto": "^1.9.0",
     "web3": "^1.7.0"
   },
   "devDependencies": {
