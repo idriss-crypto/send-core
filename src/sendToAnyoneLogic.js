@@ -408,10 +408,9 @@ export const SendToAnyoneLogic = {
         }
 
         // exchanged for redundant multiple get accounts calls
-        const accounts = await this.web3.eth.getAccounts();
-        let selectedAccount = accounts[0];
+        const selectedAccount = await this.idriss.getConnectedAccount();
 
-        if (accounts.length > 0) {
+        if (selectedAccount) {
             let result;
 
             try {
@@ -424,6 +423,9 @@ export const SendToAnyoneLogic = {
                 console.log("post gas ", transactionOptions)
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
+                console.log({
+                    recipient, walletType, asset, message, transactionOptions
+                })
                 result = await this.idriss.transferToIDriss(recipient, walletType, asset, message, transactionOptions);
             } catch (err) {
                 console.log("error", err);
@@ -468,10 +470,9 @@ export const SendToAnyoneLogic = {
         }
 
         // exchanged for redundant multiple get accounts calls
-        const accounts = await this.web3.eth.getAccounts();
-        let selectedAccount = accounts[0];
+        const selectedAccount = this.idriss.getConnectedAccount();
 
-        if (accounts.length > 0) {
+        if (selectedAccount) {
             let result;
 
             try {
