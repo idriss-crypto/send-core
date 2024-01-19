@@ -11,6 +11,7 @@ import matic from "!!url-loader!./img/matic.png"
 import eth from "!!url-loader!./img/eth_logo.png"
 import usdt from "!!url-loader!./img/usdt.svg"
 import ocean from "!!url-loader!./img/ocean.png"
+import ghst from "!!url-loader!./img/ghst.svg"
 import uni from "!!url-loader!./img/uni.svg"
 import aave from "!!url-loader!./img/aave.svg"
 import cel from "!!url-loader!./img/cel.svg"
@@ -86,6 +87,15 @@ const tokens = [
         decimals: 18,
         logoURI: bank,
         address: "0x2d94aa3e47d9d5024503ca8491fce9a2fb4da198",
+    },
+    {
+        chainId: 1,
+        network: "ETH",
+        name: "Aavegotchi",
+        symbol: "GHST",
+        decimals: 18,
+        logoURI: ghst,
+        address: "0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
     },
     {
         chainId: 10,
@@ -227,6 +237,15 @@ const tokens = [
         decimals: 18,
         logoURI: bank,
         address: "0xdb7cb471dd0b49b29cab4a1c14d070f27216a0ab",
+    },
+    {
+        chainId: 137,
+        network: "Polygon",
+        name: "Aavegotchi",
+        symbol: "GHST",
+        decimals: 18,
+        logoURI: ghst,
+        address: "0x385eeac5cb85a38a9a07a70c73e0a3271cfb54a7",
     },
     {
         chainId: 324,

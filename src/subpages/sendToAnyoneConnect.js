@@ -2,6 +2,7 @@ import template from "./sendToAnyoneConnect.mpts";
 import eth_logo from "!!url-loader!../img/eth_logo.png"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
+import mantle_logo from "!!url-loader!../img/mantle.ico"
 import base_logo from "!!url-loader!../img/base.svg"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import op_logo from "!!url-loader!../img/op.png"
@@ -20,6 +21,7 @@ export class SendToAnyoneConnect {
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
+            {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
             {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
             {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
@@ -57,7 +59,7 @@ export class SendToAnyoneConnect {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20'
+            if (assetType === 'native' && !["MATIC", "ETH", "BNB", "MNT"].includes(token)) assetType = 'erc20'
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
