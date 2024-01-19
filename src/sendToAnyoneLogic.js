@@ -53,6 +53,7 @@ let coingeckoId = {
 
 let portal_fi = {
     PRIME: "ethereum:0xb23d80f5FefcDDaa212212F028021B41DEd428CF",
+    GHST: "ethereum:0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
 }
 
 // When using all token
