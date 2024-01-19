@@ -59,7 +59,7 @@ export class SendToAnyoneConnect {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20'
+            if (assetType === 'native' && !["MATIC", "ETH", "BNB", "MNT"].includes(token)) assetType = 'erc20'
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({polygon: [token]})[0]?.address;
