@@ -333,10 +333,9 @@ export const SendToAnyoneLogic = {
         }
 
         // exchanged for redundant multiple get accounts calls
-        const accounts = await this.web3.eth.getAccounts();
-        let selectedAccount = accounts[0];
+        const selectedAccount = await this.idriss.getConnectedAccount();
 
-        if (accounts.length > 0) {
+        if (selectedAccount) {
             let result;
 
             try {
@@ -470,7 +469,7 @@ export const SendToAnyoneLogic = {
         }
 
         // exchanged for redundant multiple get accounts calls
-        const selectedAccount = this.idriss.getConnectedAccount();
+        const selectedAccount = await this.idriss.getConnectedAccount();
 
         if (selectedAccount) {
             let result;
