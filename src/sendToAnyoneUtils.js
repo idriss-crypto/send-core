@@ -179,7 +179,7 @@ const tokens = [
     {
         chainId: 137,
         network: "Polygon",
-        name: "MATIC",
+        name: "Polygon",
         symbol: "MATIC",
         decimals: 18,
         logoURI: matic,
