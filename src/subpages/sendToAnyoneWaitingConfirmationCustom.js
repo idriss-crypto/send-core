@@ -18,10 +18,10 @@ export class SendToAnyoneWaitingConfirmationCustom {
 
         if (assetType === 'erc721' || assetType === 'erc1155') {
             subtitleNFT.style.display = ''
-            approvalMessage.innerHTML = "Confirm one approval and one transaction in your wallet"
+            approvalMessage.innerHTML = "Confirm one approval and one transaction"
         } else {
             if (assetType === 'erc20') {
-                approvalMessage.innerHTML = "Confirm one approval and one transaction in your wallet"
+                approvalMessage.innerHTML = "Confirm one approval and one transaction"
             }
             subtitleCoin.style.display = ''
         }

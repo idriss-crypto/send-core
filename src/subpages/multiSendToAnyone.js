@@ -259,7 +259,7 @@ export class MultiSendToAnyone {
 
         if (!this.hasAmount) this.result = this.content.split('\n').filter(function(el) {return el.length != 0}).map(data => [data, slider.checked? '1' : this.html.querySelector('#InputCustomAmount').value]);
 
-        console.log(this.result)
+        console.log("Got this resolved result: ", this.result)
 
         this.html.querySelector(".multiSend").disabled = false;
 
@@ -390,6 +390,7 @@ export class MultiSendToAnyone {
 
         for (let element of this.result) {
             let elemToPush = await this.prepareRecipients(element)
+            await this.sleep(500)
             multiSendArr.push(elemToPush)
         }
 
@@ -400,6 +401,10 @@ export class MultiSendToAnyone {
             token
         }))
 
+    }
+
+    async sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     // for the future, also need library change to accept other strings
@@ -416,10 +421,10 @@ export class MultiSendToAnyone {
         let resolved = {}
         try {
             resolved = await this.idriss.resolve(res[0], {'network': 'evm'})
+            console.log("resolved: ", resolved)
+            res[0] = resolved['Public ETH']? resolved['Public ETH'] : resolved[Object.keys(resolved)[0]]
         } catch {
-            console.log("Is ENS? ", await defaultWeb3ETH.eth.ens.recordExists(res[0]))
             if (await defaultWeb3ETH.eth.ens.recordExists(res[0])) res[0] = await defaultWeb3ETH.eth.ens.getAddress(res[0]);
-            console.log(res)
         }
         const walletTag = resolved['Public ETH']? "Public ETH" : Object.keys(resolved)[0]
         const walletType = walletTag

@@ -51,7 +51,7 @@
         </div>
     </div>
     <div class="select-wrapper networkSelectWrapper">
-        <label for="network">Network:</label>
+        <label for="network">Network</label>
         <div class="select networkSelect" data-network=networks.0.code>
             <button type="button" id="network">
                 <img src=networks.0.img alt=""/>
@@ -70,7 +70,7 @@
     </div>
 
     <div class="select-wrapper tokenSelectWrapper">
-        <label for="tokenButton">Coin:</label>
+        <label for="tokenButton">Token</label>
         <div class="select tokenSelect" data-symbol=tokens.0.symbol>
             <button type="button" id="tokenButton">
                 <img src=tokens.0.logoURI alt=""/>

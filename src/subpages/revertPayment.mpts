@@ -1,6 +1,6 @@
 <main>
     <h1>Revert Send</h1>
-    <label>Transaction hash to revert:</label>
+    <label>Transaction hash to revert</label>
     <input id="urlInput" type="text" class="customHash" placeholder="0x..." />
     <button type="button" class="revertButton">
         <span id="revertNext" >Revert</span>

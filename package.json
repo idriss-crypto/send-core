@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/send-to-anyone-core",
-  "version": "0.4.2",
+  "version": "0.4.9",
   "scripts": {
     "build": "webpack",
     "buildLocal": "webpack --watch --mode=none",
@@ -8,22 +8,21 @@
     "buildProd": "webpack --mode=production"
   },
   "dependencies": {
-    "@depay/coinbase-wallet-sdk": "^1.0.5",
-    "@magic-ext/connect": "^3.1.0",
+    "@web3modal/ethers5": "^3.5.3",
     "alchemy-sdk": "^2.0.2",
     "fast-creator": "^1.6.0",
-    "idriss-crypto": "link:../ts-library",
-    "magic-sdk": "^10.1.0",
-    "web3": "^1.7.0",
-    "web3modal": "^1.9.7"
+    "idriss-crypto": "^1.9.2",
+    "web3": "^1.7.0"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.4.0",
-    "ethers": "^5.6.9",
+    "ethers": "5.7.2",
     "mpts-loader": "^1.0.0",
     "sass": "^1.43.2",
     "sass-loader": "^13.0.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
     "url-loader": "^4.1.1",
     "webpack": "^5.59.0",
     "webpack-cli": "^4.9.1"
@@ -35,6 +34,5 @@
     "./sendToAnyoneUtils": "./dist/sendToAnyoneUtils.mjs",
     "./sendToAnyoneStyle": "./dist/sendToAnyoneStyle.mjs",
     "./getWeb3Provider": "./dist/getWeb3Provider.mjs"
-
   }
 }
