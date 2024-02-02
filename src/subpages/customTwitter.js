@@ -4,6 +4,7 @@ import op_logo from "!!url-loader!../img/op.png"
 import mantle_logo from "!!url-loader!../img/mantle.ico"
 import zk_logo from "!!url-loader!../img/zksync.ico"
 import linea_logo from "!!url-loader!../img/linea.ico"
+import scroll_logo from "!!url-loader!../img/scroll.png"
 import pgn_logo from "!!url-loader!../img/pgn_logo.png"
 import base_logo from "!!url-loader!../img/base.svg"
 import arb_logo from "!!url-loader!../img/arb_logo.svg"
@@ -20,15 +21,16 @@ export class CustomTwitter {
     constructor(data) {
         let networks = [
             {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
+            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
             {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
-            {name: 'PGN', img: pgn_logo, chainId: 424, code: 'pgn'},
+            {name: 'Scroll', img: scroll_logo, chainId: 534352, code: 'scroll'},
             {name: 'Arbitrum One', img: arb_logo, chainId: 42161, code: 'arbitrum'},
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
-            {name: 'Base', img: base_logo, chainId: 8453, code: 'base'}
+            {name: 'PGN', img: pgn_logo, chainId: 424, code: 'pgn'},
         ]
 
         if (data.tokenFilter && data.tokenFilter.network && Array.isArray(data.tokenFilter.network)) {

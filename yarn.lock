@@ -4782,10 +4782,10 @@ idna-uts46-hx@^2.3.1:
   dependencies:
     punycode "2.1.0"
 
-idriss-crypto@^1.9.1:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.9.1.tgz#3f35fbc40ea1de80f648da3caef34db3fac23648"
-  integrity sha512-lvK5SozVWtg6CDbJIDPJ2znD3+FFPtdH5JuFeeFZmiPH0aPYNVXkM5EugBx1IqBJF04eZ0rpXkD+ALTXTssOVw==
+idriss-crypto@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/idriss-crypto/-/idriss-crypto-1.9.2.tgz#cb796ce5d9c95ab44bdce7cd5c0b2358583c5988"
+  integrity sha512-pNT+18gVJUmKlPJvfI1i9NQGCi9m06U4tz0kjCLirZMOcpo++cGDIX4VfeSjfNFAxrpNG7hipXjcoEeErYpJCA==
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
     "@types/node-fetch" "^2.5.12"
