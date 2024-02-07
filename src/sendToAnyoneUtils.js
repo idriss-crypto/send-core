@@ -372,7 +372,7 @@ const tokens = [
         name: "Dai",
         symbol: "DAI",
         decimals: 18,
-        logoURI: usdc,
+        logoURI: dai,
         address: "0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97",
     },
     {
