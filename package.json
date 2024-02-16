@@ -1,5 +1,5 @@
 {
-  "name": "@idriss-crypto/send-to-anyone-core",
+  "name": "@idriss-crypto/send-core",
   "version": "0.4.11",
   "scripts": {
     "build": "webpack",
