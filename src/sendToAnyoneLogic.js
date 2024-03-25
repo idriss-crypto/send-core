@@ -49,6 +49,7 @@ let coingeckoId = {
     CULT: "cult-dao",
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
+    DEGEN: "degen-base"
 };
 
 let portal_fi = {
