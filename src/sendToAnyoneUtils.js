@@ -12,6 +12,7 @@ import eth from "!!url-loader!./img/eth_logo.png"
 import usdt from "!!url-loader!./img/usdt.svg"
 import ocean from "!!url-loader!./img/ocean.png"
 import ghst from "!!url-loader!./img/ghst.png"
+import degen from "!!url-loader!./img/degen.png"
 import uni from "!!url-loader!./img/uni.svg"
 import aave from "!!url-loader!./img/aave.svg"
 import cel from "!!url-loader!./img/cel.svg"
@@ -314,6 +315,15 @@ const tokens = [
         decimals: 18,
         logoURI: prime,
         address: "0xfA980cEd6895AC314E7dE34Ef1bFAE90a5AdD21b",
+    },
+    {
+        chainId: 8453,
+        network: "base",
+        name: "Degen",
+        symbol: "DEGEN",
+        decimals: 18,
+        logoURI: degen,
+        address: "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
     },
     {
         chainId: 42161,
