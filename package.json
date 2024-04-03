@@ -1,6 +1,6 @@
 {
   "name": "@idriss-crypto/send-core",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "scripts": {
     "build": "webpack",
     "buildLocal": "webpack --watch --mode=none",

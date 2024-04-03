@@ -49,12 +49,12 @@ let coingeckoId = {
     CULT: "cult-dao",
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
-    DEGEN: "degen-base"
 };
 
 let portal_fi = {
     PRIME: "ethereum:0xb23d80f5FefcDDaa212212F028021B41DEd428CF",
     GHST: "ethereum:0x3F382DbD960E3a9bbCeaE22651E88158d2791550",
+    DEGEN: "base:0x4ed4e862860bed51a9570b96d89af5e1b0efefed"
 }
 
 // When using all token
