@@ -21,9 +21,9 @@ export class SendToAnyoneConnect {
             {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
-            {name: 'Scroll', img: scroll_logo, chainId: 534352, code: 'scroll'},
-            {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
             {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
+            {name: 'Optimism', img: op_logo, chainId: 10, code: 'optimism'},
+            {name: 'Scroll', img: scroll_logo, chainId: 534352, code: 'scroll'},
             {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
             {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
