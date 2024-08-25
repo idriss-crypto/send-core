@@ -7,6 +7,7 @@ import base_logo from "!!url-loader!../img/base.svg"
 import scroll_logo from "!!url-loader!../img/scroll.png"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import op_logo from "!!url-loader!../img/op.png"
+import azero from "!!url-loader!../img/azero.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
 import close from "!!url-loader!../img/close.svg"
@@ -26,7 +27,8 @@ export class SendToAnyoneConnect {
             {name: 'Scroll', img: scroll_logo, chainId: 534352, code: 'scroll'},
             {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
-            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'}
+            {name: 'BNB Chain', img: biannceCoinLogo, chainId: 56, code: 'BSC'},
+            {name: 'Aleph Zero EVM', img: azero, chainId: 41455, code: 'aleph'}
         ]
         if (tokenFilter) {
             networks = networks.filter(n => tokenFilter[n.code.toLowerCase()])

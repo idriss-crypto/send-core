@@ -49,6 +49,7 @@ let coingeckoId = {
     CULT: "cult-dao",
     RVLT: "revolt-2-earn",
     BANK: "bankless-dao",
+    AZERO: "aleph-zero"
 };
 
 let portal_fi = {
@@ -105,6 +106,10 @@ export const SendToAnyoneLogic = {
                 // not adding an oracle address (use default) as calculation is separate below
                 TIPPING_CONTRACT_ADDRESS = MANTLE_TIPPING_CONTRACT_ADDRESS;
                 break;
+            case "aleph":
+                // not adding an oracle address (use default) as calculation is separate below
+                TIPPING_CONTRACT_ADDRESS = ALEPH_TIPPING_CONTRACT_ADDRESS;
+                break;
             case "scroll":
                 ORACLE_CONTRACT_ADDRESS = ETH_PRICE_ORACLE_CONTRACT_ADDRESS;
                 TIPPING_CONTRACT_ADDRESS = SCROLL_TIPPING_CONTRACT_ADDRESS;
@@ -142,6 +147,9 @@ export const SendToAnyoneLogic = {
         } else if (redstoneId[ticker]) {
             let response = await (await fetch(`https://api.redstone.finance/prices/?symbol=${redstoneId[ticker]}&provider=redstone&limit=1`)).json();
             priceSt = response[0]["value"]
+        } else if (ticker.toUpperCase() == "AZERO") {
+            let response = await (await fetch(`https://api.diadata.org/v1/assetQuotation/AlephZero/0x0000000000000000000000000000000000000000`)).json();
+            priceSt = response["Price"]
         } else {
             let response = await (await fetch(`https://www.idriss.xyz/pricing?token=${portal_fi[ticker]}`)).json();
             priceSt = response['tokens'][0]['price']
@@ -266,6 +274,14 @@ export const SendToAnyoneLogic = {
         } else if (network === "mantle") {
             try {
                 await this.switchtomantle();
+            } catch (e) {
+                if (e != "network1") {
+                    throw e;
+                }
+            }
+        } else if (network === "aleph") {
+            try {
+                await this.switchtoaleph();
             } catch (e) {
                 if (e != "network1") {
                     throw e;
@@ -431,7 +447,7 @@ export const SendToAnyoneLogic = {
                     ...(polygonGas && { gasPrice: polygonGas }),
                 };
                 console.log("Pre gas ", transactionOptions)
-                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'mantle' || network === 'base') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
+                if (network === "zkSync" || network === "optimism" || network === 'linea' || network === 'mantle' || network === 'base' || network === 'aleph') transactionOptions.gasPrice = await this.web3.eth.getGasPrice();
                 console.log("post gas ", transactionOptions)
                 console.log(recipient, walletType, asset, message, transactionOptions);
                 console.log(network, this.idriss);
@@ -889,6 +905,42 @@ export const SendToAnyoneLogic = {
                     }
                 }
                 console.log("Please switch to Mantle.");
+                // disable continue buttons here
+                throw "network";
+            }
+        }
+    },
+    
+    async switchtoaleph() {
+        console.log("Checking chain...");
+        const chainId = await this.web3.eth.getChainId();
+        console.log(chainId);
+
+        // check if correct chain is connected
+        console.log("Connected to chain ", chainId);
+        if (chainId != 41455) {
+            console.log("Switch to Aleph");
+            try {
+                await this.provider.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0xa1ef" }],
+                });
+            } catch (switchError) {
+                if (switchError.message === "JSON RPC response format is invalid") {
+                    throw "network1";
+                }
+                // This error code indicates that the chain has not been added to MetaMask.
+                if (switchError.code === 4902) {
+                    try {
+                        await this.provider.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{ chainId: '0xa1ef', chainName: 'Aleph Zero EVM', rpcUrls: ['https://rpc.alephzero.raas.gelato.cloud'], blockExplorerUrls: ['https://evm-explorer.alephzero.org'], nativeCurrency: {name: 'AZERO', symbol: 'AZERO', decimals: 18}}],
+                        });
+                    } catch (addError) {
+                        alert("Please add Aleph Zero EVM to continue.");
+                    }
+                }
+                console.log("Please switch to Aleph Zero EVM");
                 // disable continue buttons here
                 throw "network";
             }

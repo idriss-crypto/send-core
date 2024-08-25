@@ -24,6 +24,7 @@ import quick from "!!url-loader!./img/quick.svg"
 import tel from "!!url-loader!./img/tel.svg"
 import op from "!!url-loader!./img/op.png"
 import mnt from "!!url-loader!./img/mantle.ico"
+import azero from "!!url-loader!./img/azero.png"
 import custom from "!!url-loader!./img/custom.png"
 
 const tokens = [
@@ -324,6 +325,14 @@ const tokens = [
         decimals: 18,
         logoURI: degen,
         address: "0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed",
+    },
+    {
+        chainId: 41455,
+        network: "aleph",
+        name: "AZERO",
+        symbol: "AZERO",
+        decimals: 18,
+        logoURI: azero,
     },
     {
         chainId: 42161,

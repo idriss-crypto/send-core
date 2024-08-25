@@ -8,6 +8,7 @@ import scroll_logo from "!!url-loader!../img/scroll.png"
 import pgn_logo from "!!url-loader!../img/pgn_logo.png"
 import base_logo from "!!url-loader!../img/base.svg"
 import arb_logo from "!!url-loader!../img/arb_logo.svg"
+import azero from "!!url-loader!../img/azero.png"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
@@ -31,6 +32,7 @@ export class CustomTwitter {
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Linea Mainnet', img: linea_logo, chainId: 59144, code: 'linea'},
             {name: 'PGN', img: pgn_logo, chainId: 424, code: 'pgn'},
+            {name: 'Aleph Zero EVM', img: azero, chainId: 41455, code: 'aleph'}
         ]
 
         if (data.tokenFilter && data.tokenFilter.network && Array.isArray(data.tokenFilter.network)) {
