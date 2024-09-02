@@ -32,7 +32,7 @@ export class MultiSendToAnyoneApproval {
             if (this.assetType===0) feeQuote = feeQuotes.singleToken;
         }
         if (this.noneRegistered) {
-            if (this.assetType===0) feeQuote = feeQuotes.multiNRMatic;
+            if (this.assetType===0) feeQuote = feeQuotes.multiNRPol;
         }
 
         this.html.querySelector('.linkContent').innerHTML = feeQuote
