@@ -12,7 +12,7 @@ import azero from "!!url-loader!../img/azero.png"
 import usdc_logo from "!!url-loader!../img/usdc_logo.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
-import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
+import polygonTokenIcon from "!!url-loader!../img/polygon-token-icon.webp"
 import binanceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
@@ -26,7 +26,7 @@ export class CustomTwitter {
             {name: 'Mantle', img: mantle_logo, chainId: 5000, code: 'mantle'},
             {name: 'Scroll', img: scroll_logo, chainId: 534352, code: 'scroll'},
             {name: 'Arbitrum One', img: arb_logo, chainId: 42161, code: 'arbitrum'},
-            {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Polygon', img: polygonTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'BNB Chain', img: binanceCoinLogo, chainId: 56, code: 'BSC'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
@@ -73,7 +73,7 @@ export class CustomTwitter {
             let identifier = data.recipient;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            let assetType = ["MATIC", "ETH", "BNB", "MNT"].includes(token)? "native" : "erc20"
+            let assetType = ["POL", "ETH", "BNB", "MNT"].includes(token)? "native" : "erc20"
             let message = this.html.querySelector('.messageBox textarea').value;
             let input = this.html.querySelector('input').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;

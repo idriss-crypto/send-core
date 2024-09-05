@@ -11,7 +11,7 @@ import azero from "!!url-loader!../img/azero.png"
 import arrow from "!!url-loader!../img/arrow.svg"
 import pen from "!!url-loader!../img/pen.svg"
 import close from "!!url-loader!../img/close.svg"
-import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
+import polygonTokenIcon from "!!url-loader!../img/polygon-token-icon.webp"
 import binanceCoinLogo from "!!url-loader!../img/binance-coin-logo.webp"
 import {tokens} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
@@ -19,7 +19,7 @@ import {create} from "fast-creator";
 export class SendToAnyoneMain {
     constructor(identifier, isIDrissRegistered, ownedNFTs, showMessageBox = true, tokenFilter = null, selectNFT = false) {
         let networks = [
-            {name: 'Polygon', img: maticTokenIcon, chainId: 137, code: 'Polygon'},
+            {name: 'Polygon', img: polygonTokenIcon, chainId: 137, code: 'Polygon'},
             {name: 'Ethereum', img: eth_logo, chainId: 1, code: 'ETH'},
             {name: 'zkSync Era', img: zk_logo, chainId: 324, code: 'zkSync'},
             {name: 'Base', img: base_logo, chainId: 8453, code: 'base'},
@@ -76,7 +76,7 @@ export class SendToAnyoneMain {
             let assetType = this.html.querySelector('.assetTypeSelection .isSelected').dataset.value;
             let network = this.html.querySelector('.networkSelect').dataset.network;
             let token = this.html.querySelector('.tokenSelect').dataset.symbol;
-            if (assetType === 'native' && !["MATIC", "ETH", "BNB", "MNT"].includes(token)) assetType = 'erc20';
+            if (assetType === 'native' && !["POL", "ETH", "BNB", "MNT"].includes(token)) assetType = 'erc20';
             let message = this.html.querySelector('.messageBox textarea').value;
             let amount = this.html.querySelector('.valueSelection .isSelected input')?.value || this.html.querySelector('.valueSelection .isSelected').dataset.value;
             let assetAddress = this.filterTokens({network: [network], token: [token]})[0]?.address;

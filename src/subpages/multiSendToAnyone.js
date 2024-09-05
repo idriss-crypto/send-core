@@ -1,6 +1,6 @@
 import template from "./multiSendToAnyone.mpts";
 import arrow from "!!url-loader!../img/arrow.svg"
-import maticTokenIcon from "!!url-loader!../img/matic-token-icon.webp"
+import polygonTokenIcon from "!!url-loader!../img/polygon-token-icon.webp"
 import {tokens, multiToken} from "../sendToAnyoneUtils";
 import {create} from "fast-creator";
 import { walletTypeDefault, getCoin, loadToken, loadNFT, customNFT,  regPh, regM, regT } from "../sendToAnyoneUtils";
@@ -40,7 +40,7 @@ export class MultiSendToAnyone {
         this.selectedAccount = selectedAccount;
 
         let networks = [
-            {name: 'Polygon ', img: maticTokenIcon, chainId: 137, code: 'Polygon'}
+            {name: 'Polygon ', img: polygonTokenIcon, chainId: 137, code: 'Polygon'}
         ]
 
         if (networkFilter) {
@@ -49,7 +49,7 @@ export class MultiSendToAnyone {
 
         for (let [key, value] of Object.entries(ownedAssets)) {
             if (!ownedAssets[key].balance) ownedAssets[key].balance = 0;
-            if (!ownedAssets[key].type) ownedAssets[key].type =  ownedAssets[key].symbol === "MATIC" ? "native" : "ERC20";
+            if (!ownedAssets[key].type) ownedAssets[key].type =  ownedAssets[key].symbol === "POL" ? "native" : "ERC20";
             if (!ownedAssets[key].image) ownedAssets[key].image = ownedAssets[key].logoURI
         }
 
@@ -365,7 +365,7 @@ export class MultiSendToAnyone {
         }
         let assetType = this.html.querySelector('#Toggle').checked? "erc1155" : "native";
         let token = this.html.querySelector('.assetSelect').dataset.symbol;
-        if (assetType === 'native' && token !== 'MATIC') assetType = 'erc20';
+        if (assetType === 'native' && token !== 'POL') assetType = 'erc20';
         // no message box atm
         // let message = this.html.querySelector('.messageBox textarea').value;
         // or just from selected asset?

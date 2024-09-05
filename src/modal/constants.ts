@@ -11,7 +11,7 @@ export const chains = [
   {
     chainId: Number(POLYGON_CHAIN_ID),
     name: "Polygon",
-    currency: "MATIC",
+    currency: "POL",
     explorerUrl: POLYGON_BLOCK_EXPLORER_ADDRESS,
     rpcUrl: POLYGON_RPC_ENDPOINT,
   },

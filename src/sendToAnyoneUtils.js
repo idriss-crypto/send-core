@@ -7,7 +7,7 @@ import doge from "!!url-loader!./img/doge.png"
 import bnb from "!!url-loader!./img/bnb.png"
 import weth from "!!url-loader!./img/weth.png"
 import prime from "!!url-loader!./img/prime.png"
-import matic from "!!url-loader!./img/matic.png"
+import pol from "!!url-loader!./img/pol.png"
 import eth from "!!url-loader!./img/eth_logo.png"
 import usdt from "!!url-loader!./img/usdt.svg"
 import ocean from "!!url-loader!./img/ocean.png"
@@ -182,9 +182,9 @@ const tokens = [
         chainId: 137,
         network: "Polygon",
         name: "Polygon",
-        symbol: "MATIC",
+        symbol: "POL",
         decimals: 18,
-        logoURI: matic,
+        logoURI: pol,
     },
     {
         chainId: 137,
@@ -507,8 +507,8 @@ const feeQuotes = {
     singleToken: "1% supplies IDriss’ treasury",
     singleNFT: "$1 supplies IDriss’ treasury",
     multiNonNative: "$1 per recipient supplies IDriss’ treasury",
-    singleNRMatic: "1% (min. $1) supplies IDriss’ treasury",
-    multiNRMatic: "1% (min. $1) per recipient supplies IDriss’ treasury",
+    singleNRPol: "1% (min. $1) supplies IDriss’ treasury",
+    multiNRPol: "1% (min. $1) per recipient supplies IDriss’ treasury",
     multiMixed: "A small fee supplies IDriss’ treasury"
 }
 

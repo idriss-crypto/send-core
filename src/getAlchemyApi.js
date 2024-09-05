@@ -13,7 +13,7 @@ export default function getAlchemyAPI (apiKey, network) {
             apiNetwork = Network.ETH_MAINNET
             break
         default:
-            apiNetwork = Network.MATIC_MAINNET
+            apiNetwork = Network.POLYGON_MAINNET
     }
 
     const config = {
